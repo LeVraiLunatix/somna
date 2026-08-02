@@ -62,11 +62,21 @@ enum RealtimeMetricsExtractor {
     private static func zeroCrossingRate(_ samples: UnsafePointer<Float>, frameCount: Int) -> Float {
         guard frameCount > 1 else { return 0 }
 
-        var crossings: vDSP_Length = 0
         var lastCrossing: vDSP_Length = 0
-        vDSP_zrhalfeoc(samples, 1, &crossings, &lastCrossing, vDSP_Length(frameCount))
+        var crossingCount: vDSP_Length = 0
 
-        return min(1, Float(crossings) / Float(frameCount - 1))
+        // Asking for `frameCount` crossings means "find them all"; the routine
+        // stops early if there are fewer.
+        vDSP_nzcros(
+            samples,
+            1,
+            vDSP_Length(frameCount),
+            &lastCrossing,
+            &crossingCount,
+            vDSP_Length(frameCount)
+        )
+
+        return min(1, Float(crossingCount) / Float(frameCount - 1))
     }
 }
 

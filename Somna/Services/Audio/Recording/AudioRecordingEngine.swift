@@ -233,10 +233,12 @@ actor AudioRecordingEngine: AudioRecording {
 
         input.removeTap(onBus: 0)
         input.installTap(onBus: 0, bufferSize: 4096, format: inputFormat) { [weak self] buffer, _ in
-            // Copy out of the real-time thread immediately. Holding the buffer
-            // across an await would let the audio unit reuse its memory.
+            // Copy out of the real-time thread immediately: the audio unit reuses
+            // its buffer as soon as this callback returns, so holding the original
+            // across an await would read memory that is being overwritten.
             guard let copy = buffer.deepCopy() else { return }
-            Task { await self?.ingest(copy) }
+            let transfer = AudioBufferTransfer(buffer: copy)
+            Task { await self?.ingest(transfer.buffer) }
         }
 
         engine.prepare()
@@ -375,6 +377,19 @@ actor AudioRecordingEngine: AudioRecording {
         converter = nil
         currentLevel = 0
     }
+}
+
+/// Hands a freshly copied buffer from the audio thread to the engine actor.
+///
+/// `AVAudioPCMBuffer` is a reference type and is not `Sendable`, so Swift 6
+/// rightly refuses to let one cross an isolation boundary. The exception is
+/// justified narrowly and only here: the wrapped buffer is a deep copy created
+/// inside the tap callback and never referenced again by it, so ownership
+/// genuinely moves rather than being shared. Wrapping the transfer — rather than
+/// marking the buffer type itself unsafe — keeps the exception at the one call
+/// site where the ownership argument actually holds.
+private struct AudioBufferTransfer: @unchecked Sendable {
+    let buffer: AVAudioPCMBuffer
 }
 
 private extension AVAudioPCMBuffer {
