@@ -15,7 +15,9 @@ extension AppEnvironment {
     static func preview(
         microphone: MicrophonePermission = .granted,
         notifications: NotificationPermission = .granted,
-        settings: UserSettings = .default
+        settings: UserSettings = .default,
+        power: Double? = 0.85,
+        isCharging: Bool = true
     ) -> AppEnvironment {
         let clock = FixedClock(now: Date(timeIntervalSince1970: 1_800_000_000))
 
@@ -40,7 +42,8 @@ extension AppEnvironment {
             ),
             haptics: SilentHapticFeedback(),
             calibration: StubCalibrationService(),
-            recorder: StubAudioRecorder(clock: clock)
+            recorder: StubAudioRecorder(clock: clock),
+            power: StubPowerMonitor(level: power, isCharging: isCharging)
         )
     }
 }

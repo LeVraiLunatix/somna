@@ -54,8 +54,6 @@
     "home.interrupted.title": "Une nuit s'est arrêtée en cours de route",
     "home.interrupted.body": "Ce qui a été enregistré avant l'arrêt est toujours là et peut être analysé.",
     "home.loading": "Chargement…",
-    "home.recordingSoon.title": "L'enregistrement n'est pas encore disponible",
-    "home.recordingSoon.body": "Cette version met en place tout ce qui entoure l'enregistrement : autorisations, stockage, calibration. Le moteur audio arrive dans la prochaine.",
     "home.start": "Démarrer ce soir",
     "home.stat.calmness": "Tranquillité",
     "home.stat.recorded": "Enregistré",
@@ -116,6 +114,39 @@
     "permission.provisional": "Livraison discrète",
     "permission.undetermined": "Pas encore demandé",
 
+    "action.done": "Terminé",
+
+    "session.title": "Cette nuit",
+    "session.prepare.title": "Avant de dormir",
+    "session.prepare.body": "Somna écoutera jusqu'à ce que tu l'arrêtes. L'enregistrement continue écran verrouillé.",
+    "session.prepare.warning": "Ne balaie pas Somna hors du sélecteur d'apps — iOS mettrait définitivement fin à l'enregistrement.",
+    "session.checklist": "Vérifications",
+    "session.estimatedSize": "Une nuit complète occupe environ",
+    "session.start": "Commencer la nuit",
+    "session.starting": "Démarrage…",
+    "session.stop": "Terminer la nuit",
+    "session.state.listening": "À l'écoute",
+    "session.state.interrupted": "Suspendu par iOS",
+    "session.interrupted": "Interrompu — Somna tente de reprendre",
+    "session.finished.title": "Nuit enregistrée",
+    "session.finished.analysisPending": "L'analyse de ce que Somna a entendu arrive à la prochaine version. Ton audio est enregistré et l'attendra.",
+
+    "session.check.microphone": "Micro",
+    "session.check.microphone.ok": "Autorisé",
+    "session.check.microphone.blocked": "Bloqué — autorise-le dans les Réglages iOS",
+    "session.check.storage": "Espace libre",
+    "session.check.storage.low": "Pas assez de place pour une nuit complète",
+    "session.check.power": "Alimentation",
+    "session.check.power.charging": "En charge",
+    "session.check.power.unknown": "Inconnue",
+    "session.check.lowPower": "Mode économie d'énergie",
+    "session.check.lowPower.detail": "L'enregistrement fonctionne quand même, mais l'analyse attendra que tu recharges.",
+    "session.check.calibration": "Calibration de la pièce",
+    "session.check.calibration.ok": "Faite",
+    "session.check.calibration.missing": "Pas faite — la détection sera moins fiable",
+    "session.check.placement": "Placement",
+    "session.check.placement.detail": "Sur une surface stable, à moins d'un mètre du lit, micro dégagé.",
+
     "status.allowMicrophone": "Autoriser l'accès au micro",
     "status.calibration": "Calibration",
     "status.calibrationDone": "Faite",
@@ -137,6 +168,23 @@
   },
 
   "dynamic": {
+    "session.check.storage.ok": {
+      "en": "%@ available",
+      "fr": "%@ disponibles"
+    },
+    "session.check.power.unplugged": {
+      "en": "%@ and not charging — plug in for a full night",
+      "fr": "%@ et pas en charge — branche-le pour une nuit complète"
+    },
+    "session.finished.duration": {
+      "en": "%@ of audio captured",
+      "fr": "%@ d'audio capturé"
+    },
+    "session.elapsed": {
+      "en": "Recording for %@",
+      "fr": "Enregistrement depuis %@"
+    },
+
     "onboarding.progress": {
       "en": "Step %1$lld of %2$lld",
       "fr": "Étape %1$lld sur %2$lld"

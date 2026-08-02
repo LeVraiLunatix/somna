@@ -9,10 +9,7 @@ struct HomeView: View {
     @Environment(\.somna) private var environment
     @State private var store: HomeStore?
 
-    /// Recording arrives in Phase 5. Until then the primary button explains that
-    /// rather than pretending to work — a button that silently does nothing is
-    /// worse than one that says why.
-    let onStartSession: (() -> Void)?
+    let onStartSession: () -> Void
     let onShowDiagnostics: () -> Void
 
     var body: some View {
@@ -156,31 +153,13 @@ struct HomeView: View {
                         .font(SomnaFont.secondary)
                         .foregroundStyle(SomnaColor.textSecondary)
                 }
-            } else if let onStartSession {
+            } else {
                 Button(action: onStartSession) {
                     Text(String(localized: "home.start", defaultValue: "Start tonight"))
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
-            } else {
-                // Honest placeholder rather than a dead button.
-                Label {
-                    Text(String(localized: "home.recordingSoon.title",
-                                defaultValue: "Recording is not available yet"))
-                        .font(SomnaFont.cardTitle)
-                        .foregroundStyle(SomnaColor.textPrimary)
-                } icon: {
-                    Image(systemName: "hourglass")
-                        .foregroundStyle(SomnaColor.textTertiary)
-                }
-
-                Text(String(
-                    localized: "home.recordingSoon.body",
-                    defaultValue: "This build sets up everything around recording — permissions, storage, calibration. The audio engine itself arrives in the next one."
-                ))
-                .font(SomnaFont.secondary)
-                .foregroundStyle(SomnaColor.textSecondary)
             }
         }
     }
@@ -247,14 +226,14 @@ struct NightSummaryCard: View {
 #if DEBUG
 #Preview("First run") {
     NavigationStack {
-        HomeView(onStartSession: nil, onShowDiagnostics: {})
+        HomeView(onStartSession: {}, onShowDiagnostics: {})
     }
     .environment(\.somna, .preview())
 }
 
 #Preview("Microphone blocked") {
     NavigationStack {
-        HomeView(onStartSession: nil, onShowDiagnostics: {})
+        HomeView(onStartSession: {}, onShowDiagnostics: {})
     }
     .environment(\.somna, .preview(microphone: .permanentlyDenied))
 }

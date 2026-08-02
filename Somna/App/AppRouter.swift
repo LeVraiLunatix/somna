@@ -7,6 +7,7 @@ import SwiftUI
 /// means a screen can be reached from a notification without the sending code
 /// knowing how it is built.
 enum AppDestination: Hashable, Sendable {
+    case session
     case nightReport(sessionID: UUID)
     case timeline(sessionID: UUID)
     case history

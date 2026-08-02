@@ -34,6 +34,7 @@ struct RootView: View {
             if hasCompletedOnboarding == nil {
                 hasCompletedOnboarding = environment.settings.load().hasCompletedOnboarding
             }
+            await recoverInterruptedNights()
         }
         .somnaAnimation(value: hasCompletedOnboarding)
         .tint(SomnaColor.accentPrimary)
@@ -43,13 +44,13 @@ struct RootView: View {
     private var mainApp: some View {
         NavigationStack(path: router.path(for: .home)) {
             HomeView(
-                // Recording lands in Phase 5; until then Home says so rather
-                // than offering a button that does nothing.
-                onStartSession: nil,
+                onStartSession: { router.push(.session, in: .home) },
                 onShowDiagnostics: { router.push(.storage, in: .home) }
             )
             .navigationDestination(for: AppDestination.self) { destination in
                 switch destination {
+                case .session:
+                    SessionView()
                 case .storage:
                     SystemStatusView()
                 default:
@@ -60,6 +61,23 @@ struct RootView: View {
             }
         }
         .environment(router)
+    }
+
+    /// Reconciles nights the app died in the middle of, and clears files that
+    /// nothing references any more.
+    ///
+    /// Runs at launch rather than on demand because the user has no way to know
+    /// it is needed: a session row stuck in `recording` looks like a night that
+    /// is still going, forever.
+    private func recoverInterruptedNights() async {
+        let useCase = RecoverInterruptedSessionsUseCase(
+            sessions: environment.sessions,
+            files: environment.files,
+            clock: environment.clock
+        )
+        // Failure here is not worth blocking launch over: it retries next time,
+        // and nothing the user can see depends on it having happened yet.
+        try? await useCase()
     }
 
     /// Appearance follows the user's setting, and `nil` means "follow iOS".
