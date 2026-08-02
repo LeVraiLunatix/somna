@@ -38,6 +38,12 @@ alimentent automatiquement les notes de version de la source AltStore (Phase 7).
 - L'invariant de vocabulaire prudent couvre désormais le français : aucun libellé ne peut
   employer de langage clinique ni affirmer un mouvement corporel, dans l'une ou l'autre langue.
 
+- Phase 5 — Moteur d'enregistrement : segments de dix minutes publiés atomiquement, gestion des
+  interruptions et des réinitialisations du démon média, manifeste de secours réécrit après chaque
+  segment, récupération au lancement des nuits inachevées et des fichiers orphelins.
+- Écran de préparation distinguant ce qui bloque un enregistrement de ce qui le dégrade, et écran
+  de session sobre pensé pour être regardé dans le noir.
+
 ### Corrigé
 - Les cibles de test désactivent l'isolation MainActor par défaut : `XCTestCase` déclare ses
   initialiseurs et ses hooks de cycle de vie comme `nonisolated`, ce qui rendait toute

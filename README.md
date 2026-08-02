@@ -21,9 +21,9 @@ Somna est un journal nocturne pour iPhone. Il écoute les sons de la nuit, déte
 | 3A | Fondations : domaine et persistance | ✅ [Terminée](docs/04-PHASE-3A-FONDATIONS.md) |
 | 3B | Fondations : design system, services, environnement | ✅ [Terminée](docs/05-PHASE-3B-DESIGN-ET-SERVICES.md) |
 | 4A | Onboarding, accueil, localisation FR/EN | ✅ [Terminée](docs/06-PHASE-4A-ONBOARDING-ET-ACCUEIL.md) |
-| 5 | Moteur audio | ⏳ En cours |
+| 5 | Moteur audio | ✅ [Terminée](docs/07-PHASE-5-MOTEUR-AUDIO.md) — non vérifiée sur appareil |
 | 4B / 4C | Rapport, timeline, lecteur, historique, réglages | ⏸️ |
-| 6 | Moteur d'analyse | ⏸️ |
+| 6 | Moteur d'analyse | ⏳ En cours |
 | 7 | Distribution (Release + AltStore) | ⏸️ |
 | 8 | Validation | ⏸️ |
 
@@ -97,6 +97,7 @@ tests sur simulateur, archive non signée et packaging IPA. Voir
 | [04 — Domaine et persistance](docs/04-PHASE-3A-FONDATIONS.md) | Modèles, vocabulaire prudent, SwiftData, décisions inversées |
 | [05 — Design system et services](docs/05-PHASE-3B-DESIGN-ET-SERVICES.md) | Palette, Liquid Glass, permissions, stockage, injection |
 | [06 — Onboarding et accueil](docs/06-PHASE-4A-ONBOARDING-ET-ACCUEIL.md) | Sept étapes, calibration réelle, localisation FR/EN |
+| [07 — Moteur audio](docs/07-PHASE-5-MOTEUR-AUDIO.md) | Segmentation, interruptions, récupération, limites non vérifiées |
 | [CHANGELOG](CHANGELOG.md) | Journal de version |
 
 ---
