@@ -33,6 +33,11 @@ alimentent automatiquement les notes de version de la source AltStore (Phase 7).
   stockage fichier atomique, `AppEnvironment` et routage.
 - Écran de disponibilité : permissions, espace libre, nuits enregistrées, calibration.
 
+- Phase 4A — Onboarding en sept étapes, calibration réelle du micro, accueil contextuel,
+  catalogue de localisation FR/EN (168 clés) généré et vérifié en CI.
+- L'invariant de vocabulaire prudent couvre désormais le français : aucun libellé ne peut
+  employer de langage clinique ni affirmer un mouvement corporel, dans l'une ou l'autre langue.
+
 ### Corrigé
 - Les cibles de test désactivent l'isolation MainActor par défaut : `XCTestCase` déclare ses
   initialiseurs et ses hooks de cycle de vie comme `nonisolated`, ce qui rendait toute

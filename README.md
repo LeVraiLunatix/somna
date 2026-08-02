@@ -20,8 +20,9 @@ Somna est un journal nocturne pour iPhone. Il écoute les sons de la nuit, déte
 | 7-min | Validation de la chaîne de build | ✅ [Terminée](docs/03-PHASE-7-MIN-CI.md) — CI verte, IPA produit |
 | 3A | Fondations : domaine et persistance | ✅ [Terminée](docs/04-PHASE-3A-FONDATIONS.md) |
 | 3B | Fondations : design system, services, environnement | ✅ [Terminée](docs/05-PHASE-3B-DESIGN-ET-SERVICES.md) |
-| 4 | Interface | ⏳ En cours |
-| 5 | Moteur audio | ⏸️ |
+| 4A | Onboarding, accueil, localisation FR/EN | ✅ [Terminée](docs/06-PHASE-4A-ONBOARDING-ET-ACCUEIL.md) |
+| 5 | Moteur audio | ⏳ En cours |
+| 4B / 4C | Rapport, timeline, lecteur, historique, réglages | ⏸️ |
 | 6 | Moteur d'analyse | ⏸️ |
 | 7 | Distribution (Release + AltStore) | ⏸️ |
 | 8 | Validation | ⏸️ |
@@ -95,6 +96,7 @@ tests sur simulateur, archive non signée et packaging IPA. Voir
 | [03 — Chaîne de build](docs/03-PHASE-7-MIN-CI.md) | CI, runner macOS, packaging IPA, contraintes AltStore |
 | [04 — Domaine et persistance](docs/04-PHASE-3A-FONDATIONS.md) | Modèles, vocabulaire prudent, SwiftData, décisions inversées |
 | [05 — Design system et services](docs/05-PHASE-3B-DESIGN-ET-SERVICES.md) | Palette, Liquid Glass, permissions, stockage, injection |
+| [06 — Onboarding et accueil](docs/06-PHASE-4A-ONBOARDING-ET-ACCUEIL.md) | Sept étapes, calibration réelle, localisation FR/EN |
 | [CHANGELOG](CHANGELOG.md) | Journal de version |
 
 ---
