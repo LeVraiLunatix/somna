@@ -28,10 +28,19 @@ alimentent automatiquement les notes de version de la source AltStore (Phase 7).
   langage clinique, si une étiquette de mouvement affirme un mouvement corporel, ou si deux
   niveaux de confiance se lisent à l'identique.
 
+- Phase 3B — Design system (palette sémantique, typographie Dynamic Type, mouvement,
+  haptiques), `GlassSurface` comme point unique de Liquid Glass, service de permissions,
+  stockage fichier atomique, `AppEnvironment` et routage.
+- Écran de disponibilité : permissions, espace libre, nuits enregistrées, calibration.
+
 ### Corrigé
 - Les cibles de test désactivent l'isolation MainActor par défaut : `XCTestCase` déclare ses
   initialiseurs et ses hooks de cycle de vie comme `nonisolated`, ce qui rendait toute
   sous-classe non compilable.
+- L'espace libre était interrogé sur un dossier absent au premier lancement : une installation
+  neuve aurait refusé d'enregistrer faute d'espace apparent.
+- Les blocs `#Preview` sont encadrés en `#if DEBUG` : compilés en Release, ils atteignaient du
+  code de preview volontairement absent des builds de production.
 
 ### Validé
 - Chaîne complète Windows → runner macOS → IPA non signé, vérifiée sur un run réel
