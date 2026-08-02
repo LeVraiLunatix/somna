@@ -179,9 +179,9 @@ struct SummaryGeneratorTests {
     @Test("A quiet night is described as quiet")
     func quietNightIsCalledQuiet() {
         let statements = generator.summarise(
-            facts(statistics: stats(total: 3, coughs: 3))
+            facts(statistics: stats(coughs: 3, total: 3))
         )
-        #expect(statements.contains(.overallCalm))
+        #expect(statements.contains(SummaryStatement.overallCalm))
     }
 
     /// On an already silent night, naming the quietest stretch says nothing.
