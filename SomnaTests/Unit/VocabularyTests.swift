@@ -82,11 +82,17 @@ struct VocabularyTests {
     /// Confidence has to be legible in the words themselves. An icon or a colour
     /// is not enough: VoiceOver users hear the label, and everyone else reads it
     /// faster than they interpret a badge.
+    /// Two types are deliberately exempt because confidence has no meaning for
+    /// them: `sessionGap` is a fact about the recording, not an interpretation,
+    /// and `unknown` *is* the absence of a classification — "confidently
+    /// unidentified" would be incoherent.
+    static let nonClassifyingTypes: Set<NightEventType> = [.sessionGap, .unknown]
+
     @Test("Lower confidence always reads as less certain than higher confidence")
     func confidenceIsVisibleInTheWording() {
         let assertiveMarkers = ["detected", "interrupted"]
 
-        for type in NightEventType.allCases where type != .sessionGap {
+        for type in NightEventType.allCases where !Self.nonClassifyingTypes.contains(type) {
             let high = NightEventPhrasing.englishTitle(for: type, confidence: .high).lowercased()
             let medium = NightEventPhrasing.englishTitle(for: type, confidence: .medium).lowercased()
             let low = NightEventPhrasing.englishTitle(for: type, confidence: .low).lowercased()
@@ -99,6 +105,26 @@ struct VocabularyTests {
                 #expect(!low.contains(marker), "\(type.rawValue) low confidence is too assertive: \(low)")
             }
         }
+    }
+
+    /// The exemption above is asserted rather than assumed, so a later edit that
+    /// starts hedging these types is caught instead of silently accepted.
+    @Test("Non-classifying types read the same at every confidence level")
+    func nonClassifyingTypesIgnoreConfidence() {
+        for type in Self.nonClassifyingTypes where type == .sessionGap {
+            let titles = EventConfidence.allCases.map {
+                NightEventPhrasing.englishTitle(for: type, confidence: $0)
+            }
+            #expect(Set(titles).count == 1, "\(type.rawValue) should not vary with confidence")
+        }
+
+        // `unknown` is the one exception to the exception: a faint unidentified
+        // sound is worth distinguishing from a clear one, because the user
+        // deciding whether to listen needs to know if there is anything to hear.
+        #expect(
+            NightEventPhrasing.englishTitle(for: .unknown, confidence: .low)
+                != NightEventPhrasing.englishTitle(for: .unknown, confidence: .high)
+        )
     }
 
     /// A missing table entry would silently fall back to "Unidentified sound",

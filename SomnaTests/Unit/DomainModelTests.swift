@@ -24,10 +24,14 @@ struct EventConfidenceTests {
         #expect(EventConfidence(score: 1.0) == .high)
     }
 
-    @Test("Non-finite scores are rejected rather than crashing")
+    /// Non-finite scores fail closed. An infinite score is not "maximum
+    /// certainty" — it means something upstream produced garbage, and the safe
+    /// response is to drop the detection rather than to promote it to the most
+    /// assertive wording the app has.
+    @Test("Non-finite scores are rejected rather than trusted")
     func nonFiniteScoresAreRejected() {
         #expect(EventConfidence(score: .nan) == nil)
-        #expect(EventConfidence(score: .infinity) == .high)
+        #expect(EventConfidence(score: .infinity) == nil)
         #expect(EventConfidence(score: -.infinity) == nil)
     }
 
