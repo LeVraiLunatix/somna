@@ -55,6 +55,20 @@ Le préfixe `SD` sur les modèles de persistance rend visible dans le diff toute
 - L'accès SwiftData passe par un `@ModelActor`.
 - **Objectif : zéro `@unchecked Sendable`.** Toute occurrence doit être justifiée en commentaire.
 
+### Cibles de test
+
+Les cibles `SomnaTests` et `SomnaUITests` désactivent l'isolation MainActor par défaut
+(`SWIFT_DEFAULT_ACTOR_ISOLATION: nonisolated` dans `project.yml`).
+
+Raison : XCTest est antérieur à la concurrence Swift. `XCTestCase` déclare ses initialiseurs
+et ses points d'entrée de cycle de vie (`setUp()`, `tearDown()`) comme `nonisolated`. Hériter
+de l'isolation MainActor de l'app fait échouer la compilation de **toute** sous-classe, avec
+l'erreur `has different actor isolation from nonisolated overridden declaration`.
+
+Conséquence pratique : une suite de tests qui manipule des types `@MainActor` (les stores de
+features, notamment) doit s'annoter explicitement `@MainActor`. C'est plus verbeux, mais
+l'isolation devient visible à la lecture au lieu d'être héritée implicitement.
+
 ---
 
 ## 5. Confidentialité dans le code

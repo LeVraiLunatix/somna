@@ -99,6 +99,70 @@ Résultat attendu : un artefact `Somna-unsigned-ipa` téléchargeable, d'environ
 
 ---
 
+## 5 bis. Résultats du premier run réel
+
+Dépôt : **https://github.com/LeVraiLunatix/somna** (public — voir §5 ter).
+
+### Toolchain constaté sur `macos-latest`
+
+| Élément | Valeur |
+|---|---|
+| Xcode | **26.6** (build 17F113) |
+| SDK iOS | **26.5** |
+| Simulateur retenu | **iPhone Air** (iOS 26.5) |
+
+**Le risque R6 est levé.** Le SDK iOS 26 est bien disponible, et la garde n'a pas eu à se déclencher.
+
+La sélection dynamique du simulateur a démontré son utilité immédiatement : le runner a retenu
+un **iPhone Air**, appareil qu'aucune valeur codée en dur n'aurait devinée. Un
+`name=iPhone 17 Pro` en dur aurait fait échouer le run.
+
+### Le seul échec, et ce qu'il nous a appris
+
+Le premier run a échoué à l'étape de tests :
+
+```
+LaunchSmokeTests.swift:6:42: error: main actor-isolated initializer 'init()'
+  has different actor isolation from nonisolated overridden declaration
+LaunchSmokeTests.swift:8:19: error: main actor-isolated instance method 'setUp()'
+  has different actor isolation from nonisolated overridden declaration
+```
+
+Cause directe de la décision de Phase 2 `SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor` : elle isole
+implicitement toute classe au MainActor, y compris les sous-classes de `XCTestCase`, dont les
+initialiseurs et les hooks de cycle de vie sont `nonisolated`.
+
+**Correction retenue :** désactiver l'isolation par défaut sur les deux cibles de test plutôt que
+d'annoter chaque classe. La première approche règle le problème une fois pour toutes ; la seconde
+l'aurait fait réapparaître à chaque nouvelle classe de test des phases 4 à 8.
+
+C'est exactement le genre de découverte qui justifiait d'avancer cette phase : ce défaut aurait
+sinon surgi en Phase 8, sur des dizaines de fichiers de test déjà écrits.
+
+### Nettoyage annexe
+
+`actions/checkout` et `actions/upload-artifact` passés de `v4` à `v5` — GitHub force désormais
+les actions Node 20 sur Node 24 en émettant un avertissement de dépréciation.
+
+## 5 ter. Le dépôt doit être public
+
+Contrainte découverte lors de la création du dépôt, non anticipée en Phase 1.
+
+« Bêta privée » qualifie le **cercle de testeurs**, pas la visibilité du dépôt. La chaîne AltStore
+impose deux accès publics non négociables :
+
+- l'URL de l'IPA référencée dans le feed doit être téléchargeable **sans authentification** — les
+  assets de release d'un dépôt privé exigent un token qu'AltStore ne sait pas fournir ;
+- le feed `apps.json` doit être servi par GitHub Pages, indisponible sur dépôt privé avec un
+  compte gratuit.
+
+**Conséquence de sécurité :** aucun secret, aucune clé, aucun chemin personnel ne doit entrer dans
+ce dépôt — y compris dans les exports de diagnostic prévus en Phase 7. La règle « aucun secret en
+dur » passe du statut de bonne pratique à celui de contrainte réelle.
+
+Effet de bord favorable : les minutes GitHub Actions sont illimitées sur les dépôts publics, donc
+le quota de 2000 min/mois n'est pas consommé.
+
 ## 6. Ce que cette phase ne prouve pas
 
 À dire clairement, pour ne pas confondre « la CI est verte » avec « ça marche » :

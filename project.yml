@@ -140,6 +140,12 @@ targets:
         GENERATE_INFOPLIST_FILE: YES
         TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Somna.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Somna"
         BUNDLE_LOADER: "$(TEST_HOST)"
+        # XCTest predates Swift concurrency: XCTestCase declares its
+        # initialisers and lifecycle hooks as nonisolated, so inheriting the
+        # app's MainActor default isolation makes every subclass fail to
+        # compile. Test targets therefore opt out, and suites that touch
+        # MainActor types annotate themselves explicitly.
+        SWIFT_DEFAULT_ACTOR_ISOLATION: nonisolated
 
   SomnaUITests:
     type: bundle.ui-testing
@@ -155,6 +161,8 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.somna.app.uitests
         GENERATE_INFOPLIST_FILE: YES
         TEST_TARGET_NAME: Somna
+        # Same reason as SomnaTests: XCUITest is built on XCTestCase.
+        SWIFT_DEFAULT_ACTOR_ISOLATION: nonisolated
 
 # ---------------------------------------------------------------------------
 # Schemes

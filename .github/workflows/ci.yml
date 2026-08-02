@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # ---------------------------------------------------------------------
       # Toolchain
@@ -156,7 +156,7 @@ jobs:
       # Artifacts
       # ---------------------------------------------------------------------
       - name: Upload unsigned IPA
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Somna-unsigned-ipa
           path: build/*.ipa
@@ -165,7 +165,7 @@ jobs:
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-results
           path: build/TestResults.xcresult
