@@ -39,7 +39,8 @@ extension AppEnvironment {
                     .appending(path: "SomnaPreview-\(UUID().uuidString)", directoryHint: .isDirectory)
             ),
             haptics: SilentHapticFeedback(),
-            calibration: StubCalibrationService()
+            calibration: StubCalibrationService(),
+            recorder: StubAudioRecorder(clock: clock)
         )
     }
 }
