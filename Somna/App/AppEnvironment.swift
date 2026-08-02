@@ -14,6 +14,7 @@ struct AppEnvironment: Sendable {
     let settings: any SettingsStoring
     let files: any NightFileStoring
     let haptics: any HapticFeedbacking
+    let calibration: any CalibrationMeasuring
 }
 
 extension AppEnvironment {
@@ -26,7 +27,8 @@ extension AppEnvironment {
             sessions: NightSessionRepository(modelContainer: modelContainer),
             settings: SettingsRepository(),
             files: NightFileStore(),
-            haptics: LiveHapticFeedback()
+            haptics: LiveHapticFeedback(),
+            calibration: CalibrationService()
         )
     }
 }
@@ -53,7 +55,8 @@ extension AppEnvironment {
         settings: InMemorySettingsRepository(),
         files: NightFileStore(root: FileManager.default.temporaryDirectory
             .appending(path: "SomnaUnconfigured", directoryHint: .isDirectory)),
-        haptics: SilentHapticFeedback()
+        haptics: SilentHapticFeedback(),
+        calibration: StubCalibrationService()
     )
 }
 

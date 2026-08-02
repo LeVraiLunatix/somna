@@ -38,7 +38,8 @@ extension AppEnvironment {
                 root: FileManager.default.temporaryDirectory
                     .appending(path: "SomnaPreview-\(UUID().uuidString)", directoryHint: .isDirectory)
             ),
-            haptics: SilentHapticFeedback()
+            haptics: SilentHapticFeedback(),
+            calibration: StubCalibrationService()
         )
     }
 }

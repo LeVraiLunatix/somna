@@ -1,6 +1,6 @@
 import XCTest
 
-/// Proves the packaged app actually launches and reaches its first real screen.
+/// Proves the packaged app launches and reaches its first real screen.
 ///
 /// A compile check does not cover this: a missing asset colour, a bad Info.plist
 /// key, a launch-screen misconfiguration or a persistent store that refuses to
@@ -12,35 +12,66 @@ final class LaunchSmokeTests: XCTestCase {
         continueAfterFailure = false
     }
 
-    func testAppLaunchesAndShowsStatusScreen() {
+    /// A fresh install has never completed onboarding, so this is what a first
+    /// beta tester sees.
+    func testFreshInstallStartsInOnboarding() {
         let app = XCUIApplication()
         app.launch()
 
-        let root = app.descendants(matching: .any)["status.root"]
+        let onboarding = app.descendants(matching: .any)["onboarding.root"]
         XCTAssertTrue(
-            root.waitForExistence(timeout: 15),
-            "The status screen did not appear; the app failed to launch or the store failed to open."
+            onboarding.waitForExistence(timeout: 15),
+            "Onboarding did not appear; the app failed to launch or settings could not be read."
         )
     }
 
-    /// The readiness screen resolves permissions and storage asynchronously.
-    /// Reaching a settled state proves the injected environment is wired: the
-    /// unconfigured fallback repository throws, which would surface the error
-    /// state instead.
-    func testStatusScreenReachesASettledState() {
+    /// Walks the four explanatory steps. They must be reachable without granting
+    /// anything: the permission prompt comes after the explanations, and a
+    /// tester who reads carefully must not hit a wall before it.
+    func testExplanatoryStepsAreReachableWithoutPermissions() {
         let app = XCUIApplication()
         app.launch()
 
-        // A fresh simulator install has an undetermined microphone permission,
-        // so either outcome is correct. What must not happen is neither — that
-        // would mean the screen is still loading, or the injected environment
-        // fell back to the repository that throws.
-        let ready = app.staticTexts["Ready to record tonight"]
-        let microphoneBlocked = app.staticTexts["Somna cannot hear anything"]
+        XCTAssertTrue(app.descendants(matching: .any)["onboarding.root"].waitForExistence(timeout: 15))
 
-        let settled = ready.waitForExistence(timeout: 20)
-            || microphoneBlocked.waitForExistence(timeout: 5)
+        let advance = app.buttons["Continue"]
+        for step in 1...3 {
+            XCTAssertTrue(
+                advance.waitForExistence(timeout: 5),
+                "Continue was unavailable at explanatory step \(step)."
+            )
+            advance.tap()
+        }
 
-        XCTAssertTrue(settled, "The status screen never resolved into a ready or blocked state.")
+        // Step four is the privacy explanation; step five asks for the microphone.
+        XCTAssertTrue(
+            app.staticTexts["Everything stays on this iPhone"].waitForExistence(timeout: 5),
+            "The privacy step was not reached."
+        )
+    }
+
+    /// The microphone step must never trap someone who has not answered yet, and
+    /// must not offer a button that iOS will ignore.
+    func testMicrophoneStepBlocksOnlyUntilAnswered() {
+        let app = XCUIApplication()
+        app.launch()
+
+        XCTAssertTrue(app.descendants(matching: .any)["onboarding.root"].waitForExistence(timeout: 15))
+
+        let advance = app.buttons["Continue"]
+        for _ in 0..<4 {
+            guard advance.waitForExistence(timeout: 5) else { break }
+            advance.tap()
+        }
+
+        let allow = app.buttons["Allow microphone access"]
+        XCTAssertTrue(
+            allow.waitForExistence(timeout: 5),
+            "The microphone step did not offer a request button while undetermined."
+        )
+        XCTAssertFalse(
+            advance.isEnabled,
+            "Onboarding advanced past the microphone step before it was answered."
+        )
     }
 }
