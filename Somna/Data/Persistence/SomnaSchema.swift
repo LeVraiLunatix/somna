@@ -1,5 +1,6 @@
 import Foundation
 import SwiftData
+import OSLog
 
 /// Version 1 of the persistent schema.
 ///

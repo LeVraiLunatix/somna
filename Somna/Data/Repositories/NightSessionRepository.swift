@@ -1,5 +1,6 @@
 import Foundation
 import SwiftData
+import OSLog
 
 /// SwiftData-backed implementation of ``NightSessionRepositing``.
 ///

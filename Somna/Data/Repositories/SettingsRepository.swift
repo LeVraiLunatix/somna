@@ -1,5 +1,6 @@
 import Foundation
 import Synchronization
+import OSLog
 
 /// Reads and writes ``UserSettings``.
 protocol SettingsStoring: Sendable {
