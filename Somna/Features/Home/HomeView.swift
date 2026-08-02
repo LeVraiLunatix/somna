@@ -190,8 +190,8 @@ struct NightSummaryCard: View {
                 }
             }
 
-            if let summary = session.summary {
-                Text(summary)
+            if !session.summaryStatements.isEmpty {
+                Text(SummaryRenderer.paragraph(for: session.summaryStatements))
                     .font(SomnaFont.secondary)
                     .foregroundStyle(SomnaColor.textSecondary)
             }

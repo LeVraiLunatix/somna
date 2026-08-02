@@ -28,7 +28,13 @@ final class SDNightSession {
     var estimatedSleepStart: Date?
     var estimatedWakeTime: Date?
     var calmnessScore: Int?
-    var summary: String?
+
+    // Encoded rather than modelled: neither statements nor statistics are ever
+    // queried or sorted on, and flattening them into columns would add a dozen
+    // fields that only ever move together.
+    @Attribute(.externalStorage)
+    var summaryStatementsData: Data?
+    var statisticsData: Data?
 
     var qualityRatingRaw: String?
     var qualityIssuesRaw: [String] = []

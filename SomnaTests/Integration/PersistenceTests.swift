@@ -27,7 +27,7 @@ struct PersistenceTests {
             status: .completed,
             recordedDuration: 7.5 * 3600,
             calmnessScore: 82,
-            summary: "A quiet night.",
+            summaryStatements: [.overallCalm, .coughs(count: 3)],
             recordingQuality: RecordingQuality(
                 rating: .good,
                 issues: [.sessionInterrupted],
@@ -50,7 +50,7 @@ struct PersistenceTests {
         #expect(loaded.id == session.id)
         #expect(loaded.status == .completed)
         #expect(loaded.calmnessScore == 82)
-        #expect(loaded.summary == "A quiet night.")
+        #expect(loaded.summaryStatements == [.overallCalm, .coughs(count: 3)])
         #expect(loaded.recordingQuality?.rating == .good)
         #expect(loaded.recordingQuality?.issues == [.sessionInterrupted])
         #expect(abs((loaded.recordingQuality?.coverage ?? 0) - 0.94) < 0.0001)
@@ -65,7 +65,7 @@ struct PersistenceTests {
 
         try await repository.save(session)
         session.calmnessScore = 41
-        session.summary = "A restless night."
+        session.summaryStatements = [.overallActive(eventCount: 90)]
         try await repository.save(session)
 
         let all = try await repository.sessions()

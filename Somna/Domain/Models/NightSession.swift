@@ -42,7 +42,14 @@ struct NightSession: Identifiable, Equatable, Sendable {
     /// be given a score at all rather than a misleading zero.
     var calmnessScore: Int?
 
-    var summary: String?
+    /// The summary, as statements rather than prose.
+    ///
+    /// Storing rendered text would freeze the language a night was recorded in.
+    /// Statements are turned into words at display time, so switching the phone
+    /// to English re-reads every past night correctly.
+    var summaryStatements: [SummaryStatement]
+
+    var statistics: NightStatistics?
     var recordingQuality: RecordingQuality?
 
     /// Version of the analysis pipeline that produced this report, so a night
@@ -62,7 +69,8 @@ struct NightSession: Identifiable, Equatable, Sendable {
         estimatedSleepStart: Date? = nil,
         estimatedWakeTime: Date? = nil,
         calmnessScore: Int? = nil,
-        summary: String? = nil,
+        summaryStatements: [SummaryStatement] = [],
+        statistics: NightStatistics? = nil,
         recordingQuality: RecordingQuality? = nil,
         analysisVersion: String = AnalysisConstants.currentVersion,
         isFavorite: Bool = false,
@@ -77,7 +85,8 @@ struct NightSession: Identifiable, Equatable, Sendable {
         self.estimatedSleepStart = estimatedSleepStart
         self.estimatedWakeTime = estimatedWakeTime
         self.calmnessScore = calmnessScore
-        self.summary = summary
+        self.summaryStatements = summaryStatements
+        self.statistics = statistics
         self.recordingQuality = recordingQuality
         self.analysisVersion = analysisVersion
         self.isFavorite = isFavorite

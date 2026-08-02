@@ -60,14 +60,35 @@ def extract_english_from_source() -> dict[str, str]:
     return found
 
 
-def build_catalogue(english: dict[str, str], french: dict[str, str]) -> dict:
+def unit(value: str) -> dict:
+    return {"stringUnit": {"state": "translated", "value": value}}
+
+
+def localisation(value) -> dict:
+    """Renders one language entry, plural or not.
+
+    A plural entry is a dict of CLDR categories. Without it, a count of one
+    reads "1 coughs were detected" in English and "1 toux ont ete detectees" in
+    French - wrong in both, and wrong on exactly the nights where the count is
+    smallest and most closely read.
+    """
+    if isinstance(value, dict):
+        return {
+            "variations": {
+                "plural": {category: unit(text) for category, text in value.items()}
+            }
+        }
+    return unit(value)
+
+
+def build_catalogue(english: dict, french: dict) -> dict:
     strings = {}
     for key in sorted(english):
         strings[key] = {
             "extractionState": "manual",
             "localizations": {
-                "en": {"stringUnit": {"state": "translated", "value": english[key]}},
-                "fr": {"stringUnit": {"state": "translated", "value": french[key]}},
+                "en": localisation(english[key]),
+                "fr": localisation(french[key]),
             },
         }
     return {"sourceLanguage": "en", "strings": strings, "version": "1.0"}

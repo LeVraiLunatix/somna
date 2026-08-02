@@ -147,6 +147,11 @@
     "session.check.placement": "Placement",
     "session.check.placement.detail": "Sur une surface stable, à moins d'un mètre du lit, micro dégagé.",
 
+    "summary.overallCalm": "Ta nuit est restée globalement calme.",
+    "summary.nothingDetected": "Somna n'a rien détecté du tout. Soit la nuit a été remarquablement calme, soit le micro ne captait pas grand-chose.",
+    "summary.qualityUnusable": "L'enregistrement est trop dégradé pour en tirer quoi que ce soit. Cela ne dit rien de ta nuit — seulement de l'audio.",
+    "summary.tooShort": "Cette session était trop courte pour que Somna détecte quoi que ce soit.",
+
     "status.allowMicrophone": "Autoriser l'accès au micro",
     "status.calibration": "Calibration",
     "status.calibrationDone": "Faite",
@@ -168,6 +173,42 @@
   },
 
   "dynamic": {
+    "summary.overallActive": {
+      "plural": true,
+      "en": { "one": "It was a busy night, with one event picked up.", "other": "It was a busy night, with %lld events picked up." },
+      "fr": { "one": "La nuit a été agitée, avec un événement détecté.", "other": "La nuit a été agitée, avec %lld événements détectés." }
+    },
+    "summary.coughs": {
+      "plural": true,
+      "en": { "one": "One cough was detected.", "other": "%lld coughs were detected." },
+      "fr": { "one": "Une toux a été détectée.", "other": "%lld toux ont été détectées." }
+    },
+    "summary.interrupted": {
+      "plural": true,
+      "en": { "one": "Recording was interrupted once, so part of the night was not captured.", "other": "Recording was interrupted %lld times, so parts of the night were not captured." },
+      "fr": { "one": "L'enregistrement a été interrompu une fois, une partie de la nuit n'a donc pas été captée.", "other": "L'enregistrement a été interrompu %lld fois, des parties de la nuit n'ont donc pas été captées." }
+    },
+    "summary.snoringConcentrated": {
+      "en": "Snoring was detected mostly between %1$@ and %2$@, for about %3$@ in total.",
+      "fr": "Des ronflements ont été détectés surtout entre %1$@ et %2$@, pour environ %3$@ au total."
+    },
+    "summary.snoringScattered": {
+      "en": "Snoring was detected on and off through the night, for about %@ in total.",
+      "fr": "Des ronflements ont été détectés par intermittence, pour environ %@ au total."
+    },
+    "summary.speech": {
+      "en": "Somna heard about %@ of speech.",
+      "fr": "Somna a entendu environ %@ de paroles."
+    },
+    "summary.loudEvent": {
+      "en": "A loud sound was recorded around %@.",
+      "fr": "Un bruit important a été enregistré vers %@."
+    },
+    "summary.calmestStretch": {
+      "en": "The quietest stretch ran from %1$@ to %2$@.",
+      "fr": "La période la plus calme s'est étendue de %1$@ à %2$@."
+    },
+
     "session.check.storage.ok": {
       "en": "%@ available",
       "fr": "%@ disponibles"
@@ -190,8 +231,9 @@
       "fr": "Étape %1$lld sur %2$lld"
     },
     "status.hours": {
-      "en": "%lld hours",
-      "fr": "%lld heures"
+      "plural": true,
+      "en": { "one": "%lld hour", "other": "%lld hours" },
+      "fr": { "one": "%lld heure", "other": "%lld heures" }
     },
 
     "home.greeting.morning": { "en": "Good morning", "fr": "Bonjour" },

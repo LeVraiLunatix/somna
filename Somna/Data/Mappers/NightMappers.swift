@@ -18,7 +18,8 @@ enum NightSessionMapper {
             estimatedSleepStart: model.estimatedSleepStart,
             estimatedWakeTime: model.estimatedWakeTime,
             calmnessScore: model.calmnessScore,
-            summary: model.summary,
+            summaryStatements: decode([SummaryStatement].self, from: model.summaryStatementsData) ?? [],
+            statistics: decode(NightStatistics.self, from: model.statisticsData),
             recordingQuality: quality(from: model),
             analysisVersion: model.analysisVersion,
             isFavorite: model.isFavorite,
@@ -39,7 +40,8 @@ enum NightSessionMapper {
         model.estimatedSleepStart = session.estimatedSleepStart
         model.estimatedWakeTime = session.estimatedWakeTime
         model.calmnessScore = session.calmnessScore
-        model.summary = session.summary
+        model.summaryStatementsData = encode(session.summaryStatements)
+        model.statisticsData = session.statistics.flatMap(encode)
         model.analysisVersion = session.analysisVersion
         model.isFavorite = session.isFavorite
         model.updatedAt = session.updatedAt
@@ -59,6 +61,17 @@ enum NightSessionMapper {
         )
         apply(session, to: model)
         return model
+    }
+
+    /// Decoding failures degrade to absence rather than throwing: a summary
+    /// written by a future build must not make a night unreadable today.
+    private static func decode<T: Decodable>(_ type: T.Type, from data: Data?) -> T? {
+        guard let data else { return nil }
+        return try? JSONDecoder().decode(type, from: data)
+    }
+
+    private static func encode<T: Encodable>(_ value: T) -> Data? {
+        try? JSONEncoder().encode(value)
     }
 
     private static func quality(from model: SDNightSession) -> RecordingQuality? {
