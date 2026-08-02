@@ -1,0 +1,55 @@
+# --- Generated Xcode project -------------------------------------------------
+# The project is generated from project.yml by XcodeGen and must never be
+# committed. See docs/01-PHASE-2-ARBORESCENCE.md.
+*.xcodeproj/
+*.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+
+# --- Generated Info.plist ----------------------------------------------------
+# Produced by XcodeGen from the `info.properties` block in project.yml.
+Somna/Resources/Info.plist
+
+# --- Xcode -------------------------------------------------------------------
+build/
+DerivedData/
+*.xcarchive
+*.ipa
+Payload/
+*.hmap
+*.ipa.dSYM.zip
+*.dSYM.zip
+*.dSYM
+xcuserdata/
+*.xcuserstate
+*.moved-aside
+*.perspectivev3
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.xccheckout
+*.xcscmblueprint
+timeline.xctimeline
+playground.xcworkspace
+
+# --- Swift Package Manager ---------------------------------------------------
+.build/
+.swiftpm/
+Package.resolved
+
+# --- macOS / Windows noise ---------------------------------------------------
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# --- Editors -----------------------------------------------------------------
+.idea/
+*.swp
+*~
+
+# --- Local secrets and scratch ----------------------------------------------
+.env
+.env.local
+/scratch/
+ExportOptions.local.plist

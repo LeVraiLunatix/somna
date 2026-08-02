@@ -1,0 +1,180 @@
+# XcodeGen project definition for Somna.
+#
+# The Xcode project is NEVER committed: it is generated from this file, both
+# locally on macOS and on the GitHub Actions runner.
+#
+#   brew install xcodegen
+#   xcodegen generate
+#
+# Rationale: development happens on Windows, where no Xcode exists. Hand-editing
+# a .pbxproj is unmaintainable and corruption-prone, whereas this file is
+# readable, diffable and reviewable. See docs/01-PHASE-2-ARBORESCENCE.md.
+
+name: Somna
+options:
+  bundleIdPrefix: com.somna
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+  generateEmptyDirectories: false
+  defaultConfig: Debug
+
+configs:
+  Debug: debug
+  Release: release
+
+# ---------------------------------------------------------------------------
+# Project-wide build settings
+# ---------------------------------------------------------------------------
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    # Xcode 26 / Swift 6.2 concurrency ergonomics: UI code is MainActor by
+    # default, so only the audio and analysis actors need explicit isolation.
+    # Unknown settings are inert on older toolchains.
+    SWIFT_APPROACHABLE_CONCURRENCY: YES
+    SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+    SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY: YES
+
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+    TARGETED_DEVICE_FAMILY: "1" # iPhone only
+    SUPPORTS_MACCATALYST: NO
+    SUPPORTS_XR_DESIGNED_FOR_IPHONE: NO
+
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    DEAD_CODE_STRIPPING: YES
+    CLANG_ENABLE_MODULES: YES
+
+    # Warnings are signal, not noise. The v0.1 exit criteria require a clean build.
+    GCC_TREAT_WARNINGS_AS_ERRORS: NO
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: NO
+    CLANG_WARN_DOCUMENTATION_COMMENTS: YES
+
+    # Versioning. Overridden by CI: MARKETING_VERSION from the git tag,
+    # CURRENT_PROJECT_VERSION from github.run_number.
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+    # Signing is intentionally left at Xcode defaults here so a developer with a
+    # Mac can still run on device. CI passes CODE_SIGNING_ALLOWED=NO to produce
+    # the unsigned IPA that AltStore re-signs on the user's device.
+  configs:
+    Debug:
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+      SWIFT_OPTIMIZATION_LEVEL: "-Onone"
+      ENABLE_TESTABILITY: YES
+    Release:
+      SWIFT_COMPILATION_MODE: wholemodule
+      SWIFT_OPTIMIZATION_LEVEL: "-O"
+      VALIDATE_PRODUCT: YES
+
+# ---------------------------------------------------------------------------
+# Targets
+# ---------------------------------------------------------------------------
+targets:
+
+  Somna:
+    type: application
+    platform: iOS
+    sources:
+      - path: Somna
+        excludes:
+          - "**/.gitkeep"
+          - "**/.DS_Store"
+    settings:
+      base:
+        PRODUCT_NAME: Somna
+        PRODUCT_BUNDLE_IDENTIFIER: com.somna.app
+        INFOPLIST_KEY_CFBundleDisplayName: Somna
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        SWIFT_EMIT_LOC_STRINGS: YES
+    info:
+      path: Somna/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: Somna
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSRequiresIPhoneOS: true
+
+        # The only background mode Somna uses. It is an Info.plist key, not a
+        # signed entitlement, so it works with a free Apple account and
+        # sideloading. This single line is what makes overnight recording
+        # possible at all.
+        UIBackgroundModes:
+          - audio
+
+        NSMicrophoneUsageDescription: >-
+          Somna listens to the sounds of your night so it can build a timeline
+          of what happened while you slept. Audio never leaves your iPhone.
+
+        UIRequiredDeviceCapabilities:
+          - arm64
+          - microphone
+
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+
+        # No encryption beyond what iOS provides: avoids the export compliance
+        # prompt on every upload.
+        ITSAppUsesNonExemptEncryption: false
+
+        # Appearance is user-controlled in Settings, so no forced style here.
+
+  SomnaTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: SomnaTests
+        excludes:
+          - "**/.gitkeep"
+    dependencies:
+      - target: Somna
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.somna.app.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Somna.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Somna"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+
+  SomnaUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: SomnaUITests
+        excludes:
+          - "**/.gitkeep"
+    dependencies:
+      - target: Somna
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.somna.app.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: Somna
+
+# ---------------------------------------------------------------------------
+# Schemes
+# ---------------------------------------------------------------------------
+schemes:
+  Somna:
+    build:
+      targets:
+        Somna: all
+        SomnaTests: [test]
+        SomnaUITests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      coverageTargets:
+        - Somna
+      targets:
+        - SomnaTests
+        - SomnaUITests
+    archive:
+      config: Release

@@ -1,0 +1,25 @@
+# Somna is developed on Windows and built on a macOS runner. Normalise line
+# endings so the toolchain never sees CRLF, and so diffs stay clean across both.
+
+* text=auto eol=lf
+
+*.swift    text eol=lf
+*.yml      text eol=lf
+*.yaml     text eol=lf
+*.json     text eol=lf
+*.md       text eol=lf
+*.sh       text eol=lf
+*.plist    text eol=lf
+*.xcprivacy text eol=lf
+*.xcstrings text eol=lf
+*.pbxproj  text eol=lf
+
+# Binary assets — never touch.
+*.png      binary
+*.jpg      binary
+*.pdf      binary
+*.ipa      binary
+*.m4a      binary
+*.wav      binary
+*.mlmodel  binary
+*.mlmodelc binary

@@ -1,0 +1,186 @@
+name: CI
+
+# Phase 7 (minimal) — proves the Windows → macOS runner → unsigned IPA chain
+# works end to end, before the codebase grows large enough to make a toolchain
+# surprise expensive. The release workflow (GitHub Release + AltStore feed) is
+# added in the full Phase 7.
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Unbuffered output keeps xcodebuild logs readable when a step fails.
+  NSUnbufferedIO: YES
+
+jobs:
+  build:
+    name: Generate, build, test, package
+    runs-on: macos-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ---------------------------------------------------------------------
+      # Toolchain
+      # ---------------------------------------------------------------------
+      - name: Inspect available Xcode versions
+        run: |
+          echo "Runner image: ${ImageOS:-unknown} / ${ImageVersion:-unknown}"
+          ls -d /Applications/Xcode*.app
+
+      - name: Select the newest installed Xcode
+        run: |
+          XCODE=$(ls -d /Applications/Xcode*.app | sort -V | tail -1)
+          echo "Selecting ${XCODE}"
+          sudo xcode-select -s "${XCODE}"
+          xcodebuild -version
+
+      - name: Verify the iOS 26 SDK is available
+        run: |
+          xcodebuild -showsdks | grep -i "ios" || true
+          SDK=$(xcodebuild -showsdks | sed -n 's/.*-sdk iphoneos\([0-9][0-9.]*\).*/\1/p' | sort -V | tail -1)
+          echo "Newest iOS SDK: ${SDK:-none}"
+          MAJOR="${SDK%%.*}"
+          if [ -z "${SDK}" ] || [ "${MAJOR}" -lt 26 ]; then
+            echo "::error::Somna targets iOS 26 but the newest iOS SDK on this runner is '${SDK:-none}'. Pin a runner image that ships Xcode 26, or lower IPHONEOS_DEPLOYMENT_TARGET in project.yml."
+            exit 1
+          fi
+
+      - name: Install XcodeGen
+        run: |
+          brew install xcodegen
+          xcodegen --version
+
+      # ---------------------------------------------------------------------
+      # Project generation
+      # ---------------------------------------------------------------------
+      - name: Validate project.yml
+        run: |
+          python3 -m pip install --quiet --break-system-packages pyyaml || python3 -m pip install --quiet pyyaml
+          python3 scripts/validate-project.py
+
+      - name: Generate the Xcode project
+        run: |
+          xcodegen generate --spec project.yml
+          xcodebuild -list -project Somna.xcodeproj
+
+      # ---------------------------------------------------------------------
+      # Versioning — tag drives the marketing version, run number the build
+      # ---------------------------------------------------------------------
+      - name: Resolve version numbers
+        id: version
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            MARKETING="${GITHUB_REF#refs/tags/v}"
+          else
+            MARKETING=$(sed -n 's/^ *MARKETING_VERSION: *"\(.*\)"/\1/p' project.yml | head -1)
+          fi
+          echo "marketing=${MARKETING}" >> "$GITHUB_OUTPUT"
+          echo "build=${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
+          echo "Building Somna ${MARKETING} (${GITHUB_RUN_NUMBER})"
+
+      # ---------------------------------------------------------------------
+      # Tests on simulator
+      # ---------------------------------------------------------------------
+      - name: Select a simulator
+        id: simulator
+        run: |
+          chmod +x scripts/ci/*.sh
+          UDID=$(scripts/ci/select-simulator.sh)
+          echo "udid=${UDID}" >> "$GITHUB_OUTPUT"
+
+      - name: Run unit and UI tests
+        run: |
+          xcodebuild test \
+            -project Somna.xcodeproj \
+            -scheme Somna \
+            -configuration Debug \
+            -destination "id=${{ steps.simulator.outputs.udid }}" \
+            -resultBundlePath build/TestResults.xcresult \
+            MARKETING_VERSION="${{ steps.version.outputs.marketing }}" \
+            CURRENT_PROJECT_VERSION="${{ steps.version.outputs.build }}" \
+            CODE_SIGNING_ALLOWED=NO
+
+      # ---------------------------------------------------------------------
+      # Unsigned device archive → IPA
+      # ---------------------------------------------------------------------
+      - name: Archive for device (unsigned)
+        run: |
+          xcodebuild archive \
+            -project Somna.xcodeproj \
+            -scheme Somna \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath build/Somna.xcarchive \
+            MARKETING_VERSION="${{ steps.version.outputs.marketing }}" \
+            CURRENT_PROJECT_VERSION="${{ steps.version.outputs.build }}" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGN_ENTITLEMENTS=""
+
+      - name: Package unsigned IPA
+        id: package
+        run: |
+          scripts/ci/make-ipa.sh \
+            build/Somna.xcarchive \
+            "build/Somna-${{ steps.version.outputs.marketing }}-${{ steps.version.outputs.build }}-unsigned.ipa"
+
+      - name: Verify the packaged Info.plist
+        run: |
+          PLIST=build/Somna.xcarchive/Products/Applications/Somna.app/Info.plist
+          echo "--- Packaged Info.plist ---"
+          plutil -p "${PLIST}"
+          # These three are load-bearing: overnight recording, versioning, and
+          # the permission prompt. A silent regression here is invisible until a
+          # tester's night fails to record.
+          plutil -extract UIBackgroundModes json -o - "${PLIST}" | grep -q "audio"
+          plutil -extract NSMicrophoneUsageDescription raw -o - "${PLIST}" > /dev/null
+          test "$(plutil -extract CFBundleShortVersionString raw -o - "${PLIST}")" = "${{ steps.version.outputs.marketing }}"
+          test "$(plutil -extract CFBundleVersion raw -o - "${PLIST}")" = "${{ steps.version.outputs.build }}"
+          echo "Info.plist checks passed."
+
+      # ---------------------------------------------------------------------
+      # Artifacts
+      # ---------------------------------------------------------------------
+      - name: Upload unsigned IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: Somna-unsigned-ipa
+          path: build/*.ipa
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: build/TestResults.xcresult
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### Somna ${{ steps.version.outputs.marketing }} (${{ steps.version.outputs.build }})"
+            echo ""
+            echo "| Étape | Résultat |"
+            echo "| --- | --- |"
+            echo "| Xcode | \`$(xcodebuild -version | head -1)\` |"
+            echo "| Projet généré | XcodeGen |"
+            echo "| IPA | non signé — signature déléguée à AltStore |"
+          } >> "$GITHUB_STEP_SUMMARY"
