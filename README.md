@@ -18,7 +18,8 @@ Somna est un journal nocturne pour iPhone. Il écoute les sons de la nuit, déte
 | 1 | Analyse et faisabilité | ✅ [Terminée](docs/00-PHASE-1-ANALYSE.md) |
 | 2 | Arborescence et conventions | ✅ [Terminée](docs/01-PHASE-2-ARBORESCENCE.md) |
 | 7-min | Validation de la chaîne de build | ✅ [Terminée](docs/03-PHASE-7-MIN-CI.md) — CI verte, IPA produit |
-| 3 | Fondations | ⏳ En cours |
+| 3A | Fondations : domaine et persistance | ✅ [Terminée](docs/04-PHASE-3A-FONDATIONS.md) |
+| 3B | Fondations : design system, services, environnement | ⏳ En cours |
 | 4 | Interface | ⏸️ |
 | 5 | Moteur audio | ⏸️ |
 | 6 | Moteur d'analyse | ⏸️ |
@@ -91,6 +92,8 @@ tests sur simulateur, archive non signée et packaging IPA. Voir
 | [00 — Analyse](docs/00-PHASE-1-ANALYSE.md) | Faisabilité, contraintes iOS, stratégies audio/ML/stockage/distribution, risques |
 | [01 — Arborescence](docs/01-PHASE-2-ARBORESCENCE.md) | Structure du projet, rôle de chaque module |
 | [02 — Conventions](docs/02-CONVENTIONS.md) | Code, nommage, accessibilité, vocabulaire produit, git |
+| [03 — Chaîne de build](docs/03-PHASE-7-MIN-CI.md) | CI, runner macOS, packaging IPA, contraintes AltStore |
+| [04 — Domaine et persistance](docs/04-PHASE-3A-FONDATIONS.md) | Modèles, vocabulaire prudent, SwiftData, décisions inversées |
 | [CHANGELOG](CHANGELOG.md) | Journal de version |
 
 ---

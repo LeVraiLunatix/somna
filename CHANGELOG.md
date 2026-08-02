@@ -22,6 +22,12 @@ alimentent automatiquement les notes de version de la source AltStore (Phase 7).
   catalogue d'assets initial et tests de non-régression sur le background mode `audio`.
 - `scripts/validate-project.py` — 15 vérifications de `project.yml` exécutables depuis Windows.
 
+- Phase 3A — Couche domaine en Swift pur, schéma SwiftData versionné, repository `@ModelActor`,
+  mappers tolérants aux valeurs inconnues, réglages utilisateur.
+- Vocabulaire prudent transformé en invariant testé : le build échoue si un libellé emploie du
+  langage clinique, si une étiquette de mouvement affirme un mouvement corporel, ou si deux
+  niveaux de confiance se lisent à l'identique.
+
 ### Corrigé
 - Les cibles de test désactivent l'isolation MainActor par défaut : `XCTestCase` déclare ses
   initialiseurs et ses hooks de cycle de vie comme `nonisolated`, ce qui rendait toute
@@ -29,7 +35,12 @@ alimentent automatiquement les notes de version de la source AltStore (Phase 7).
 
 ### Validé
 - Chaîne complète Windows → runner macOS → IPA non signé, vérifiée sur un run réel
-  (Xcode 26.6, SDK iOS 26.5). 5 tests unitaires et 1 test UI au vert.
+  (Xcode 26.6, SDK iOS 26.5). 55 tests au vert.
+
+### Modifié
+- L'isolation par défaut reste `nonisolated` au lieu de `MainActor` : le domaine, les
+  repositories et les moteurs vivent hors du main actor et échangent des types valeur.
+- `@unchecked Sendable` remplacé par `Mutex` là où il avait été introduit.
 
 ### Décisions verrouillées
 - Cible iOS 26.0, iPhone uniquement, portrait.

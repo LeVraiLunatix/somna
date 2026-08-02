@@ -55,19 +55,32 @@ Le préfixe `SD` sur les modèles de persistance rend visible dans le diff toute
 - L'accès SwiftData passe par un `@ModelActor`.
 - **Objectif : zéro `@unchecked Sendable`.** Toute occurrence doit être justifiée en commentaire.
 
-### Cibles de test
+### Isolation par défaut : `nonisolated`
 
-Les cibles `SomnaTests` et `SomnaUITests` désactivent l'isolation MainActor par défaut
-(`SWIFT_DEFAULT_ACTOR_ISOLATION: nonisolated` dans `project.yml`).
+Le projet **n'utilise pas** `SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor`. Décision initialement
+prise en Phase 2 puis **inversée en Phase 3A**, pour deux raisons découvertes à l'usage :
 
-Raison : XCTest est antérieur à la concurrence Swift. `XCTestCase` déclare ses initialiseurs
-et ses points d'entrée de cycle de vie (`setUp()`, `tearDown()`) comme `nonisolated`. Hériter
-de l'isolation MainActor de l'app fait échouer la compilation de **toute** sous-classe, avec
-l'erreur `has different actor isolation from nonisolated overridden declaration`.
+1. **XCTest est antérieur à la concurrence Swift.** `XCTestCase` déclare ses initialiseurs et
+   ses hooks de cycle de vie comme `nonisolated` ; hériter d'une isolation MainActor fait
+   échouer la compilation de toute sous-classe.
+2. **Somna n'est pas une app dominée par l'UI.** Le domaine, les repositories et les moteurs
+   audio et d'analyse vivent hors du main actor et échangent des types valeur. Isoler ces
+   types au MainActor les aurait rendus inconstructibles depuis les acteurs qui les produisent —
+   exactement l'inverse du besoin.
 
-Conséquence pratique : une suite de tests qui manipule des types `@MainActor` (les stores de
-features, notamment) doit s'annoter explicitement `@MainActor`. C'est plus verbeux, mais
-l'isolation devient visible à la lecture au lieu d'être héritée implicitement.
+Conséquence : `@MainActor` s'écrit explicitement sur les stores. Les vues SwiftUI l'obtiennent
+déjà du protocole `View`. Plus verbeux, mais l'isolation se lit au lieu de s'hériter en silence.
+
+### Import explicite des modules
+
+`SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY` est actif : un fichier doit importer le module
+définissant les membres qu'il utilise. Concrètement, tout fichier qui journalise doit
+`import OSLog`, même si `Log` est défini ailleurs dans le module.
+
+C'est délibéré. `Log` expose `Logger` plutôt qu'une façade prenant des chaînes, parce que
+l'interpolation native d'`os_log` porte les annotations de confidentialité
+(`\(value, privacy: .private)`) — une façade à base de `String` les perdrait, et la
+journalisation est ici une surface de confidentialité, pas un confort de débogage.
 
 ---
 
