@@ -220,6 +220,10 @@ struct SystemStatusView: View {
     }
 }
 
+#if DEBUG
+// Previews are compiled into Release builds too, so they must not reach
+// `AppEnvironment.preview()`, which is DEBUG-only on purpose: preview
+// scaffolding has no business shipping in a beta.
 #Preview("Ready") {
     NavigationStack {
         SystemStatusView()
@@ -233,3 +237,4 @@ struct SystemStatusView: View {
     }
     .environment(\.somna, .preview(microphone: .permanentlyDenied, notifications: .denied))
 }
+#endif

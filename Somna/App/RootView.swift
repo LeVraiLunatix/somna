@@ -38,7 +38,12 @@ struct RootView: View {
     }
 }
 
+#if DEBUG
+// Previews are compiled into Release builds too, so they must not reach
+// `AppEnvironment.preview()`, which is DEBUG-only on purpose: preview
+// scaffolding has no business shipping in a beta.
 #Preview {
     RootView()
         .environment(\.somna, .preview())
 }
+#endif
