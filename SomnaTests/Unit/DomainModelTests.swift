@@ -72,7 +72,7 @@ struct NightEventTests {
 
     @Test("A corrected event is stated with full confidence")
     func correctionRaisesConfidence() {
-        let event = makeEvent(confidence: .low, corrected: .coughing)
+        let event = makeEvent(corrected: .coughing, confidence: .low)
         #expect(event.effectiveConfidence == .high)
         #expect(event.title == "Cough detected")
     }
