@@ -71,6 +71,11 @@ jobs:
           python3 -m pip install --quiet --break-system-packages pyyaml || python3 -m pip install --quiet pyyaml
           python3 scripts/validate-project.py
 
+      # Fails when a screen has been added without a French translation. That is
+      # the kind of gap a beta tester finds otherwise, and it costs 2 seconds here.
+      - name: Verify the String Catalogue is up to date
+        run: python3 scripts/generate-strings.py --check
+
       - name: Generate the Xcode project
         run: |
           xcodegen generate --spec project.yml
