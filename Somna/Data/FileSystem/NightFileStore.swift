@@ -140,10 +140,18 @@ struct NightFileStore: NightFileStoring {
     }
 
     func availableCapacity() -> Int64 {
+        // Queried against the container root, not against `root`: on first
+        // launch Somna's own directory does not exist yet, and asking about a
+        // missing path returns nothing — which the readiness screen would read
+        // as "no space left" and refuse to record. Capacity is a property of the
+        // volume, so any existing path on it gives the same answer.
+        //
         // `importantUsage` is the figure that reflects space iOS would free by
         // evicting purgeable data — the number that actually predicts whether a
         // long write will succeed.
-        let values = try? root.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+        let values = try? URL.homeDirectory.resourceValues(
+            forKeys: [.volumeAvailableCapacityForImportantUsageKey]
+        )
         return values?.volumeAvailableCapacityForImportantUsage ?? 0
     }
 

@@ -135,6 +135,17 @@ struct FileStoreTests {
         try store.removeSessionDirectory(for: id)
     }
 
+    /// Regression: capacity was queried against Somna's own directory, which
+    /// does not exist on first launch. The query returned nothing, the readiness
+    /// screen read that as "no space left", and a fresh install would have
+    /// refused to record — visible only to a user whose microphone was already
+    /// granted, which no test had reached.
+    @Test("Free space is reported before any directory has been created")
+    func capacityIsKnownOnFirstLaunch() {
+        let (store, _) = makeStore()
+        #expect(store.availableCapacity() > 0)
+    }
+
     @Test("Session size accumulates across subdirectories")
     func sizeAccumulates() throws {
         let (store, root) = makeStore()
@@ -155,10 +166,13 @@ struct ByteFormattingTests {
 
     @Test("Sizes are rendered in the same style as iOS Settings")
     func sizeFormatting() {
-        // Exact strings vary by locale, so the assertion is on shape, not text:
-        // a non-empty rendering containing the digits.
+        // Exact strings vary by locale and, for zero, by spelling: the system
+        // formatter renders it as "Zero KB" rather than "0 KB". Asserting the
+        // wording would test Foundation, not Somna — so the assertion is that a
+        // rendering exists and that magnitudes are distinguished.
         #expect(!Int64(115_000_000).formattedByteSize.isEmpty)
-        #expect(Int64(0).formattedByteSize.contains("0"))
+        #expect(!Int64(0).formattedByteSize.isEmpty)
+        #expect(Int64(115_000_000).formattedByteSize != Int64(0).formattedByteSize)
     }
 
     @Test("Free space converts to a meaningful number of recording hours")
