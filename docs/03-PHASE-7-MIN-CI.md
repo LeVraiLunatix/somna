@@ -139,10 +139,54 @@ l'aurait fait réapparaître à chaque nouvelle classe de test des phases 4 à 8
 C'est exactement le genre de découverte qui justifiait d'avancer cette phase : ce défaut aurait
 sinon surgi en Phase 8, sur des dizaines de fichiers de test déjà écrits.
 
+### Run vert — chaîne complète validée
+
+Second run : **succès en 5 min 11 s**, les 16 étapes passées.
+
+| Vérification | Résultat |
+|---|---|
+| Tests unitaires (Swift Testing) | 5/5 |
+| Test UI (lancement réel sur simulateur) | 1/1, en 22,6 s |
+| Archive appareil non signée | OK |
+| IPA produit | `Somna-0.1.0-2-unsigned.ipa`, 12 190 octets |
+| `plutil` sur le bundle empaqueté | OK |
+
+**Inspection de l'IPA téléchargé** (les 12 Ko méritaient un contrôle plutôt qu'une supposition) :
+
+```
+Payload/Somna.app/Somna         79 160 octets   Mach-O 64-bit / arm64
+Payload/Somna.app/Assets.car    19 160 octets
+Payload/Somna.app/Info.plist     1 233 octets
+Payload/Somna.app/PkgInfo             8 octets
+```
+
+| Clé du bundle final | Valeur |
+|---|---|
+| `CFBundleIdentifier` | `com.somna.app` |
+| `CFBundleShortVersionString` | `0.1.0` |
+| `CFBundleVersion` | `2` (numéro de run) |
+| `MinimumOSVersion` | **26.0** |
+| `UIBackgroundModes` | `['audio']` |
+| `UIRequiredDeviceCapabilities` | `['arm64', 'microphone']` |
+| `DTPlatformVersion` / `DTXcode` | 26.5 / 2660 |
+
+Un binaire de 79 Ko est normal et non suspect : depuis iOS 12.2, la bibliothèque d'exécution
+Swift et SwiftUI sont fournies par le système et liées dynamiquement — rien n'est embarqué dans
+l'app. Avec l'optimisation whole-module et le dead-code stripping en Release, un écran témoin
+tient dans cette taille.
+
+Absence attendue et correcte : ni `_CodeSignature`, ni `embedded.mobileprovision`. C'est
+exactement l'état qu'AltStore attend pour re-signer avec le compte du testeur.
+
 ### Nettoyage annexe
 
 `actions/checkout` et `actions/upload-artifact` passés de `v4` à `v5` — GitHub force désormais
 les actions Node 20 sur Node 24 en émettant un avertissement de dépréciation.
+
+Résultat partiel : `checkout@v5` a bien fait disparaître l'avertissement, **`upload-artifact@v5`
+non** — cette version cible toujours Node 20. Il n'y a rien à corriger de notre côté ; l'action
+fonctionne, et l'avertissement disparaîtra quand GitHub publiera une version compilée pour
+Node 24.
 
 ## 5 ter. Le dépôt doit être public
 
@@ -186,9 +230,10 @@ le quota de 2000 min/mois n'est pas consommé.
 - [x] `ci.yml` syntaxiquement valide (16 étapes vérifiées par parsing)
 - [x] Python embarqué dans `select-simulator.sh` validé par `ast.parse`
 - [x] `scripts/validate-project.py` : 15/15 depuis Windows
-- [ ] **Workflow réellement exécuté sur un runner** — nécessite un dépôt GitHub distant
-
-Le dernier point est le seul qui compte vraiment, et il est entre tes mains : il faut un remote.
+- [x] **Workflow réellement exécuté sur un runner** — run `30760902298`, vert en 5 min 11 s
+- [x] Toolchain confirmé : Xcode 26.6, SDK iOS 26.5 — **risque R6 levé**
+- [x] IPA téléchargé et inspecté : Mach-O arm64, `MinimumOSVersion` 26.0, background mode `audio`
+- [x] Résistance aux rotations d'image démontrée : le runner a retenu un *iPhone Air*
 
 ---
 

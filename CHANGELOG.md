@@ -22,6 +22,15 @@ alimentent automatiquement les notes de version de la source AltStore (Phase 7).
   catalogue d'assets initial et tests de non-régression sur le background mode `audio`.
 - `scripts/validate-project.py` — 15 vérifications de `project.yml` exécutables depuis Windows.
 
+### Corrigé
+- Les cibles de test désactivent l'isolation MainActor par défaut : `XCTestCase` déclare ses
+  initialiseurs et ses hooks de cycle de vie comme `nonisolated`, ce qui rendait toute
+  sous-classe non compilable.
+
+### Validé
+- Chaîne complète Windows → runner macOS → IPA non signé, vérifiée sur un run réel
+  (Xcode 26.6, SDK iOS 26.5). 5 tests unitaires et 1 test UI au vert.
+
 ### Décisions verrouillées
 - Cible iOS 26.0, iPhone uniquement, portrait.
 - Audio AAC-LC 16 kHz mono 32 kbps, segments de 10 minutes.

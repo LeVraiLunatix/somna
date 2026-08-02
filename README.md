@@ -17,7 +17,7 @@ Somna est un journal nocturne pour iPhone. Il écoute les sons de la nuit, déte
 |---|---|---|
 | 1 | Analyse et faisabilité | ✅ [Terminée](docs/00-PHASE-1-ANALYSE.md) |
 | 2 | Arborescence et conventions | ✅ [Terminée](docs/01-PHASE-2-ARBORESCENCE.md) |
-| 7-min | Validation de la chaîne de build | ✅ [Terminée](docs/03-PHASE-7-MIN-CI.md) |
+| 7-min | Validation de la chaîne de build | ✅ [Terminée](docs/03-PHASE-7-MIN-CI.md) — CI verte, IPA produit |
 | 3 | Fondations | ⏳ En cours |
 | 4 | Interface | ⏸️ |
 | 5 | Moteur audio | ⏸️ |
