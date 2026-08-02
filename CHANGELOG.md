@@ -44,6 +44,13 @@ alimentent automatiquement les notes de version de la source AltStore (Phase 7).
 - Écran de préparation distinguant ce qui bloque un enregistrement de ce qui le dégrade, et écran
   de session sobre pensé pour être regardé dans le noir.
 
+- Phase 6A — Groupement des événements, score de tranquillité, statistiques, estimation de la
+  fenêtre de sommeil, évaluation de la qualité d'enregistrement, et résumé structurellement
+  incapable de citer un événement inexistant.
+- Le résumé est stocké sous forme d'énoncés et rendu à l'affichage : changer la langue du
+  téléphone relit correctement toutes les nuits passées.
+- Le catalogue de localisation gère les pluriels.
+
 ### Corrigé
 - Les cibles de test désactivent l'isolation MainActor par défaut : `XCTestCase` déclare ses
   initialiseurs et ses hooks de cycle de vie comme `nonisolated`, ce qui rendait toute
