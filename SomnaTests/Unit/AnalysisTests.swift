@@ -333,11 +333,14 @@ struct SleepWindowEstimatorTests {
         #expect(estimate.wakeTime == nil)
     }
 
-    @Test("A quiet middle yields both estimates")
-    func quietMiddleYieldsEstimates() throws {
+    /// The shape of a real night: some settling in, a long quiet middle, then
+    /// morning activity before the recording is stopped.
+    @Test("Settling, quiet, then morning activity yields both estimates")
+    func realisticNightYieldsEstimates() throws {
         let events = [
             event(.movementNoise, at: 300),
-            event(.movementNoise, at: 7 * 3600),
+            event(.beddingNoise, at: 7.8 * 3600),
+            event(.movementNoise, at: 7.9 * 3600),
         ]
         let estimate = SleepWindowEstimator.estimate(events: events, session: session())
 
@@ -345,6 +348,20 @@ struct SleepWindowEstimatorTests {
         let wake = try #require(estimate.wakeTime)
         #expect(sleepStart > origin)
         #expect(wake > sleepStart)
+        #expect(wake < origin.addingTimeInterval(8 * 3600))
+    }
+
+    /// Waking silently and reaching for the phone leaves no acoustic trace, so
+    /// there is nothing to estimate from. Reporting the moment the user pressed
+    /// stop as "wake time" would be restating their own tap back at them as a
+    /// finding.
+    @Test("A night that ends in silence yields no wake time")
+    func silentEndingYieldsNoWakeTime() {
+        let events = [event(.movementNoise, at: 300)]
+        let estimate = SleepWindowEstimator.estimate(events: events, session: session())
+
+        #expect(estimate.sleepStart != nil)
+        #expect(estimate.wakeTime == nil)
     }
 
     @Test("A session too short to analyse yields no estimate")
