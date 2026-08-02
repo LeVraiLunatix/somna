@@ -347,8 +347,8 @@ struct CalibrationStepView: View {
             // Advice, not a verdict: a rating nobody can act on only makes
             // people distrust the app.
             ForEach(assessment.issues, id: \.self) { issue in
-                Text(String(localized: String.LocalizationValue(issue.adviceKey),
-                            defaultValue: issue.englishAdvice))
+                Text(String.localized(dynamicKey: issue.adviceKey,
+                                      fallback: issue.englishAdvice))
                     .font(SomnaFont.secondary)
                     .foregroundStyle(SomnaColor.textSecondary)
             }

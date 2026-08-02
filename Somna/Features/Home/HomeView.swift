@@ -65,10 +65,20 @@ struct HomeView: View {
     // MARK: - Sections
 
     private func greeting(_ store: HomeStore) -> some View {
-        Text(String(localized: String.LocalizationValue(store.greetingKey),
-                    defaultValue: "Good evening"))
+        Text(String.localized(dynamicKey: store.greetingKey, fallback: englishGreeting(store)))
             .font(SomnaFont.screenTitle)
             .foregroundStyle(SomnaColor.textPrimary)
+    }
+
+    /// English source strings for the computed greeting key. Kept next to the
+    /// key that selects them so the two cannot drift apart.
+    private func englishGreeting(_ store: HomeStore) -> String {
+        switch store.greetingKey {
+        case "home.greeting.morning": "Good morning"
+        case "home.greeting.afternoon": "Good afternoon"
+        case "home.greeting.evening": "Good evening"
+        default: "Still awake?"
+        }
     }
 
     /// Nights that stopped unexpectedly are surfaced first, because their audio

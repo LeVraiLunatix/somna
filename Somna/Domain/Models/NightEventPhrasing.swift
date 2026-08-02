@@ -27,10 +27,9 @@ enum NightEventPhrasing {
     /// The user-facing title, localised when a catalogue entry exists and
     /// falling back to the English source string otherwise.
     static func title(for type: NightEventType, confidence: EventConfidence) -> String {
-        Bundle.main.localizedString(
-            forKey: key(for: type, confidence: confidence),
-            value: englishTitle(for: type, confidence: confidence),
-            table: nil
+        String.localized(
+            dynamicKey: key(for: type, confidence: confidence),
+            fallback: englishTitle(for: type, confidence: confidence)
         )
     }
 
