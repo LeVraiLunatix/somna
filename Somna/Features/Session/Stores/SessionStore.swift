@@ -43,10 +43,6 @@ final class SessionStore {
         self.environment = environment
     }
 
-    deinit {
-        statusTask?.cancel()
-    }
-
     var canStart: Bool {
         !checks.contains { $0.severity == .blocking } && phase == .preparing
     }
@@ -202,11 +198,19 @@ final class SessionStore {
         }
     }
 
+    /// Mirrors the engine's status into the view.
+    ///
+    /// `[weak self]` rather than a `deinit` that cancels: a `deinit` cannot touch
+    /// main-actor state, and a strong capture would keep the store alive for the
+    /// whole night even after its screen is gone. Weak capture ends the loop the
+    /// moment nothing is watching.
     private func observeStatus() {
         statusTask?.cancel()
-        statusTask = Task { [environment] in
-            for await update in await environment.recorder.statusStream() {
-                if Task.isCancelled { return }
+        let recorder = environment.recorder
+
+        statusTask = Task { [weak self] in
+            for await update in await recorder.statusStream() {
+                guard let self, !Task.isCancelled else { return }
                 self.status = update
             }
         }
