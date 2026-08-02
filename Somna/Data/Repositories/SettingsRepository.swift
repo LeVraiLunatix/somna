@@ -19,7 +19,12 @@ protocol SettingsStoring: Sendable {
 /// them would be a bug.
 struct SettingsRepository: SettingsStoring {
 
-    private let defaults: UserDefaults
+    /// `UserDefaults` is documented as thread-safe but is not annotated
+    /// `Sendable`. `nonisolated(unsafe)` on this one property is the narrow
+    /// escape hatch — narrower than marking the whole type `@unchecked Sendable`,
+    /// which would also silence future genuinely unsafe additions.
+    nonisolated(unsafe) private let defaults: UserDefaults
+
     private let key = "somna.settings.v1"
 
     init(defaults: UserDefaults = .standard) {
@@ -49,7 +54,10 @@ struct SettingsRepository: SettingsStoring {
 ///
 /// Uses `Mutex` rather than a hand-rolled lock behind `@unchecked Sendable`:
 /// the compiler verifies the isolation instead of a comment promising it.
-struct InMemorySettingsRepository: SettingsStoring {
+///
+/// A `final class` rather than a struct because `Mutex` is non-copyable and
+/// therefore cannot be stored in a copyable value type.
+final class InMemorySettingsRepository: SettingsStoring {
 
     private let storage: Mutex<UserSettings>
 
