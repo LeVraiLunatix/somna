@@ -1,44 +1,44 @@
 import SwiftUI
 
-/// Temporary root view proving that the generated project produces a running
-/// app on a real toolchain.
+/// Top of the view hierarchy.
 ///
-/// Replaced in Phase 3 by the real router, which decides between onboarding and
-/// the main app. Strings are intentionally `verbatim`: the brand name and
-/// tagline are not localised, and no user-facing copy exists yet — the string
-/// catalogue lands with the first real screens in Phase 4.
+/// Deliberately a single screen rather than a tab bar with three empty tabs.
+/// Shipping placeholder tabs would put dead ends in front of a beta tester on
+/// day one; the tab bar arrives in Phase 4 together with the screens that fill it.
 struct RootView: View {
+
+    @Environment(\.somna) private var environment
+    @State private var router = AppRouter()
+
     var body: some View {
-        ZStack {
-            Color("LaunchBackground")
-                .ignoresSafeArea()
+        NavigationStack(path: router.path(for: .home)) {
+            SystemStatusView()
+                .navigationDestination(for: AppDestination.self) { destination in
+                    // Every case is routed the moment its screen exists. Until
+                    // then the router simply cannot produce these destinations —
+                    // there is no code path that pushes them.
+                    switch destination {
+                    default:
+                        SystemStatusView()
+                    }
+                }
+        }
+        .environment(router)
+        .tint(SomnaColor.accentPrimary)
+        .preferredColorScheme(colorScheme)
+    }
 
-            VStack(spacing: 12) {
-                Image(systemName: "moon.stars")
-                    .font(.system(size: 44, weight: .light))
-                    .foregroundStyle(.tint)
-                    .accessibilityHidden(true)
-
-                Text(verbatim: "Somna")
-                    .font(.largeTitle.weight(.semibold))
-
-                Text(verbatim: "Every Night Tells a Story.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-
-                Text(verbatim: "v\(Bundle.main.shortVersion) (\(Bundle.main.buildNumber))")
-                    .font(.caption.monospacedDigit())
-                    .foregroundStyle(.tertiary)
-                    .padding(.top, 4)
-            }
-            .multilineTextAlignment(.center)
-            .padding()
-            .accessibilityElement(children: .combine)
-            .accessibilityIdentifier("root.placeholder")
+    /// Appearance follows the user's setting, and `nil` means "follow iOS".
+    private var colorScheme: ColorScheme? {
+        switch environment.settings.load().theme {
+        case .system: nil
+        case .dark: .dark
+        case .light: .light
         }
     }
 }
 
 #Preview {
     RootView()
+        .environment(\.somna, .preview())
 }
