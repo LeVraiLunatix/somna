@@ -324,11 +324,14 @@ struct SettingsStoreTests {
         #expect(everything.lowercased().contains("cannot be undone"))
     }
 
-    @Test("Only tabs whose screens exist are offered")
+    /// The tab bar is the one place in an app where a dead end is permanently
+    /// visible, so the list is enumerated by hand rather than derived from
+    /// `allCases`. Every entry must correspond to a screen that exists — which
+    /// is now all four, Trends having arrived with its charts.
+    @Test("Every offered tab has a screen behind it")
     func tabsAreReal() {
-        #expect(!AppTab.available.contains(.trends))
-        #expect(AppTab.available.contains(.home))
-        #expect(AppTab.available.contains(.history))
-        #expect(AppTab.available.contains(.settings))
+        #expect(Set(AppTab.available).isSubset(of: Set(AppTab.allCases)))
+        #expect(AppTab.available.count == AppTab.allCases.count)
+        #expect(AppTab.available.first == .home, "Tonight must remain the landing tab")
     }
 }
