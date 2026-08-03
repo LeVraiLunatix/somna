@@ -125,9 +125,20 @@ Elle se déclenche tous les matins, qu'une nuit existe ou non.
 
 **La vraie réponse : AlarmKit (iOS 26).** C'est le framework prévu pour ça, introduit précisément pour permettre à une app tierce de sonner comme l'app Horloge — au travers du mode silencieux et des Concentrations. Il apporte aussi sa propre présentation sur l'écran verrouillé, ce qui pourrait offrir le bouton d'arrêt du point 4 **sans extension widget**.
 
-**À vérifier avant de s'engager.** AlarmKit demande une autorisation et une clé d'usage dans l'`Info.plist`. Il faut confirmer qu'aucune *entitlement* signée n'est requise, sinon c'est incompatible avec le sideloading sur compte gratuit — la même contrainte qui a écarté HealthKit et les widgets en Phase 1. Tant que ce point n'est pas tranché, **ne rien promettre dans l'interface**.
+**Vérifié : aucun compte développeur payant n'est nécessaire.** AlarmKit demande uniquement :
 
-Si AlarmKit s'avérait indisponible, l'honnêteté impose de nommer la fonctionnalité pour ce qu'elle serait : un *rappel*, pas un réveil.
+- la clé `NSAlarmKitUsageDescription` dans l'`Info.plist` ;
+- une autorisation obtenue à l'exécution.
+
+**Aucune *entitlement* signée.** Le point mérite d'être écrit noir sur blanc parce qu'il circule une fausse information : `com.apple.developer.alarmkit` **n'existe pas**. Un ingénieur Apple l'a confirmé sur les forums, dans un fil ouvert par un développeur dont le build échouait à cause de cette clé — inventée par un LLM. Sa réponse mérite d'être citée ici, parce qu'elle vise exactement le risque que court ce projet :
+
+> « Nous constatons une augmentation des LLM qui inventent des entitlements inexistants… Les LLM ne semblent pas comprendre la différence entre les entitlements déclarés, ceux qu'il faut demander, et les entrées d'Info.plist — ils appellent tout “entitlement”. »
+
+Source : [forums.developer.apple.com/forums/thread/797950](https://developer.apple.com/forums/thread/797950)
+
+**Conséquence pour Somna.** AlarmKit est compatible avec le sideloading sur compte gratuit. C'est donc la bonne réponse au réveil, et probablement aussi à l'arrêt de la nuit.
+
+**Ce qui reste à confirmer.** Une extension widget est nécessaire pour les alarmes programmées avec un `CountdownDuration` — sans elle, le système peut interrompre l'alarme. Un réveil à heure fixe n'entre pas dans ce cas, mais il faut vérifier ce que la présentation de l'alarme exige avant de conclure qu'aucune extension n'est nécessaire. Si une extension s'avère requise, elle coûte **un App ID supplémentaire** sur le quota de trois d'un compte gratuit — un coût réel, mais pas un blocage.
 
 ---
 
