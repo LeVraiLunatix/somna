@@ -68,7 +68,18 @@ alimentent automatiquement les notes de version de la source AltStore (Phase 7).
   AltStore versionnée, icône d'application générée, manifeste de confidentialité, et guide
   d'installation. Rien n'est encore publié.
 
+- Phase 8 — Audit d'accessibilité système sur chaque écran, y compris à la plus grande taille de
+  texte, exécuté à chaque push. Trente problèmes trouvés et corrigés.
+
 ### Corrigé
+- Contraste : `textTertiary` était sous le seuil de 4,5:1 dans les deux modes.
+- Treize tailles de police fixes ignoraient Dynamic Type.
+- Le bouton Retour de l'onboarding et la barre de progression avaient des zones tactiles trop
+  petites ; l'étape est désormais affichée plutôt que cachée dans un libellé.
+- Six textes se faisaient tronquer aux grandes tailles.
+- Trois `try?` masquaient de vraies défaillances : favori non enregistré, re-analyse muette,
+  manifeste de secours perdu sans trace.
+- Les tests UI n'étaient pas isolés : les réglages survivaient d'une suite à l'autre.
 - Les cibles de test désactivent l'isolation MainActor par défaut : `XCTestCase` déclare ses
   initialiseurs et ses hooks de cycle de vie comme `nonisolated`, ce qui rendait toute
   sous-classe non compilable.

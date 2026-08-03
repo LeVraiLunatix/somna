@@ -11,7 +11,7 @@ Somna est un journal nocturne pour iPhone. Il écoute les sons de la nuit, déte
 
 ## Statut
 
-**v0.1 — bêta privée, en développement.**
+**v0.1 — bêta privée. Fonctionnellement complète, jamais éprouvée sur un appareil.**
 
 | Phase | Contenu | Statut |
 |---|---|---|
@@ -27,7 +27,7 @@ Somna est un journal nocturne pour iPhone. Il écoute les sons de la nuit, déte
 | 6A | Analyse : algorithmes purs et résumé | ✅ [Terminée](docs/08-PHASE-6A-ANALYSE.md) |
 | 6B | Analyse : classification SoundAnalysis | ✅ [Terminée](docs/09-PHASE-6B-CLASSIFICATION.md) |
 | 7 | Distribution (Release + AltStore) | ✅ [Préparée](docs/12-PHASE-7-DISTRIBUTION.md) — rien publié |
-| 8 | Validation | ⏳ En cours |
+| 8 | Validation | ✅ [Terminée](docs/13-PHASE-8-VALIDATION.md) |
 
 ---
 
@@ -105,6 +105,7 @@ tests sur simulateur, archive non signée et packaging IPA. Voir
 | [10 — Rapport et timeline](docs/10-PHASE-4B-RAPPORT-ET-TIMELINE.md) | Lecteur, rapport, corrections, refus d'afficher des chiffres non fondés |
 | [11 — Historique et réglages](docs/11-PHASE-4C-HISTORIQUE-TENDANCES-REGLAGES.md) | Suppression, rétention, tendances honnêtes, export, Premium |
 | [12 — Distribution](docs/12-PHASE-7-DISTRIBUTION.md) | Release, feed AltStore, icône, manifeste de confidentialité |
+| [13 — Validation](docs/13-PHASE-8-VALIDATION.md) | Audit d'accessibilité, revue de code, ce qui n'est pas vérifié |
 | [Installation](docs/INSTALLATION.md) | Guide destiné aux bêta-testeurs |
 | [CHANGELOG](CHANGELOG.md) | Journal de version |
 
