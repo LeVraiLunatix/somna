@@ -2347,6 +2347,23 @@
         }
       }
     },
+    "launch.accessibility": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Somna is opening"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Somna s'ouvre"
+          }
+        }
+      }
+    },
     "notification.evening.body": {
       "extractionState": "manual",
       "localizations": {

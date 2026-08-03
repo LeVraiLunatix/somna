@@ -14,18 +14,22 @@ struct RootView: View {
     /// Owned here rather than per screen: playback has to survive navigation, or
     /// comparing three events would mean restarting the audio on every scroll.
     @State private var player = ClipPlayer()
+    @State private var hasLaunched = false
 
     var body: some View {
         Group {
-            if settings.settings.hasCompletedOnboarding {
+            if !hasLaunched {
+                // The launch sequence owns the startup work it covers, so the
+                // two cannot drift apart — a progress bar that outlives its task
+                // is the kind of theatre this app refuses.
+                LaunchView { hasLaunched = true }
+            } else if settings.settings.hasCompletedOnboarding {
                 mainApp.transition(.opacity)
             } else {
                 OnboardingView().transition(.opacity)
             }
         }
-        .task {
-            await recoverInterruptedNights()
-        }
+        .somnaAnimation(value: hasLaunched)
         .somnaAnimation(value: settings.settings.hasCompletedOnboarding)
         .tint(SomnaColor.accentPrimary)
         .preferredColorScheme(colorScheme)
@@ -98,23 +102,6 @@ struct RootView: View {
         case .trends: String(localized: "tab.trends", defaultValue: "Trends")
         case .settings: String(localized: "tab.settings", defaultValue: "Settings")
         }
-    }
-
-    /// Reconciles nights the app died in the middle of, and clears files that
-    /// nothing references any more.
-    ///
-    /// Runs at launch rather than on demand because the user has no way to know
-    /// it is needed: a session row stuck in `recording` looks like a night that
-    /// is still going, forever.
-    private func recoverInterruptedNights() async {
-        let useCase = RecoverInterruptedSessionsUseCase(
-            sessions: environment.sessions,
-            files: environment.files,
-            clock: environment.clock
-        )
-        // Failure here is not worth blocking launch over: it retries next time,
-        // and nothing the user can see depends on it having happened yet.
-        try? await useCase()
     }
 
     /// Appearance follows the user's setting, and `nil` means "follow iOS".

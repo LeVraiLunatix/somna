@@ -359,6 +359,8 @@
     "settings.wakeTime": "Me réveiller à",
     "settings.wakeAlarm.allow": "Autoriser Somna à sonner",
 
+    "launch.accessibility": "Somna s'ouvre",
+
     "status.allowMicrophone": "Autoriser l'accès au micro",
     "status.calibration": "Calibration",
     "status.calibrationDone": "Faite",
