@@ -87,7 +87,8 @@ extension AppEnvironment {
             analyser: analyser ?? self.analyser,
             storage: storage ?? self.storage,
             notifications: notifications,
-            export: export
+            export: export,
+            wakeAlarm: wakeAlarm
         )
     }
 }
