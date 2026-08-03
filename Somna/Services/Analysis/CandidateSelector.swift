@@ -140,6 +140,17 @@ enum EnvelopePeriodicity {
     /// The band a human breath cycle falls in.
     static let periodRange: ClosedRange<TimeInterval> = 2...6
 
+    /// A rhythm requires the level to actually swing.
+    ///
+    /// Without this floor, a perfectly steady sound — a fan, a fridge — leaves
+    /// only floating-point rounding after the mean is removed, and rounding noise
+    /// autocorrelates almost perfectly. The measure then reports a fan as
+    /// strongly rhythmic, which is exactly backwards: this whole function exists
+    /// so the refiner can tell a fan from snoring. Caught by a test that fed it a
+    /// constant signal.
+    static let minimumRelativeSwing: Float = 0.05
+    static let minimumAbsoluteSwing: Float = 0.004
+
     /// - Returns: 0–1. Above roughly 0.35 the envelope has a real rhythm.
     static func strength(
         levels: [Float],
@@ -152,6 +163,9 @@ enum EnvelopePeriodicity {
 
         let energy = centred.reduce(0) { $0 + $1 * $1 }
         guard energy > 0 else { return 0 }
+
+        let swing = (energy / Float(centred.count)).squareRoot()
+        guard swing >= max(minimumAbsoluteSwing, mean * minimumRelativeSwing) else { return 0 }
 
         let minimumLag = max(1, Int((periodRange.lowerBound / sampleInterval).rounded()))
         let maximumLag = min(centred.count - 1, Int((periodRange.upperBound / sampleInterval).rounded()))

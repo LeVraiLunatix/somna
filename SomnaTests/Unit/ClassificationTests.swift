@@ -128,12 +128,22 @@ struct EnvelopePeriodicityTests {
         #expect(strength > 0.5)
     }
 
-    @Test("A steady hum has no rhythm")
+    /// The case this measure exists for. A fan is steady; snoring swings.
+    /// Before the swing floor was added, rounding noise left over from removing
+    /// the mean autocorrelated at 0.95 and a fan scored as strongly rhythmic —
+    /// exactly backwards.
+    @Test("A perfectly steady hum has no rhythm")
     func steadyLevelHasNoRhythm() {
         let strength = EnvelopePeriodicity.strength(
             levels: Array(repeating: 0.3, count: 400), sampleInterval: 0.1
         )
-        #expect(strength < 0.35)
+        #expect(strength == 0)
+    }
+
+    @Test("A hum with only slight drift still has no rhythm")
+    func slightlyDriftingHumHasNoRhythm() {
+        let levels = (0..<400).map { Float(0.30 + Double($0) * 0.000_01) }
+        #expect(EnvelopePeriodicity.strength(levels: levels, sampleInterval: 0.1) < 0.35)
     }
 
     @Test("Too few samples yield no score rather than a false one")
