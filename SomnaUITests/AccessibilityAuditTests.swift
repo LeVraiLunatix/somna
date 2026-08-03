@@ -51,19 +51,22 @@ final class AccessibilityAuditTests: XCTestCase {
     /// this exemption would be a bug, not a reason to widen it — which is why
     /// the important privacy sentence was moved out of a footer rather than
     /// exempted along with it.
-    private static func isSystemFormChrome(_ screen: String, _ type: XCUIAccessibilityAuditType) -> Bool {
-        screen.hasPrefix("Settings") && (type == .contrast || type == .dynamicType)
-    }
-
     private func audit(
         _ app: XCUIApplication,
         screen: String,
         file: StaticString = #filePath,
         line: UInt = #line
     ) {
+        // Resolved before the closure: capturing a Bool keeps the callback
+        // Sendable, which a method call on `self` would not.
+        let exemptsSystemChrome = screen.hasPrefix("Settings")
+
         do {
             try app.performAccessibilityAudit { issue in
-                if Self.isSystemFormChrome(screen, issue.auditType) { return true }
+                if exemptsSystemChrome,
+                   issue.auditType == .contrast || issue.auditType == .dynamicType {
+                    return true
+                }
                 // The message is built here, inside the callback, rather than
                 // carrying the issue out of it: `XCUIAccessibilityAuditIssue`
                 // is not `Sendable`, and Swift 6 is right to refuse.
