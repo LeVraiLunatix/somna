@@ -291,19 +291,32 @@ struct SettingsStoreTests {
     @Test("Changing a setting writes it through immediately")
     func settingsWriteThrough() async {
         let environment = AppEnvironment.preview()
-        let store = SettingsStore(environment: environment)
+        let store = SettingsStore(
+            environment: environment,
+            appSettings: AppSettings(
+                repository: environment.settings,
+                notifications: environment.notifications
+            )
+        )
 
-        store.settings.retentionPolicy = .ninetyDays
+        store.settings.retentionPolicy = AudioRetentionPolicy.ninetyDays
         #expect(environment.settings.load().retentionPolicy == .ninetyDays)
     }
 
     /// No deletion path may skip the confirmation step.
     @Test("Destructive actions require an explicit confirmation")
     func deletionNeedsConfirmation() async {
-        let store = SettingsStore(environment: .preview())
+        let environment = AppEnvironment.preview()
+        let store = SettingsStore(
+            environment: environment,
+            appSettings: AppSettings(
+                repository: environment.settings,
+                notifications: environment.notifications
+            )
+        )
 
-        store.pendingDeletion = .everything
-        #expect(store.pendingDeletion == .everything)
+        store.pendingDeletion = SettingsStore.PendingDeletion.everything
+        #expect(store.pendingDeletion == SettingsStore.PendingDeletion.everything)
 
         // Nothing happens until confirm is called.
         store.pendingDeletion = nil
@@ -314,7 +327,14 @@ struct SettingsStoreTests {
     /// built where the action is, not in the view.
     @Test("Each confirmation names what it will remove")
     func confirmationsAreSpecific() {
-        let store = SettingsStore(environment: .preview())
+        let environment = AppEnvironment.preview()
+        let store = SettingsStore(
+            environment: environment,
+            appSettings: AppSettings(
+                repository: environment.settings,
+                notifications: environment.notifications
+            )
+        )
 
         let audio = store.confirmationMessage(for: .rawAudio)
         let everything = store.confirmationMessage(for: .everything)
