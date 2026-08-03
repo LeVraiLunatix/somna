@@ -368,6 +368,13 @@
     "palette.tide": "Marée",
     "palette.ink": "Encre",
 
+    "gate.title": "Bêta privée",
+    "gate.body": "Cette version est testée par un petit groupe. Saisis le code qu'on t'a communiqué pour continuer.",
+    "gate.field": "Code d'accès",
+    "gate.enter": "Entrer",
+    "gate.rejected": "Ce code n'ouvre pas cette version.",
+    "gate.disclaimer": "Ce code décide qui rejoint la bêta. Il ne protège pas tes enregistrements — ceux-ci ne quittent jamais ton iPhone, et iOS les chiffre sur le disque.",
+
     "status.allowMicrophone": "Autoriser l'accès au micro",
     "status.calibration": "Calibration",
     "status.calibrationDone": "Faite",

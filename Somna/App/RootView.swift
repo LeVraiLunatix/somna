@@ -23,6 +23,10 @@ struct RootView: View {
                 // two cannot drift apart — a progress bar that outlives its task
                 // is the kind of theatre this app refuses.
                 LaunchView { hasLaunched = true }
+            } else if !settings.settings.hasUnlockedBeta {
+                // Before onboarding, not after: there is no point explaining an
+                // app to someone who turns out not to have been invited to it.
+                BetaGateView().transition(.opacity)
             } else if settings.settings.hasCompletedOnboarding {
                 mainApp.transition(.opacity)
             } else {
@@ -30,6 +34,7 @@ struct RootView: View {
             }
         }
         .somnaAnimation(value: hasLaunched)
+        .somnaAnimation(value: settings.settings.hasUnlockedBeta)
         .somnaAnimation(value: settings.settings.hasCompletedOnboarding)
         .tint(settings.settings.palette.accentPrimary)
         .environment(\.somnaPalette, settings.settings.palette)
