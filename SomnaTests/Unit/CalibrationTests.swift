@@ -89,13 +89,19 @@ struct PlacementQualityEvaluatorTests {
 }
 
 @MainActor
+private func makeAppSettings(_ environment: AppEnvironment) -> AppSettings {
+    AppSettings(repository: environment.settings, notifications: environment.notifications)
+}
+
+@MainActor
 struct OnboardingStoreTests {
 
     private func makeStore(
         microphone: MicrophonePermission = .undetermined,
         notifications: NotificationPermission = .undetermined
     ) -> OnboardingStore {
-        OnboardingStore(environment: .preview(microphone: microphone, notifications: notifications))
+        let environment = AppEnvironment.preview(microphone: microphone, notifications: notifications)
+        return OnboardingStore(environment: environment, appSettings: makeAppSettings(environment))
     }
 
     @Test("Onboarding walks the seven steps in order")
@@ -159,7 +165,7 @@ struct OnboardingStoreTests {
     @Test("Finishing onboarding records that it was completed")
     func finishingPersists() async {
         let environment = AppEnvironment.preview(microphone: .granted)
-        let store = OnboardingStore(environment: environment)
+        let store = OnboardingStore(environment: environment, appSettings: makeAppSettings(environment))
         await store.start()
 
         #expect(!environment.settings.load().hasCompletedOnboarding)
@@ -175,7 +181,7 @@ struct OnboardingStoreTests {
     @Test("Calibration can be skipped")
     func calibrationIsSkippable() async {
         let environment = AppEnvironment.preview(microphone: .granted)
-        let store = OnboardingStore(environment: environment)
+        let store = OnboardingStore(environment: environment, appSettings: makeAppSettings(environment))
         await store.start()
 
         store.skipCalibration()
@@ -187,12 +193,12 @@ struct OnboardingStoreTests {
     @Test("A successful calibration is recorded and stored")
     func calibrationPersists() async throws {
         let environment = AppEnvironment.preview(microphone: .granted)
-        let store = OnboardingStore(environment: environment)
+        let store = OnboardingStore(environment: environment, appSettings: makeAppSettings(environment))
         await store.start()
 
         await store.runCalibration()
 
-        #expect(store.calibration == .finished(StubCalibrationService().assessment))
+        #expect(store.calibration == OnboardingStore.CalibrationState.finished(StubCalibrationService().assessment))
         let saved = try #require(await environment.sessions.latestCalibration())
         #expect(saved.rating == .excellent)
     }
