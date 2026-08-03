@@ -12,17 +12,10 @@ struct SessionLifecycleTests {
     private func makeEnvironment(failure: AudioError? = nil) -> (AppEnvironment, URL) {
         let root = FileManager.default.temporaryDirectory
             .appending(path: "SomnaLifecycle-\(UUID().uuidString)", directoryHint: .isDirectory)
-        var environment = AppEnvironment.preview()
-        environment = AppEnvironment(
-            clock: environment.clock,
-            permissions: environment.permissions,
-            sessions: environment.sessions,
-            settings: environment.settings,
+        let base = AppEnvironment.preview()
+        let environment = base.replacing(
             files: NightFileStore(root: root),
-            haptics: environment.haptics,
-            calibration: environment.calibration,
-            recorder: StubAudioRecorder(clock: environment.clock, failure: failure),
-            power: environment.power
+            recorder: StubAudioRecorder(clock: base.clock, failure: failure)
         )
         return (environment, root)
     }
@@ -128,18 +121,7 @@ struct RecoveryTests {
         let root = FileManager.default.temporaryDirectory
             .appending(path: "SomnaRecovery-\(UUID().uuidString)", directoryHint: .isDirectory)
         let files = NightFileStore(root: root)
-        let base = AppEnvironment.preview()
-        let environment = AppEnvironment(
-            clock: base.clock,
-            permissions: base.permissions,
-            sessions: base.sessions,
-            settings: base.settings,
-            files: files,
-            haptics: base.haptics,
-            calibration: base.calibration,
-            recorder: base.recorder,
-            power: base.power
-        )
+        let environment = AppEnvironment.preview().replacing(files: files)
         return (environment, files, root)
     }
 

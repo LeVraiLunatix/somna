@@ -53,5 +53,32 @@ extension AppEnvironment {
             )
         )
     }
+
+    /// Returns a copy with selected dependencies replaced.
+    ///
+    /// Tests used to rebuild the whole struct field by field, which meant every
+    /// new dependency broke every suite that did so — a cost paid on each phase
+    /// for no benefit. Overriding only what a test cares about keeps the failure
+    /// where the behaviour changed.
+    func replacing(
+        files: (any NightFileStoring)? = nil,
+        recorder: (any AudioRecording)? = nil,
+        analyser: (any NightAnalyzing)? = nil,
+        permissions: (any PermissionRequesting)? = nil,
+        power: (any PowerMonitoring)? = nil
+    ) -> AppEnvironment {
+        AppEnvironment(
+            clock: clock,
+            permissions: permissions ?? self.permissions,
+            sessions: sessions,
+            settings: settings,
+            files: files ?? self.files,
+            haptics: haptics,
+            calibration: calibration,
+            recorder: recorder ?? self.recorder,
+            power: power ?? self.power,
+            analyser: analyser ?? self.analyser
+        )
+    }
 }
 #endif
