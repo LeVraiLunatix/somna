@@ -37,6 +37,8 @@ struct SessionView: View {
                                                  defaultValue: "Starting…"))
             case .running, .stopping:
                 RunningSessionView(store: store)
+            case .analysing(let progress):
+                analysing(progress)
             case .finished(let session):
                 finished(session)
             case .failed(let error):
@@ -119,6 +121,30 @@ struct SessionView: View {
         }
     }
 
+    // MARK: - Analysing
+
+    private func analysing(_ progress: AnalysisProgress) -> some View {
+        VStack(spacing: SomnaSpacing.l) {
+            ProgressView(value: progress.fraction)
+                .tint(SomnaColor.accentPrimary)
+                .padding(.horizontal, SomnaSpacing.xl)
+
+            Text(String(localized: "session.analysing", defaultValue: "Reading your night…"))
+                .font(SomnaFont.sectionTitle)
+                .foregroundStyle(SomnaColor.textPrimary)
+
+            Text(String(
+                localized: "session.analysing.detail",
+                defaultValue: "Somna is going back over the parts where it heard something. This takes a couple of minutes."
+            ))
+            .font(SomnaFont.secondary)
+            .foregroundStyle(SomnaColor.textSecondary)
+            .multilineTextAlignment(.center)
+        }
+        .padding(SomnaSpacing.xl)
+        .accessibilityElement(children: .combine)
+    }
+
     // MARK: - Finished
 
     private func finished(_ session: NightSession) -> some View {
@@ -139,15 +165,12 @@ struct SessionView: View {
             .font(SomnaFont.body)
             .foregroundStyle(SomnaColor.textSecondary)
 
-            // Analysis lands in Phase 6. Saying so beats a button that would
-            // open an empty report.
-            Text(String(
-                localized: "session.finished.analysisPending",
-                defaultValue: "Analysis of what Somna heard arrives in the next build. Your audio is saved and will be waiting for it."
-            ))
-            .font(SomnaFont.caption)
-            .foregroundStyle(SomnaColor.textTertiary)
-            .multilineTextAlignment(.center)
+            if !session.summaryStatements.isEmpty {
+                Text(SummaryRenderer.paragraph(for: session.summaryStatements))
+                    .font(SomnaFont.secondary)
+                    .foregroundStyle(SomnaColor.textSecondary)
+                    .multilineTextAlignment(.center)
+            }
 
             Button {
                 dismiss()

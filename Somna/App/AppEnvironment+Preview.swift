@@ -21,6 +21,11 @@ extension AppEnvironment {
     ) -> AppEnvironment {
         let clock = FixedClock(now: Date(timeIntervalSince1970: 1_800_000_000))
 
+        let files = NightFileStore(
+            root: FileManager.default.temporaryDirectory
+                .appending(path: "SomnaPreview-\(UUID().uuidString)", directoryHint: .isDirectory)
+        )
+
         let container: ModelContainer
         do {
             container = try ModelContainerFactory.makeContainer(inMemory: true)
@@ -36,14 +41,16 @@ extension AppEnvironment {
             permissions: StubPermissionService(microphone: microphone, notifications: notifications),
             sessions: NightSessionRepository(modelContainer: container),
             settings: InMemorySettingsRepository(settings),
-            files: NightFileStore(
-                root: FileManager.default.temporaryDirectory
-                    .appending(path: "SomnaPreview-\(UUID().uuidString)", directoryHint: .isDirectory)
-            ),
+            files: files,
             haptics: SilentHapticFeedback(),
             calibration: StubCalibrationService(),
             recorder: StubAudioRecorder(clock: clock),
-            power: StubPowerMonitor(level: power, isCharging: isCharging)
+            power: StubPowerMonitor(level: power, isCharging: isCharging),
+            analyser: NightAnalysisEngine(
+                files: files,
+                classifier: StubSoundClassifier(),
+                clock: clock
+            )
         )
     }
 }

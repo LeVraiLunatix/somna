@@ -116,6 +116,16 @@
 
     "action.done": "Terminé",
 
+    "analysis.classifier.title": "Somna n'a pas pu analyser cette nuit",
+    "analysis.classifier.suggestion": "Ton enregistrement est intact. Réessaie l'analyse depuis la page de la nuit.",
+    "analysis.noAudio.title": "L'audio de cette nuit n'a pas pu être lu",
+    "analysis.noAudio.suggestion": "Les fichiers ont peut-être été supprimés. Rien d'autre sur l'appareil n'est affecté.",
+    "analysis.cancelled.title": "L'analyse a été arrêtée",
+    "analysis.cancelled.suggestion": "Tu peux la relancer quand tu veux.",
+
+    "session.analysing": "Lecture de ta nuit…",
+    "session.analysing.detail": "Somna repasse sur les moments où elle a entendu quelque chose. Cela prend une à deux minutes.",
+
     "session.title": "Cette nuit",
     "session.prepare.title": "Avant de dormir",
     "session.prepare.body": "Somna écoutera jusqu'à ce que tu l'arrêtes. L'enregistrement continue écran verrouillé.",
@@ -129,7 +139,6 @@
     "session.state.interrupted": "Suspendu par iOS",
     "session.interrupted": "Interrompu — Somna tente de reprendre",
     "session.finished.title": "Nuit enregistrée",
-    "session.finished.analysisPending": "L'analyse de ce que Somna a entendu arrive à la prochaine version. Ton audio est enregistré et l'attendra.",
 
     "session.check.microphone": "Micro",
     "session.check.microphone.ok": "Autorisé",

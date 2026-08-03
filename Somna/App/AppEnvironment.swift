@@ -17,6 +17,7 @@ struct AppEnvironment: Sendable {
     let calibration: any CalibrationMeasuring
     let recorder: any AudioRecording
     let power: any PowerMonitoring
+    let analyser: any NightAnalyzing
 }
 
 extension AppEnvironment {
@@ -32,7 +33,12 @@ extension AppEnvironment {
             haptics: LiveHapticFeedback(),
             calibration: CalibrationService(),
             recorder: AudioRecordingEngine(files: NightFileStore(), clock: SystemClock()),
-            power: DevicePowerMonitor()
+            power: DevicePowerMonitor(),
+            analyser: NightAnalysisEngine(
+                files: NightFileStore(),
+                classifier: SoundAnalysisClassifier(),
+                clock: SystemClock()
+            )
         )
     }
 }
@@ -62,7 +68,13 @@ extension AppEnvironment {
         haptics: SilentHapticFeedback(),
         calibration: StubCalibrationService(),
         recorder: StubAudioRecorder(),
-        power: StubPowerMonitor()
+        power: StubPowerMonitor(),
+        analyser: NightAnalysisEngine(
+            files: NightFileStore(root: FileManager.default.temporaryDirectory
+                .appending(path: "SomnaUnconfigured", directoryHint: .isDirectory)),
+            classifier: StubSoundClassifier(),
+            clock: SystemClock()
+        )
     )
 }
 

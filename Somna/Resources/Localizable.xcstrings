@@ -69,6 +69,108 @@
         }
       }
     },
+    "analysis.cancelled.suggestion": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can start it again whenever you like."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu peux la relancer quand tu veux."
+          }
+        }
+      }
+    },
+    "analysis.cancelled.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysis was stopped"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'analyse a été arrêtée"
+          }
+        }
+      }
+    },
+    "analysis.classifier.suggestion": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your recording is safe. Try analysing it again from the night's page."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ton enregistrement est intact. Réessaie l'analyse depuis la page de la nuit."
+          }
+        }
+      }
+    },
+    "analysis.classifier.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Somna could not analyse this night"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Somna n'a pas pu analyser cette nuit"
+          }
+        }
+      }
+    },
+    "analysis.noAudio.suggestion": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The files may have been removed. Nothing else on the device is affected."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les fichiers ont peut-être été supprimés. Rien d'autre sur l'appareil n'est affecté."
+          }
+        }
+      }
+    },
+    "analysis.noAudio.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The audio for this night could not be read"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'audio de cette nuit n'a pas pu être lu"
+          }
+        }
+      }
+    },
     "audio.engineFailed.suggestion": {
       "extractionState": "manual",
       "localizations": {
@@ -2517,6 +2619,40 @@
         }
       }
     },
+    "session.analysing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading your night…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lecture de ta nuit…"
+          }
+        }
+      }
+    },
+    "session.analysing.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Somna is going back over the parts where it heard something. This takes a couple of minutes."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Somna repasse sur les moments où elle a entendu quelque chose. Cela prend une à deux minutes."
+          }
+        }
+      }
+    },
     "session.check.calibration": {
       "extractionState": "manual",
       "localizations": {
@@ -2853,23 +2989,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Une nuit complète occupe environ"
-          }
-        }
-      }
-    },
-    "session.finished.analysisPending": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Analysis of what Somna heard arrives in the next build. Your audio is saved and will be waiting for it."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "L'analyse de ce que Somna a entendu arrive à la prochaine version. Ton audio est enregistré et l'attendra."
           }
         }
       }

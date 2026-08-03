@@ -11,6 +11,10 @@ final class SessionStore {
         case starting
         case running
         case stopping
+        /// The morning pass, run immediately after the night rather than left
+        /// for later: the phone is awake and usually charging at this exact
+        /// moment, which is the cheapest it will ever be to do this work.
+        case analysing(AnalysisProgress)
         case finished(NightSession)
         case failed(SomnaError)
     }
@@ -50,7 +54,7 @@ final class SessionStore {
     var isRunning: Bool {
         switch phase {
         case .starting, .running, .stopping: true
-        case .preparing, .finished, .failed: false
+        case .preparing, .analysing, .finished, .failed: false
         }
     }
 
@@ -190,11 +194,44 @@ final class SessionStore {
         do {
             let session = try await useCase(reason: reason)
             environment.haptics.play(.sessionStopped)
-            phase = .finished(session)
+            await analyse(session)
         } catch let error as SomnaError {
             phase = .failed(error)
         } catch {
             phase = .failed(.persistenceUnavailable(underlying: String(describing: type(of: error))))
+        }
+    }
+
+    /// Runs the morning pass and lands on the finished night.
+    ///
+    /// A failure here does **not** become a failed screen: the recording is
+    /// intact, the night is saved, and the analysis can be retried from the
+    /// night's own page. Showing an error would suggest the night was lost.
+    private func analyse(_ session: NightSession) async {
+        guard session.isAnalysable else {
+            phase = .finished(session)
+            return
+        }
+
+        phase = .analysing(.starting)
+
+        let useCase = AnalyzeNightUseCase(
+            sessions: environment.sessions,
+            analyser: environment.analyser,
+            settings: environment.settings,
+            clock: environment.clock
+        )
+
+        do {
+            let analysed = try await useCase(sessionID: session.id) { progress in
+                Task { @MainActor [weak self] in
+                    if case .analysing = self?.phase { self?.phase = .analysing(progress) }
+                }
+            }
+            phase = .finished(analysed)
+        } catch {
+            Log.analysis.error("Post-session analysis failed; the night is kept as recorded")
+            phase = .finished(session)
         }
     }
 
