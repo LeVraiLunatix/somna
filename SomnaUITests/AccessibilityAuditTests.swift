@@ -44,12 +44,16 @@ final class AccessibilityAuditTests: XCTestCase {
     ) {
         do {
             try app.performAccessibilityAudit { issue in
-                // Nothing is ignored. If an issue turns out to be a false
-                // positive it gets an explicit exemption here, with a reason —
-                // a blanket filter would quietly disable the whole check.
-                XCTContext.runActivity(named: "\(screen): \(issue.auditType)") { _ in
-                    XCTFail("\(screen): \(issue.compactDescription)", file: file, line: line)
-                }
+                // The message is built here, inside the callback, rather than
+                // carrying the issue out of it: `XCUIAccessibilityAuditIssue`
+                // is not `Sendable`, and Swift 6 is right to refuse.
+                let message = "\(screen) — \(issue.auditType): \(issue.compactDescription)"
+                XCTFail(message, file: file, line: line)
+
+                // Reported, then marked handled so the audit continues and one
+                // screen yields every one of its problems in a single run.
+                // Nothing is ignored: a false positive would get an explicit,
+                // reasoned exemption here, never a blanket filter.
                 return true
             }
         } catch {
