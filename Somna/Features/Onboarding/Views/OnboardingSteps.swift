@@ -254,6 +254,8 @@ struct NotificationsStepView: View {
 
 struct CalibrationStepView: View {
 
+    @Environment(\.somnaPalette) private var palette
+
     let store: OnboardingStore
 
     var body: some View {
@@ -380,7 +382,7 @@ struct CalibrationStepView: View {
     private func ratingTint(_ rating: CalibrationProfile.Rating) -> Color {
         switch rating {
         case .excellent: SomnaColor.success
-        case .good: SomnaColor.accentPrimary
+        case .good: palette.accentPrimary
         case .needsImprovement: SomnaColor.warning
         }
     }

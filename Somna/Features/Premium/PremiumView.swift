@@ -8,6 +8,8 @@ import SwiftUI
 /// pattern, and a fake price is a promise.
 struct PremiumView: View {
 
+    @Environment(\.somnaPalette) private var palette
+
     private struct Feature: Identifiable {
         let id = UUID()
         let symbol: String
@@ -60,7 +62,7 @@ struct PremiumView: View {
                             .foregroundStyle(SomnaColor.textPrimary)
                     } icon: {
                         Image(systemName: "hourglass")
-                            .foregroundStyle(SomnaColor.accentSecondary)
+                            .foregroundStyle(palette.accentSecondary)
                     }
 
                     Text(String(
@@ -79,7 +81,7 @@ struct PremiumView: View {
                                 .foregroundStyle(SomnaColor.textPrimary)
                         } icon: {
                             Image(systemName: feature.symbol)
-                                .foregroundStyle(SomnaColor.accentPrimary)
+                                .foregroundStyle(palette.accentPrimary)
                         }
 
                         Text(feature.detail)

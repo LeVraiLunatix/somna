@@ -323,12 +323,36 @@ struct SettingsView: View {
                 }
             }
 
+            // Only the accent changes, and the icon with it. Backgrounds and
+            // text keep the contrast ratios that were measured against each
+            // other — four palettes would be four chances to ship something
+            // unreadable in a dark bedroom.
+            Picker(
+                String(localized: "settings.palette", defaultValue: "Accent"),
+                selection: store.settings.palette
+            ) {
+                ForEach(ThemePalette.allCases) { palette in
+                    Label {
+                        Text(paletteTitle(palette))
+                    } icon: {
+                        Image(systemName: "circle.fill")
+                            .foregroundStyle(palette.swatch)
+                    }
+                    .tag(palette)
+                }
+            }
+
             Toggle(
                 String(localized: "settings.reducedEffects", defaultValue: "Reduce visual effects"),
                 isOn: store.settings.reducedVisualEffects
             )
         } header: {
             Text(String(localized: "settings.section.appearance", defaultValue: "Appearance"))
+        } footer: {
+            Text(String(
+                localized: "settings.appearance.footer",
+                defaultValue: "The accent also changes the app icon on your Home Screen. iOS shows its own confirmation when it does."
+            ))
         }
     }
 
@@ -396,6 +420,15 @@ struct SettingsView: View {
         case .thirtyDays: String(localized: "settings.retention.month", defaultValue: "30 days")
         case .ninetyDays: String(localized: "settings.retention.quarter", defaultValue: "90 days")
         case .keepAll: String(localized: "settings.retention.forever", defaultValue: "Keep everything")
+        }
+    }
+
+    private func paletteTitle(_ palette: ThemePalette) -> String {
+        switch palette {
+        case .midnight: String(localized: "palette.midnight", defaultValue: "Midnight")
+        case .dawn: String(localized: "palette.dawn", defaultValue: "Dawn")
+        case .tide: String(localized: "palette.tide", defaultValue: "Tide")
+        case .ink: String(localized: "palette.ink", defaultValue: "Ink")
         }
     }
 

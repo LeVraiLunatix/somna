@@ -91,6 +91,11 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.somna.app
         INFOPLIST_KEY_CFBundleDisplayName: Somna
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        # Alternate icons need no entitlement, so they work under sideloading.
+        # Both keys are required: the first lists what `setAlternateIconName`
+        # may be given, the second makes the catalogue actually ship them.
+        ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: AppIconDawn AppIconTide AppIconInk
+        ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS: YES
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         SWIFT_EMIT_LOC_STRINGS: YES
     info:

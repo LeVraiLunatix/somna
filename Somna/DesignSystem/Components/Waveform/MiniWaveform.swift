@@ -13,7 +13,12 @@ struct MiniWaveform: View {
     let samples: [Float]
     /// Fraction already played, 0–1. Bars behind it are tinted.
     var progress: Double = 0
-    var tint: Color = SomnaColor.accentPrimary
+    /// `nil` follows the user's palette. A default parameter cannot read the
+    /// environment, so the choice is expressed as absence rather than as a
+    /// hard-coded colour that would ignore the setting.
+    var tint: Color?
+
+    @Environment(\.somnaPalette) private var palette
 
     private let barWidth: CGFloat = 2
     private let spacing: CGFloat = 1
@@ -28,7 +33,7 @@ struct MiniWaveform: View {
                     let played = Double(index) / Double(max(1, bars.count - 1)) <= progress
 
                     Capsule()
-                        .fill(played ? tint : tint.opacity(0.28))
+                        .fill(played ? resolvedTint : resolvedTint.opacity(0.28))
                         .frame(
                             width: barWidth,
                             // A floor of two points: a silent stretch should read
@@ -41,6 +46,8 @@ struct MiniWaveform: View {
         }
         .accessibilityHidden(true)
     }
+
+    private var resolvedTint: Color { tint ?? palette.accentPrimary }
 
     /// Fits the stored envelope to the bars that actually fit on screen.
     ///
@@ -66,6 +73,8 @@ struct MiniWaveform: View {
 /// A number this prominent will be read as a verdict unless the words next to it
 /// say otherwise, and those words must not be forgettable by a future caller.
 struct CalmnessRing: View {
+
+    @Environment(\.somnaPalette) private var palette
 
     let score: Int
     var showsCaption = true
@@ -132,7 +141,7 @@ struct CalmnessRing: View {
 
     private var tint: Color {
         switch band {
-        case .veryCalm, .calm: SomnaColor.accentPrimary
+        case .veryCalm, .calm: palette.accentPrimary
         case .someActivity: SomnaColor.warning
         case .restless: SomnaColor.error
         }

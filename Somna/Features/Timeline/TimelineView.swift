@@ -3,6 +3,8 @@ import SwiftUI
 /// The night, event by event.
 struct TimelineView: View {
 
+    @Environment(\.somnaPalette) private var palette
+
     @Environment(\.somna) private var environment
     @Environment(ClipPlayer.self) private var player
     @State private var store: TimelineStore?
@@ -112,7 +114,7 @@ struct TimelineView: View {
                             .font(SomnaFont.caption)
                     }
                     .buttonStyle(.bordered)
-                    .tint(store.filter == filter ? SomnaColor.accentPrimary : SomnaColor.textTertiary)
+                    .tint(store.filter == filter ? palette.accentPrimary : SomnaColor.textTertiary)
                 }
             }
             .padding(.vertical, SomnaSpacing.s)
@@ -141,6 +143,8 @@ struct TimelineView: View {
 
 /// One event.
 struct EventRow: View {
+
+    @Environment(\.somnaPalette) private var palette
 
     let event: NightEvent
     let isCurrent: Bool
@@ -180,7 +184,7 @@ struct EventRow: View {
                     Button(action: onPlay) {
                         Image(systemName: isCurrent ? "waveform" : "play.circle.fill")
                             .font(.system(.title2))
-                            .foregroundStyle(SomnaColor.accentPrimary)
+                            .foregroundStyle(palette.accentPrimary)
                     }
                     .buttonStyle(.plain)
                     .frame(width: SomnaSpacing.minimumTapTarget,

@@ -56,7 +56,8 @@ extension AppEnvironment {
             storage: StorageService(sessions: repository, files: files),
             notifications: StubNotificationService(),
             export: ExportService(files: files),
-            wakeAlarm: StubWakeAlarmService()
+            wakeAlarm: StubWakeAlarmService(),
+            appIcon: StubAppIconService()
         )
     }
 
@@ -88,7 +89,8 @@ extension AppEnvironment {
             storage: storage ?? self.storage,
             notifications: notifications,
             export: export,
-            wakeAlarm: wakeAlarm
+            wakeAlarm: wakeAlarm,
+            appIcon: appIcon
         )
     }
 }

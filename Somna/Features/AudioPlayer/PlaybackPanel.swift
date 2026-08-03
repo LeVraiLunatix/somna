@@ -8,6 +8,8 @@ import SwiftUI
 /// the choice degrades rather than breaks.
 struct PlaybackPanel: View {
 
+    @Environment(\.somnaPalette) private var palette
+
     @Environment(ClipPlayer.self) private var player
 
     var body: some View {
@@ -107,7 +109,7 @@ struct PlaybackPanel: View {
             } label: {
                 Image(systemName: player.isPlaying ? "pause.circle.fill" : "play.circle.fill")
                     .font(.system(.largeTitle))
-                    .foregroundStyle(SomnaColor.accentPrimary)
+                    .foregroundStyle(palette.accentPrimary)
             }
             .buttonStyle(.plain)
             .frame(width: 52, height: 52)

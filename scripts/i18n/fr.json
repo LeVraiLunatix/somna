@@ -361,6 +361,13 @@
 
     "launch.accessibility": "Somna s'ouvre",
 
+    "settings.palette": "Accent",
+    "settings.appearance.footer": "L'accent change aussi l'icône de l'app sur ton écran d'accueil. iOS affiche sa propre confirmation quand c'est le cas.",
+    "palette.midnight": "Minuit",
+    "palette.dawn": "Aube",
+    "palette.tide": "Marée",
+    "palette.ink": "Encre",
+
     "status.allowMicrophone": "Autoriser l'accès au micro",
     "status.calibration": "Calibration",
     "status.calibrationDone": "Faite",

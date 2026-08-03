@@ -44,7 +44,8 @@ struct SomnaApp: App {
         _settings = State(
             initialValue: AppSettings(
                 repository: environment.settings,
-                notifications: environment.notifications
+                notifications: environment.notifications,
+                appIcon: environment.appIcon
             )
         )
     }

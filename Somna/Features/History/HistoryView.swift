@@ -130,6 +130,8 @@ final class HistoryStore {
 /// Every night Somna has recorded.
 struct HistoryView: View {
 
+    @Environment(\.somnaPalette) private var palette
+
     @Environment(\.somna) private var environment
     @State private var store: HistoryStore?
 
@@ -192,7 +194,7 @@ struct HistoryView: View {
                                 }
                                 .buttonStyle(.bordered)
                                 .tint(store.query == query
-                                      ? SomnaColor.accentPrimary : SomnaColor.textTertiary)
+                                      ? palette.accentPrimary : SomnaColor.textTertiary)
                             }
                         }
                     }
@@ -248,6 +250,8 @@ struct HistoryView: View {
 /// One night in the list.
 struct HistoryRow: View {
 
+    @Environment(\.somnaPalette) private var palette
+
     let night: NightSession
 
     private func statistics(_ night: NightSession, layout: AnyLayout) -> some View {
@@ -279,7 +283,7 @@ struct HistoryRow: View {
                 if night.isFavorite {
                     Image(systemName: "bookmark.fill")
                         .font(.caption)
-                        .foregroundStyle(SomnaColor.accentSecondary)
+                        .foregroundStyle(palette.accentSecondary)
                         .accessibilityLabel(Text(String(localized: "history.saved",
                                                         defaultValue: "Saved")))
                 }

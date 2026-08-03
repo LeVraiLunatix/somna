@@ -27,7 +27,7 @@ from pathlib import Path
 
 SIZE = 1024
 ROOT = Path(__file__).resolve().parent.parent
-ICONSET = ROOT / "Somna" / "Resources" / "Assets.xcassets" / "AppIcon.appiconset"
+ASSETS = ROOT / "Somna" / "Resources" / "Assets.xcassets"
 
 # Geometry, in fractions of the canvas so the mark scales with SIZE.
 #
@@ -56,9 +56,35 @@ ARC_START = math.radians(-45)
 ARC_END = math.radians(45)
 
 MOON_COLOUR = (0xF4, 0xF3, 0xF7)
-ARC_COLOUR = (0x6B, 0x8C, 0xF2)
-BACKGROUND_TOP = (0x12, 0x16, 0x2C)
-BACKGROUND_BOTTOM = (0x05, 0x06, 0x0D)
+
+# One variant per palette in `ThemePalette`. The mark never changes — only the
+# colour of the arcs and the tint of the night behind them — so the icon stays
+# recognisable as Somna whichever one someone picks.
+#
+# `None` for the iconset name means the primary icon, which is what
+# `setAlternateIconName(nil)` restores.
+VARIANTS = {
+    "AppIcon": {
+        "arc": (0x6B, 0x8C, 0xF2),
+        "top": (0x12, 0x16, 0x2C),
+        "bottom": (0x05, 0x06, 0x0D),
+    },
+    "AppIconDawn": {
+        "arc": (0xE0, 0x93, 0x4A),
+        "top": (0x2A, 0x1B, 0x12),
+        "bottom": (0x0D, 0x07, 0x05),
+    },
+    "AppIconTide": {
+        "arc": (0x4F, 0xBE, 0xC6),
+        "top": (0x0E, 0x24, 0x28),
+        "bottom": (0x04, 0x0C, 0x0D),
+    },
+    "AppIconInk": {
+        "arc": (0xC4, 0xC4, 0xCE),
+        "top": (0x1A, 0x1A, 0x1E),
+        "bottom": (0x07, 0x07, 0x09),
+    },
+}
 
 
 def smoothstep(edge0: float, edge1: float, x: float) -> float:
@@ -79,8 +105,8 @@ def coverage_circle(dx: float, dy: float, radius: float, feather: float) -> floa
     return 1.0 - smoothstep(radius - feather, radius + feather, distance)
 
 
-def render(variant: str) -> bytes:
-    """Returns RGBA bytes for one variant."""
+def render(variant: str, colours: dict) -> bytes:
+    """Returns RGBA bytes for one appearance of one palette."""
     pixels = bytearray()
     feather = 1.5 / SIZE
 
@@ -96,7 +122,7 @@ def render(variant: str) -> bytes:
             if variant == "light":
                 base = tuple(
                     round(t + (b - t) * v)
-                    for t, b in zip(BACKGROUND_TOP, BACKGROUND_BOTTOM)
+                    for t, b in zip(colours["top"], colours["bottom"])
                 )
                 alpha = 1.0
             else:
@@ -123,7 +149,7 @@ def render(variant: str) -> bytes:
                     taper = 1.0 - smoothstep(0.55, 1.0, abs(angle) / ARC_END)
                     strength = band * arc_alpha * taper
                     if strength > 0:
-                        tint = ARC_COLOUR if variant != "tinted" else MOON_COLOUR
+                        tint = colours["arc"] if variant != "tinted" else MOON_COLOUR
                         colour = blend(colour, tint, strength)
                         alpha = max(alpha, strength)
 
@@ -208,14 +234,17 @@ CONTENTS = """{
 
 
 def main() -> int:
-    ICONSET.mkdir(parents=True, exist_ok=True)
+    for name, colours in VARIANTS.items():
+        iconset = ASSETS / f"{name}.appiconset"
+        iconset.mkdir(parents=True, exist_ok=True)
 
-    for variant in ("light", "dark", "tinted"):
-        write_png(ICONSET / f"icon-{variant}.png", render(variant))
-        print(f"  wrote icon-{variant}.png")
+        for variant in ("light", "dark", "tinted"):
+            write_png(iconset / f"icon-{variant}.png", render(variant, colours))
 
-    (ICONSET / "Contents.json").write_text(CONTENTS, encoding="utf-8")
-    print(f"Icon written to {ICONSET.relative_to(ROOT)}")
+        (iconset / "Contents.json").write_text(CONTENTS, encoding="utf-8")
+        print(f"  wrote {name}.appiconset")
+
+    print(f"{len(VARIANTS)} icon variants written to {ASSETS.relative_to(ROOT)}")
     return 0
 
 

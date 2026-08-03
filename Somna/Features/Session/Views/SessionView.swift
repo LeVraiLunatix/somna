@@ -7,6 +7,8 @@ import SwiftUI
 /// duplicated the store that owns the recording.
 struct SessionView: View {
 
+    @Environment(\.somnaPalette) private var palette
+
     @Environment(\.somna) private var environment
     @Environment(\.dismiss) private var dismiss
     @State private var store: SessionStore?
@@ -126,7 +128,7 @@ struct SessionView: View {
     private func analysing(_ progress: AnalysisProgress) -> some View {
         VStack(spacing: SomnaSpacing.l) {
             ProgressView(value: progress.fraction)
-                .tint(SomnaColor.accentPrimary)
+                .tint(palette.accentPrimary)
                 .padding(.horizontal, SomnaSpacing.xl)
 
             Text(String(localized: "session.analysing", defaultValue: "Reading your night…"))
@@ -190,6 +192,8 @@ struct SessionView: View {
 /// Deliberately sparse and dark. It is looked at in a dark bedroom by someone
 /// about to sleep, and again at 3 a.m. by someone who should go back to sleep.
 struct RunningSessionView: View {
+
+    @Environment(\.somnaPalette) private var palette
 
     let store: SessionStore
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -263,11 +267,11 @@ struct RunningSessionView: View {
         let level = Double(store.status.level)
 
         return Circle()
-            .fill(SomnaColor.accentPrimary.opacity(0.18 + min(0.5, level * 2)))
+            .fill(palette.accentPrimary.opacity(0.18 + min(0.5, level * 2)))
             .frame(width: 120, height: 120)
             .overlay(
                 Circle()
-                    .strokeBorder(SomnaColor.accentPrimary.opacity(0.4), lineWidth: 1)
+                    .strokeBorder(palette.accentPrimary.opacity(0.4), lineWidth: 1)
             )
             .scaleEffect(reduceMotion ? 1 : 1 + min(0.12, level))
             .somnaAnimation(SomnaMotion.quick, value: store.status.level)

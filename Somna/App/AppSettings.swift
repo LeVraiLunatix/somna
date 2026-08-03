@@ -23,10 +23,16 @@ final class AppSettings {
 
     private let repository: any SettingsStoring
     private let notifications: any NotificationScheduling
+    private let appIcon: any AppIconSwitching
 
-    init(repository: any SettingsStoring, notifications: any NotificationScheduling) {
+    init(
+        repository: any SettingsStoring,
+        notifications: any NotificationScheduling,
+        appIcon: any AppIconSwitching = StubAppIconService()
+    ) {
         self.repository = repository
         self.notifications = notifications
+        self.appIcon = appIcon
         settings = repository.load()
     }
 
@@ -44,6 +50,18 @@ final class AppSettings {
         repository.save(updated)
 
         Task { await notifications.refresh(for: updated) }
+
+        // The icon follows the accent, guarded because iOS shows a system alert
+        // every time a change succeeds — a redundant call interrupts the user
+        // for nothing.
+        //
+        // The predicate compares against the icon *currently installed* rather
+        // than against the previous palette. It is the honest question ("is the
+        // Home Screen already showing this?") and it self-corrects if the two
+        // ever drift, which comparing palettes would not.
+        if appIcon.currentIconName() != updated.palette.iconName {
+            Task { await appIcon.apply(updated.palette) }
+        }
     }
 
     /// Convenience for the one flag that is set from outside the Settings screen.

@@ -7,6 +7,8 @@ import SwiftUI
 /// sequence from developing shortcuts that skip a permission explanation.
 struct OnboardingView: View {
 
+    @Environment(\.somnaPalette) private var palette
+
     @Environment(\.somna) private var environment
     @Environment(AppSettings.self) private var appSettings
     @State private var store: OnboardingStore?
@@ -36,7 +38,7 @@ struct OnboardingView: View {
             // sighted users benefit from seeing where they are just as much.
             VStack(spacing: SomnaSpacing.xs) {
                 ProgressView(value: store.progress)
-                    .tint(SomnaColor.accentPrimary)
+                    .tint(palette.accentPrimary)
                     .accessibilityHidden(true)
 
                 Text(String(
@@ -137,7 +139,7 @@ struct OnboardingStepLayout<Content: View>: View {
         VStack(alignment: .leading, spacing: SomnaSpacing.l) {
             Image(systemName: symbolName)
                 .font(.system(.largeTitle, weight: .light))
-                .foregroundStyle(SomnaColor.accentPrimary)
+                .foregroundStyle(palette.accentPrimary)
                 .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: SomnaSpacing.s) {
@@ -160,12 +162,13 @@ struct OnboardingPoint: View {
 
     let symbolName: String
     let text: String
-    var tint: Color = SomnaColor.accentPrimary
+    /// `nil` follows the palette; explicit colours stay explicit.
+    var tint: Color?
 
     var body: some View {
         HStack(alignment: .firstTextBaseline, spacing: SomnaSpacing.m) {
             Image(systemName: symbolName)
-                .foregroundStyle(tint)
+                .foregroundStyle(tint ?? palette.accentPrimary)
                 .frame(width: 22)
                 .accessibilityHidden(true)
 

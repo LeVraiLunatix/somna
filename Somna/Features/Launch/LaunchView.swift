@@ -161,6 +161,8 @@ private extension Double {
 /// The opening screen.
 struct LaunchView: View {
 
+    @Environment(\.somnaPalette) private var palette
+
     @Environment(\.somna) private var environment
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var store: LaunchStore?
@@ -228,7 +230,7 @@ struct LaunchView: View {
             .foregroundStyle(SomnaColor.textTertiary.opacity(0.35))
             .overlay {
                 WaveFill(progress: store.progress, phase: wavePhase)
-                    .fill(SomnaColor.accentPrimary)
+                    .fill(palette.accentPrimary)
                     .mask {
                         Text(verbatim: text)
                             .font(wordFont)

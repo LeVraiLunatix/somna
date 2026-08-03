@@ -100,6 +100,8 @@ final class TrendsStore {
 /// Simple, honest trends.
 struct TrendsView: View {
 
+    @Environment(\.somnaPalette) private var palette
+
     @Environment(\.somna) private var environment
     @State private var store: TrendsStore?
 
@@ -244,11 +246,11 @@ struct TrendsView: View {
             } else {
                 Chart(points) { point in
                     LineMark(x: .value("Date", point.date), y: .value("Value", point.value))
-                        .foregroundStyle(SomnaColor.accentPrimary)
+                        .foregroundStyle(palette.accentPrimary)
                         .interpolationMethod(.monotone)
 
                     PointMark(x: .value("Date", point.date), y: .value("Value", point.value))
-                        .foregroundStyle(SomnaColor.accentPrimary)
+                        .foregroundStyle(palette.accentPrimary)
                         .symbolSize(24)
 
                     // The average is drawn rather than only stated, so a single

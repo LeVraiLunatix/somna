@@ -63,6 +63,8 @@ enum ThemePreference: String, Codable, Sendable, CaseIterable {
 struct UserSettings: Equatable, Sendable, Codable {
 
     var theme: ThemePreference
+    /// Which accent the app uses, and which icon it wears.
+    var palette: ThemePalette
     var retentionPolicy: AudioRetentionPolicy
     var analysisSensitivity: AnalysisSensitivity
 
@@ -95,6 +97,7 @@ struct UserSettings: Equatable, Sendable, Codable {
 
     static let `default` = UserSettings(
         theme: .system,
+        palette: .midnight,
         retentionPolicy: .sevenDays,
         analysisSensitivity: .balanced,
         keepOnlyDetectedClips: false,

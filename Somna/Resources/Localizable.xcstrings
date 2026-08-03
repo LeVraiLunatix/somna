@@ -3214,6 +3214,74 @@
         }
       }
     },
+    "palette.dawn": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dawn"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aube"
+          }
+        }
+      }
+    },
+    "palette.ink": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ink"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encre"
+          }
+        }
+      }
+    },
+    "palette.midnight": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Midnight"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minuit"
+          }
+        }
+      }
+    },
+    "palette.tide": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tide"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marée"
+          }
+        }
+      }
+    },
     "permission.denied": {
       "extractionState": "manual",
       "localizations": {
@@ -4751,6 +4819,23 @@
         }
       }
     },
+    "settings.appearance.footer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The accent also changes the app icon on your Home Screen. iOS shows its own confirmation when it does."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'accent change aussi l'icône de l'app sur ton écran d'accueil. iOS affiche sa propre confirmation quand c'est le cas."
+          }
+        }
+      }
+    },
     "settings.applyRetention": {
       "extractionState": "manual",
       "localizations": {
@@ -5162,6 +5247,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Somna ne commente jamais la façon dont tu as dormi — elle ne le sait pas. La notification de rapport part quand une analyse se termine vraiment, pas sur une minuterie : elle n'annoncera jamais une nuit que tu n'as pas enregistrée."
+          }
+        }
+      }
+    },
+    "settings.palette": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accent"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accent"
           }
         }
       }
