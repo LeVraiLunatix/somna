@@ -74,14 +74,71 @@ La séquence doit donc être **adossée au travail réel du démarrage** : ouver
 - **Reduce Motion doit court-circuiter toute la séquence** vers un fondu simple. Une animation d'ouverture est exactement ce que ce réglage existe pour supprimer.
 - Le zoom final ne doit pas retarder l'interactivité : l'app est utilisable dès la fin du fondu.
 
+### 3. Notification mensongère : « ta nuit est prête » sans nuit
+
+**Symptôme.** Notification reçue à 8 h annonçant que le rapport de la nuit était prêt, alors qu'aucune session n'avait été lancée.
+
+**Cause, confirmée dans le code.** Le « résumé du matin » est programmé comme une **notification calendaire répétitive quotidienne à 8 h**, sans aucune condition :
+
+```swift
+if settings.morningSummaryEnabled {
+    await schedule(
+        identifier: Identifier.morningSummary,
+        title: "Your night is ready to read",
+        body: "Somna has finished going over what it heard.",
+        at: DateComponents(hour: 8, minute: 0)
+    )
+}
+```
+
+Elle se déclenche tous les matins, qu'une nuit existe ou non.
+
+**Pourquoi c'est le pire bug du projet.** Toute l'identité de Somna tient dans le refus d'affirmer plus que les données ne soutiennent — vocabulaire nuancé, score absent quand l'audio est inexploitable, résumé structurellement incapable d'inventer un événement. Et l'app **ment à quelqu'un tous les matins à 8 h**. Aucun autre défaut de cette liste ne contredit le produit à ce point.
+
+**Deuxième constat.** La méthode qui ferait les choses correctement existe déjà — `notifyReportReady(sessionID:)` — et **n'est appelée nulle part**. Elle a été écrite, testée à la compilation, et jamais branchée.
+
+**Troisième constat.** L'heure est codée en dur. Seul le rappel du soir est réglable ; le résumé du matin est figé à 8 h et le rapport hebdomadaire au dimanche 9 h.
+
+**Correction.** Supprimer la notification calendaire répétitive. Le résumé du matin doit être **déclenché par la fin d'une analyse**, via `notifyReportReady`, c'est-à-dire seulement quand un rapport existe réellement. Et l'heure doit être réglable partout où une heure est proposée.
+
+---
+
+### 4. Arrêter la nuit sans avoir à ouvrir l'app
+
+**Ce qui existe.** Le bouton « Terminer la nuit » sur l'écran de session. Il faut donc déverrouiller, ouvrir Somna, et le trouver.
+
+**Ce qui manque.** Pouvoir arrêter au moment où on se lève, sans cette manipulation.
+
+**Pistes, avec leur coût réel.**
+
+- **Live Activity avec un bouton d'arrêt** sur l'écran verrouillé. C'est la réponse la plus directe. Coût : une extension widget, donc **un App ID supplémentaire** sur le quota de trois d'un compte Apple gratuit. Somna en occuperait deux.
+- **Bouton d'arrêt dans la notification** de session en cours : plus léger, pas d'extension, mais suppose une notification persistante.
+- **Arrêt automatique par l'alarme** — voir le point suivant. C'est probablement le plus élégant : on se réveille, l'alarme sonne, la nuit se termine.
+
+---
+
+### 5. Un vrai réveil dans l'app
+
+**Ce qui est demandé.** Régler une heure de réveil dans Somna, qui sonne vraiment, et qui termine la nuit.
+
+**La distinction qui compte.** Une `UNNotification` **n'est pas un réveil**. Elle est silencée par le mode Concentration, par l'interrupteur silencieux, et peut être manquée. Promettre « un vrai réveil » avec des notifications serait exactement le genre de sur-promesse que cette app refuse partout ailleurs — et le bug ci-dessus montre que ce risque n'est pas théorique.
+
+**La vraie réponse : AlarmKit (iOS 26).** C'est le framework prévu pour ça, introduit précisément pour permettre à une app tierce de sonner comme l'app Horloge — au travers du mode silencieux et des Concentrations. Il apporte aussi sa propre présentation sur l'écran verrouillé, ce qui pourrait offrir le bouton d'arrêt du point 4 **sans extension widget**.
+
+**À vérifier avant de s'engager.** AlarmKit demande une autorisation et une clé d'usage dans l'`Info.plist`. Il faut confirmer qu'aucune *entitlement* signée n'est requise, sinon c'est incompatible avec le sideloading sur compte gratuit — la même contrainte qui a écarté HealthKit et les widgets en Phase 1. Tant que ce point n'est pas tranché, **ne rien promettre dans l'interface**.
+
+Si AlarmKit s'avérait indisponible, l'honnêteté impose de nommer la fonctionnalité pour ce qu'elle serait : un *rappel*, pas un réveil.
+
 ---
 
 ## Ordre proposé
 
-1. **Thème** — bug visible, et sa correction assainit toute la lecture des réglages.
-2. **Calibration dans les Réglages** — l'onboarding promet quelque chose qui n'existe pas, et la qualité de détection en dépend.
-3. **Animation de lancement** — forte valeur perçue, isolée, ne touche à rien d'autre.
-4. **Personnalisation** — la plus grosse, et celle qui gagne le plus à être faite après un thème qui fonctionne.
+1. **Notification mensongère** — l'app contredit tous les jours ce qu'elle prétend être. Rien ne devrait passer devant.
+2. **Thème** — bug visible, et sa correction assainit toute la lecture des réglages.
+3. **Calibration dans les Réglages** — l'onboarding promet quelque chose qui n'existe pas, et la qualité de détection en dépend.
+4. **Réveil + arrêt de la nuit** — à instruire ensemble : si AlarmKit est utilisable en sideloading, il résout les deux d'un coup.
+5. **Animation de lancement** — forte valeur perçue, isolée, ne touche à rien d'autre.
+6. **Personnalisation** — la plus grosse, et celle qui gagne le plus à être faite après un thème qui fonctionne.
 
 ---
 
