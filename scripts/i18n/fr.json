@@ -395,6 +395,17 @@
     "status.unfinished": "Nuits inachevées"
   },
 
+  "infoplist": {
+    "NSMicrophoneUsageDescription": {
+      "en": "Somna listens to the sounds of your night so it can build a timeline of what happened while you slept. Audio never leaves your iPhone.",
+      "fr": "Somna écoute les sons de ta nuit pour construire au réveil une chronologie de ce qui s'est passé. L'audio ne quitte jamais ton iPhone."
+    },
+    "NSAlarmKitUsageDescription": {
+      "en": "Somna rings the wake alarm you set, and ends the night's recording when it does.",
+      "fr": "Somna fait sonner le réveil que tu as réglé, et met fin à l'enregistrement de la nuit quand il sonne."
+    }
+  },
+
   "dynamic": {
     "summary.overallActive": {
       "plural": true,

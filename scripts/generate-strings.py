@@ -31,6 +31,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SOURCE_DIR = ROOT / "Somna"
 FRENCH_FILE = ROOT / "scripts" / "i18n" / "fr.json"
 OUTPUT = ROOT / "Somna" / "Resources" / "Localizable.xcstrings"
+INFO_OUTPUT = ROOT / "Somna" / "Resources" / "InfoPlist.xcstrings"
 
 # Matches String(localized: "key", defaultValue: "text") across line breaks.
 STATIC_CALL = re.compile(
@@ -121,18 +122,36 @@ def main() -> int:
     catalogue = build_catalogue(english, {k: french[k] for k in english})
     rendered = json.dumps(catalogue, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
 
+    # Info.plist usage descriptions live in their own catalogue. Without it iOS
+    # shows the raw English string inside an otherwise French system prompt —
+    # at the exact moment the app is asking to be trusted with a microphone.
+    info = data.get("infoplist", {})
+    info_catalogue = build_catalogue(
+        {key: entry["en"] for key, entry in info.items()},
+        {key: entry["fr"] for key, entry in info.items()},
+    )
+    info_rendered = json.dumps(info_catalogue, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+
     if check_only:
-        current = OUTPUT.read_text(encoding="utf-8") if OUTPUT.exists() else ""
-        if current != rendered:
-            print("Localizable.xcstrings is out of date. Run scripts/generate-strings.py.",
+        stale = []
+        if (OUTPUT.read_text(encoding="utf-8") if OUTPUT.exists() else "") != rendered:
+            stale.append("Localizable.xcstrings")
+        if (INFO_OUTPUT.read_text(encoding="utf-8") if INFO_OUTPUT.exists() else "") != info_rendered:
+            stale.append("InfoPlist.xcstrings")
+
+        if stale:
+            print(f"{', '.join(stale)} out of date. Run scripts/generate-strings.py.",
                   file=sys.stderr)
             return 1
-        print(f"Localizable.xcstrings is up to date - {len(english)} keys, 2 languages.")
+        print(f"Catalogues up to date - {len(english)} keys plus "
+              f"{len(info)} Info.plist descriptions, 2 languages.")
         return 0
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(rendered, encoding="utf-8")
+    INFO_OUTPUT.write_text(info_rendered, encoding="utf-8")
     print(f"Wrote {OUTPUT.relative_to(ROOT)} - {len(english)} keys, 2 languages.")
+    print(f"Wrote {INFO_OUTPUT.relative_to(ROOT)} - {len(info)} Info.plist descriptions.")
     if unused:
         print(f"({len(unused)} stale French entries left in place, harmless.)")
     return 0

@@ -47,9 +47,6 @@ struct SettingsView: View {
         // breaks the contrast contract those colours assume — which is what the
         // audit caught here. Settings is the one screen where deferring to the
         // platform beats matching the rest of the app.
-        .navigationDestination(for: AppDestination.self) { destination in
-            if case .premium = destination { PremiumView() }
-        }
         .disabled(store.isWorking)
         .confirmationDialog(
             Text(String(localized: "settings.confirm.title", defaultValue: "Are you sure?")),

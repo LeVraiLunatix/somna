@@ -81,6 +81,19 @@ struct RootView: View {
         }
     }
 
+    /// Every destination, exhaustively.
+    ///
+    /// **No `default:` case, deliberately.** There used to be one, and it made a
+    /// missing screen invisible: `.calibration` fell through to a placeholder
+    /// instead of failing to build. Worse, `SettingsView` declared a second
+    /// `navigationDestination` for the same type, which — being closer in the
+    /// hierarchy — shadowed this one and pushed a blank screen for anything it
+    /// did not handle. The result was a black page with a back button and no
+    /// title, and nothing anywhere said so.
+    ///
+    /// Exhaustive means a destination added without a screen is now a compile
+    /// error. And there is exactly one registration for this type in the app, so
+    /// nothing can shadow it again.
     @ViewBuilder
     private func destination(_ destination: AppDestination) -> some View {
         switch destination {
@@ -92,12 +105,26 @@ struct RootView: View {
             }
         case .timeline(let sessionID):
             TimelineView(sessionID: sessionID)
+        case .calibration:
+            CalibrationView()
         case .storage:
+            SystemStatusView()
+        case .privacy:
             SystemStatusView()
         case .premium:
             PremiumView()
-        default:
-            SystemStatusView()
+        case .history:
+            HistoryView(
+                onOpenNight: { router.push(.nightReport(sessionID: $0), in: router.selectedTab) },
+                onStartSession: {
+                    router.selectedTab = .home
+                    router.push(.session, in: .home)
+                }
+            )
+        case .trends:
+            TrendsView()
+        case .settings:
+            SettingsView()
         }
     }
 
