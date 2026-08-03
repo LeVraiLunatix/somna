@@ -36,6 +36,28 @@ final class NightReportStore {
             .sorted { $0.startDate < $1.startDate }
     }
 
+    /// What the summary card should say, including when nothing was analysed.
+    ///
+    /// A night under five minutes is never analysed — deliberately, since it
+    /// cannot support any statement — so it has no statements at all. The card
+    /// was drawing itself around that emptiness: a blank rounded rectangle,
+    /// which says nothing while looking like it should.
+    ///
+    /// `SummaryStatement.tooShort` existed for exactly this and was unreachable,
+    /// because the use case throws before the generator ever runs.
+    var displayStatements: [SummaryStatement] {
+        guard let session else { return [] }
+        if !session.summaryStatements.isEmpty { return session.summaryStatements }
+        if !session.isAnalysable { return [.tooShort] }
+        return []
+    }
+
+    /// A night long enough to analyse, that has not been analysed yet.
+    var awaitsAnalysis: Bool {
+        guard let session else { return false }
+        return session.summaryStatements.isEmpty && session.isAnalysable
+    }
+
     /// Whether the report should hold back its numbers.
     var suppressesStatistics: Bool {
         session?.recordingQuality?.suppressesConclusions ?? false
@@ -132,7 +154,7 @@ struct NightReportView: View {
                     VStack(alignment: .leading, spacing: SomnaSpacing.l) {
                         header(session)
                         quality(session, store: store)
-                        summary(session)
+                        summary(store)
 
                         // Numbers drawn from unusable audio are worse than no
                         // numbers: they look like findings.
@@ -213,11 +235,44 @@ struct NightReportView: View {
         }
     }
 
-    private func summary(_ session: NightSession) -> some View {
-        SomnaCard {
-            Text(SummaryRenderer.paragraph(for: session.summaryStatements))
-                .font(SomnaFont.body)
-                .foregroundStyle(SomnaColor.textPrimary)
+    @ViewBuilder
+    private func summary(_ store: NightReportStore) -> some View {
+        if !store.displayStatements.isEmpty {
+            SomnaCard {
+                Text(SummaryRenderer.paragraph(for: store.displayStatements))
+                    .font(SomnaFont.body)
+                    .foregroundStyle(SomnaColor.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        } else if store.awaitsAnalysis {
+            // Long enough to analyse, but not analysed — usually because the
+            // pass failed or the app was killed during it. Offering the retry
+            // beats a silent gap where a summary should be.
+            SomnaCard {
+                Text(String(localized: "report.notAnalysed.title",
+                            defaultValue: "This night has not been read yet"))
+                    .font(SomnaFont.cardTitle)
+                    .foregroundStyle(SomnaColor.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Text(String(
+                    localized: "report.notAnalysed.body",
+                    defaultValue: "The recording is safe. Somna can go over it now."
+                ))
+                .font(SomnaFont.secondary)
+                .foregroundStyle(SomnaColor.textSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+                Button {
+                    Task { await store.reanalyse() }
+                } label: {
+                    Text(store.isReanalysing
+                         ? String(localized: "report.analysing", defaultValue: "Reading…")
+                         : String(localized: "report.analyse", defaultValue: "Read this night"))
+                }
+                .buttonStyle(.bordered)
+                .disabled(store.isReanalysing)
+            }
         }
     }
 

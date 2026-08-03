@@ -38,7 +38,7 @@ struct TimelineView: View {
         case .ready:
             if let store {
                 if store.allEvents.isEmpty {
-                    quietNight
+                    quietNight(store)
                 } else {
                     list(store)
                 }
@@ -50,7 +50,7 @@ struct TimelineView: View {
     ///
     /// It is also ambiguous, and the copy says so rather than congratulating
     /// someone on a quiet night that may have been a deaf microphone.
-    private var quietNight: some View {
+    private func quietNight(_ store: TimelineStore) -> some View {
         VStack(spacing: SomnaSpacing.m) {
             Image(systemName: "moon.zzz")
                 .font(.system(.largeTitle, weight: .light))
@@ -63,10 +63,16 @@ struct TimelineView: View {
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
 
-            Text(String(
-                localized: "timeline.empty.body",
-                defaultValue: "Either the night was remarkably quiet, or the microphone was not picking much up. The recording quality section says which is more likely."
-            ))
+            // The quality section only exists once a night has been analysed.
+            // Pointing at it otherwise sends someone looking for something that
+            // is not there.
+            Text(store.session?.isAnalysable == false
+                 ? String(localized: "timeline.empty.tooShort",
+                          defaultValue: "This session was too short for Somna to detect anything.")
+                 : String(
+                    localized: "timeline.empty.body",
+                    defaultValue: "Either the night was remarkably quiet, or the microphone was not picking much up. The recording quality section says which is more likely."
+                 ))
             .font(SomnaFont.secondary)
             .foregroundStyle(SomnaColor.textSecondary)
             .multilineTextAlignment(.center)

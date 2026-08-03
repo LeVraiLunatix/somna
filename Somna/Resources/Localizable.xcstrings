@@ -3843,6 +3843,40 @@
         }
       }
     },
+    "report.analyse": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Read this night"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lire cette nuit"
+          }
+        }
+      }
+    },
+    "report.analysing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lecture en cours…"
+          }
+        }
+      }
+    },
     "report.band.calm": {
       "extractionState": "manual",
       "localizations": {
@@ -3996,6 +4030,40 @@
         }
       }
     },
+    "report.notAnalysed.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The recording is safe. Somna can go over it now."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'enregistrement est intact. Somna peut le parcourir maintenant."
+          }
+        }
+      }
+    },
+    "report.notAnalysed.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This night has not been read yet"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette nuit n'a pas encore été lue"
+          }
+        }
+      }
+    },
     "report.quality.excellent": {
       "extractionState": "manual",
       "localizations": {
@@ -4090,7 +4158,7 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "See the whole night (1 event)"
+                  "value": "See the whole night (%lld event)"
                 }
               },
               "other": {
@@ -4108,7 +4176,7 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "Voir toute la nuit (1 événement)"
+                  "value": "Voir toute la nuit (%lld événement)"
                 }
               },
               "other": {
@@ -6822,6 +6890,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rien n'a été détecté"
+          }
+        }
+      }
+    },
+    "timeline.empty.tooShort": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This session was too short for Somna to detect anything."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette session était trop courte pour que Somna détecte quoi que ce soit."
           }
         }
       }

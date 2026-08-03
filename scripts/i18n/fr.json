@@ -375,6 +375,12 @@
     "gate.rejected": "Ce code n'ouvre pas cette version.",
     "gate.disclaimer": "Ce code décide qui rejoint la bêta. Il ne protège pas tes enregistrements — ceux-ci ne quittent jamais ton iPhone, et iOS les chiffre sur le disque.",
 
+    "report.notAnalysed.title": "Cette nuit n'a pas encore été lue",
+    "report.notAnalysed.body": "L'enregistrement est intact. Somna peut le parcourir maintenant.",
+    "report.analyse": "Lire cette nuit",
+    "report.analysing": "Lecture en cours…",
+    "timeline.empty.tooShort": "Cette session était trop courte pour que Somna détecte quoi que ce soit.",
+
     "status.allowMicrophone": "Autoriser l'accès au micro",
     "status.calibration": "Calibration",
     "status.calibrationDone": "Faite",
@@ -474,8 +480,8 @@
     },
     "report.seeTimeline": {
       "plural": true,
-      "en": { "one": "See the whole night (1 event)", "other": "See the whole night (%lld events)" },
-      "fr": { "one": "Voir toute la nuit (1 événement)", "other": "Voir toute la nuit (%lld événements)" }
+      "en": { "one": "See the whole night (%lld event)", "other": "See the whole night (%lld events)" },
+      "fr": { "one": "Voir toute la nuit (%lld événement)", "other": "Voir toute la nuit (%lld événements)" }
     },
     "timeline.episodes": {
       "plural": true,
