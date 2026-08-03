@@ -26,8 +26,8 @@ Somna est un journal nocturne pour iPhone. Il écoute les sons de la nuit, déte
 | 4C | Historique, tendances, réglages, barre d'onglets | ✅ [Terminée](docs/11-PHASE-4C-HISTORIQUE-TENDANCES-REGLAGES.md) |
 | 6A | Analyse : algorithmes purs et résumé | ✅ [Terminée](docs/08-PHASE-6A-ANALYSE.md) |
 | 6B | Analyse : classification SoundAnalysis | ✅ [Terminée](docs/09-PHASE-6B-CLASSIFICATION.md) |
-| 7 | Distribution (Release + AltStore) | ⏳ En cours |
-| 8 | Validation | ⏸️ |
+| 7 | Distribution (Release + AltStore) | ✅ [Préparée](docs/12-PHASE-7-DISTRIBUTION.md) — rien publié |
+| 8 | Validation | ⏳ En cours |
 
 ---
 
@@ -104,6 +104,8 @@ tests sur simulateur, archive non signée et packaging IPA. Voir
 | [09 — Classification](docs/09-PHASE-6B-CLASSIFICATION.md) | SoundAnalysis, zones candidates, règles d'arbitrage, extraits |
 | [10 — Rapport et timeline](docs/10-PHASE-4B-RAPPORT-ET-TIMELINE.md) | Lecteur, rapport, corrections, refus d'afficher des chiffres non fondés |
 | [11 — Historique et réglages](docs/11-PHASE-4C-HISTORIQUE-TENDANCES-REGLAGES.md) | Suppression, rétention, tendances honnêtes, export, Premium |
+| [12 — Distribution](docs/12-PHASE-7-DISTRIBUTION.md) | Release, feed AltStore, icône, manifeste de confidentialité |
+| [Installation](docs/INSTALLATION.md) | Guide destiné aux bêta-testeurs |
 | [CHANGELOG](CHANGELOG.md) | Journal de version |
 
 ---
@@ -112,13 +114,20 @@ tests sur simulateur, archive non signée et packaging IPA. Voir
 
 La distribution passe par **AltStore / SideStore**, via un IPA non signé publié en GitHub Release et signé sur l'appareil avec le compte Apple du testeur.
 
+Source AltStore :
+
+```
+https://raw.githubusercontent.com/LeVraiLunatix/somna/main/altstore/apps.json
+```
+
 Limites d'un compte Apple gratuit, à connaître avant de s'inscrire à la bêta :
 
 - l'app doit être **rafraîchie tous les 7 jours**, sinon elle refuse de s'ouvrir
+- une expiration non rattrapée **efface tes nuits** (iOS recrée le conteneur)
 - **3 apps sideloadées** maximum simultanément
-- AltStore nécessite un ordinateur sur le même réseau (ou SideStore)
+- AltStore nécessite un ordinateur sur le même réseau ; SideStore se rafraîchit depuis l'iPhone
 
-Le guide détaillé arrivera en Phase 7.
+**Guide complet : [docs/INSTALLATION.md](docs/INSTALLATION.md).**
 
 ---
 

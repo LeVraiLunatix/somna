@@ -64,6 +64,10 @@ alimentent automatiquement les notes de version de la source AltStore (Phase 7).
   tendances refusant de s'afficher sans données suffisantes, export local, vitrine Premium
   non achetable, et barre d'onglets.
 
+- Phase 7 — Chaîne de publication complète : workflow de release déclenché par tag, source
+  AltStore versionnée, icône d'application générée, manifeste de confidentialité, et guide
+  d'installation. Rien n'est encore publié.
+
 ### Corrigé
 - Les cibles de test désactivent l'isolation MainActor par défaut : `XCTestCase` déclare ses
   initialiseurs et ses hooks de cycle de vie comme `nonisolated`, ce qui rendait toute
