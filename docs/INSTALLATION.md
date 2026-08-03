@@ -103,7 +103,7 @@ Une nouvelle version apparaît dans l'onglet **Browse** ou **My Apps**. La mise 
 |---|---|
 | « Impossible de vérifier l'app » | Certificat pas encore approuvé — étape 4 |
 | L'app se ferme au lancement | Profil expiré — rafraîchis |
-| « Unable to install » dans AltStore | Quota de 3 apps atteint, ou 10 App IDs cette semaine |
+| « Unable to install » dans AltStore | Trois apps ou extensions déjà actives (AltStore compte dedans), ou 10 App IDs créés dans les 7 derniers jours |
 | Aucun son détecté après une nuit | Micro obstrué ou trop loin — la section **Qualité d'enregistrement** du rapport le dira |
 | L'enregistrement s'est arrêté seul | Batterie vide, ou app balayée hors du multitâche |
 

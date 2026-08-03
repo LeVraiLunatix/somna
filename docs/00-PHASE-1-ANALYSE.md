@@ -54,7 +54,7 @@ L'expérience cible est celle d'une app Apple de première partie : sobre, rapid
 |---|---|
 | Détection de mouvement corporel | Accéléromètre inutilisable depuis une table de nuit. Voir §5. |
 | Apple Watch / HealthKit | HealthKit exige une *entitlement* → compte développeur payant. Incompatible sideloading gratuit. |
-| Widgets & Live Activities | Nécessitent une App Extension = un App ID supplémentaire, sur un quota gratuit de 3 apps. Coût/bénéfice défavorable en v0.1. |
+| Widgets & Live Activities | Nécessitent une App Extension : un binaire séparé, avec son propre bundle ID et son propre profil. Un compte gratuit ne peut activer que **3 apps *et extensions*** à la fois, et AltStore en occupe déjà une — Somna en prendrait deux des trois. Coût/bénéfice défavorable en v0.1. |
 | Sync iCloud | Exige l'entitlement CloudKit → compte payant. |
 | Achats intégrés réels | StoreKit exige App Store Connect. L'écran Premium est une vitrine désactivée. |
 | Transcription des paroles nocturnes | Techniquement possible (SpeechAnalyzer, iOS 26) mais **volontairement exclu** : transcrire ce que quelqu'un dit en dormant est une violation de vie privée majeure, y compris pour les tiers présents dans la pièce. Somna détecte *qu'il y a eu parole*, jamais *ce qui a été dit*. |
@@ -345,8 +345,8 @@ AltStore / SideStore sur l'iPhone : télécharge, signe avec l'Apple ID de l'uti
 | Limite | Conséquence pour les bêta-testeurs |
 |---|---|
 | Profil valide **7 jours** | L'app doit être « rafraîchie » chaque semaine via AltStore/SideStore, sinon elle refuse de s'ouvrir |
-| **3 apps sideloadées** maximum simultanément | Consomme un des trois emplacements |
-| **10 App IDs par semaine** | Limite les réinstallations répétées |
+| **3 apps et extensions** actives simultanément | Limite d'*installation*, permanente. Une extension compte pour un emplacement au même titre qu'une app — d'où le refus des widgets en §3.4. Somna en consomme un seul. |
+| **10 App IDs par 7 jours** | Limite de *création*, glissante. Elle borne l'enregistrement de nouveaux identifiants, pas l'usage : elle gêne le développement, pas les testeurs. À ne pas confondre avec la précédente. |
 | Pas d'App Groups, iCloud, HealthKit, push distant | Confirme le périmètre défini en §2.2 |
 | AltStore nécessite un ordinateur (AltServer) sur le même réseau, ou SideStore avec un VPN de boucle locale | Friction réelle à documenter pas à pas dans le guide d'installation |
 | Le testeur saisit son Apple ID dans AltStore | Doit être expliqué honnêtement, y compris la recommandation d'un mot de passe d'application |
