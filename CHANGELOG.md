@@ -51,10 +51,17 @@ alimentent automatiquement les notes de version de la source AltStore (Phase 7).
   téléphone relit correctement toutes les nuits passées.
 - Le catalogue de localisation gère les pluriels.
 
+- Phase 6B — Classification par le modèle sonore embarqué d'Apple, sélection des zones
+  candidates depuis les métriques nocturnes, arbitrage par règles, extraction des extraits
+  audio, et analyse déclenchée juste après la nuit.
+
 ### Corrigé
 - Les cibles de test désactivent l'isolation MainActor par défaut : `XCTestCase` déclare ses
   initialiseurs et ses hooks de cycle de vie comme `nonisolated`, ce qui rendait toute
   sous-classe non compilable.
+- La mesure de périodicité rapportait un son parfaitement stable comme fortement rythmique :
+  le bruit d'arrondi restant après soustraction de la moyenne s'autocorrèle presque
+  parfaitement. Un ventilateur aurait donc été rapporté comme un ronflement.
 - L'espace libre était interrogé sur un dossier absent au premier lancement : une installation
   neuve aurait refusé d'enregistrer faute d'espace apparent.
 - Les blocs `#Preview` sont encadrés en `#if DEBUG` : compilés en Release, ils atteignaient du
