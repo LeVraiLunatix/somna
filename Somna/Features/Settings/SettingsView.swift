@@ -93,6 +93,35 @@ struct SettingsView: View {
                 isOn: store.settings.useHighQualityAudio
             )
 
+            // The wake alarm sits under Recording rather than Notifications
+            // because it is not a notification: it rings through Focus and the
+            // ring switch, and it ends the night. Filing it with reminders
+            // would suggest it can be silenced the same way.
+            Toggle(
+                String(localized: "settings.wakeAlarm", defaultValue: "Wake alarm"),
+                isOn: store.settings.wakeAlarmEnabled
+            )
+
+            if store.wrappedValue.settings.wakeAlarmEnabled {
+                DatePicker(
+                    String(localized: "settings.wakeTime", defaultValue: "Wake me at"),
+                    selection: Binding(
+                        get: { reminderDate(store.wrappedValue.settings.wakeAlarmMinutes) },
+                        set: { store.wrappedValue.settings.wakeAlarmMinutes = minutes(from: $0) }
+                    ),
+                    displayedComponents: .hourAndMinute
+                )
+
+                if store.wrappedValue.wakeAlarmPermission != .granted {
+                    Button {
+                        Task { await store.wrappedValue.requestWakeAlarmPermission() }
+                    } label: {
+                        Text(String(localized: "settings.wakeAlarm.allow",
+                                    defaultValue: "Allow Somna to ring an alarm"))
+                    }
+                }
+            }
+
             // The onboarding promises this screen exists. Until now it did not,
             // which made the promise a lie and left anyone who skipped the step
             // without a measured noise floor for good.
@@ -107,7 +136,7 @@ struct SettingsView: View {
         } footer: {
             Text(String(
                 localized: "settings.recording.footer",
-                defaultValue: "A stricter sensitivity means fewer detections, and the ones you get are surer. Higher quality roughly doubles the space a night uses."
+                defaultValue: "A stricter sensitivity means fewer detections, and the ones you get are surer. Higher quality roughly doubles the space a night uses. The wake alarm rings even in silent mode, and ends the recording when it does."
             ))
         }
     }

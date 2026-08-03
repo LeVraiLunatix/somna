@@ -42,6 +42,11 @@ final class SessionStore {
 
     private let environment: AppEnvironment
     private var statusTask: Task<Void, Never>?
+    private var autoStopTask: Task<Void, Never>?
+    private var alarmID: UUID?
+
+    /// When the night will end on its own, if a wake alarm is set.
+    private(set) var scheduledEnd: Date?
 
     init(environment: AppEnvironment) {
         self.environment = environment
@@ -162,10 +167,11 @@ final class SessionStore {
         )
 
         do {
-            _ = try await useCase()
+            let session = try await useCase()
             environment.haptics.play(.sessionStarted)
             phase = .running
             observeStatus()
+            await scheduleWakeAlarm(for: session)
         } catch let error as SomnaError {
             environment.haptics.play(.errorOccurred)
             phase = .failed(error)
@@ -184,6 +190,16 @@ final class SessionStore {
         guard isRunning else { return }
         phase = .stopping
         statusTask?.cancel()
+        autoStopTask?.cancel()
+        autoStopTask = nil
+
+        // Stopping early cancels the alarm: nobody wants to be woken by an app
+        // for a night they already ended.
+        if let alarmID {
+            await environment.wakeAlarm.cancel(id: alarmID)
+            self.alarmID = nil
+        }
+        scheduledEnd = nil
 
         let useCase = StopNightSessionUseCase(
             sessions: environment.sessions,
@@ -199,6 +215,49 @@ final class SessionStore {
             phase = .failed(error)
         } catch {
             phase = .failed(.persistenceUnavailable(underlying: String(describing: type(of: error))))
+        }
+    }
+
+    /// Sets the alarm, and — separately — arranges for the night to end.
+    ///
+    /// **The two are deliberately independent.** Whether AlarmKit tells the app
+    /// that the user pressed its stop button, while Somna is in the background
+    /// holding an audio session, is not something that can be verified from CI.
+    /// Building the end of the night on that assumption would mean a recording
+    /// that runs until the battery dies whenever the assumption is wrong.
+    ///
+    /// So the alarm rings, and a timer inside the app ends the session at the
+    /// same instant. The app stays awake through the night anyway — that is what
+    /// the audio background mode is for — so the timer is the reliable half and
+    /// the alarm is the audible one.
+    private func scheduleWakeAlarm(for session: NightSession) async {
+        let settings = environment.settings.load()
+        guard settings.wakeAlarmEnabled else { return }
+
+        guard let wakeDate = WakeTime.nextOccurrence(
+            ofMinutesFromMidnight: settings.wakeAlarmMinutes,
+            after: environment.clock.now,
+            calendar: environment.clock.calendar
+        ) else { return }
+
+        scheduledEnd = wakeDate
+
+        let id = session.id
+        alarmID = id
+        try? await environment.wakeAlarm.schedule(
+            id: id,
+            at: wakeDate,
+            title: String(localized: "alarm.title", defaultValue: "Good morning"),
+            stopButtonTitle: String(localized: "alarm.stop", defaultValue: "Stop")
+        )
+
+        let interval = wakeDate.timeIntervalSince(environment.clock.now)
+        guard interval > 0 else { return }
+
+        autoStopTask = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(interval))
+            guard let self, !Task.isCancelled else { return }
+            await self.stop(reason: .userRequested)
         }
     }
 

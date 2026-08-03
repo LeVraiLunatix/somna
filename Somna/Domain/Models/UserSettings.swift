@@ -79,6 +79,11 @@ struct UserSettings: Equatable, Sendable, Codable {
     /// Minutes from midnight, like the evening reminder.
     var weeklyReportMinutes: Int
 
+    /// Rings through Focus and the ring switch, via AlarmKit, and ends the
+    /// night when it does.
+    var wakeAlarmEnabled: Bool
+    var wakeAlarmMinutes: Int
+
     /// Both default to `false` and stay `false` in v0.1: nothing in this version
     /// sends anything anywhere. They exist so the choice is recorded as opt-in
     /// from the start rather than being retrofitted later.
@@ -99,6 +104,8 @@ struct UserSettings: Equatable, Sendable, Codable {
         morningSummaryEnabled: false,
         weeklyReportEnabled: false,
         weeklyReportMinutes: 9 * 60,
+        wakeAlarmEnabled: false,
+        wakeAlarmMinutes: 7 * 60,
         cloudProcessingConsent: false,
         analyticsConsent: false,
         reducedVisualEffects: false,

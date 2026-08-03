@@ -37,6 +37,7 @@ final class SettingsStore {
 
     private(set) var storage: StorageBreakdown = .empty
     private(set) var calibration: CalibrationProfile?
+    private(set) var wakeAlarmPermission: WakeAlarmPermission = .undetermined
     private(set) var microphone: MicrophonePermission = .undetermined
     private(set) var notifications: NotificationPermission = .undetermined
     private(set) var isWorking = false
@@ -65,11 +66,16 @@ final class SettingsStore {
         notifications = await environment.permissions.notificationPermission()
         storage = (try? await environment.storage.breakdown()) ?? .empty
         calibration = try? await environment.sessions.latestCalibration()
+        wakeAlarmPermission = await environment.wakeAlarm.permission()
     }
 
     func requestNotifications() async {
         notifications = await environment.permissions.requestNotificationPermission()
         await environment.notifications.refresh(for: settings)
+    }
+
+    func requestWakeAlarmPermission() async {
+        wakeAlarmPermission = await environment.wakeAlarm.requestPermission()
     }
 
     func openSystemSettings() {

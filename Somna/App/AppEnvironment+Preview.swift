@@ -55,7 +55,8 @@ extension AppEnvironment {
             ),
             storage: StorageService(sessions: repository, files: files),
             notifications: StubNotificationService(),
-            export: ExportService(files: files)
+            export: ExportService(files: files),
+            wakeAlarm: StubWakeAlarmService()
         )
     }
 

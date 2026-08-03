@@ -353,6 +353,12 @@
     "settings.reportReady": "Me prévenir quand un rapport est prêt",
     "settings.weeklyTime": "L'envoyer le dimanche à",
 
+    "alarm.title": "Bonjour",
+    "alarm.stop": "Arrêter",
+    "settings.wakeAlarm": "Réveil",
+    "settings.wakeTime": "Me réveiller à",
+    "settings.wakeAlarm.allow": "Autoriser Somna à sonner",
+
     "status.allowMicrophone": "Autoriser l'accès au micro",
     "status.calibration": "Calibration",
     "status.calibrationDone": "Faite",

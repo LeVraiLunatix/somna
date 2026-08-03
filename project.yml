@@ -108,6 +108,13 @@ targets:
         UIBackgroundModes:
           - audio
 
+        # AlarmKit needs a usage description, not a signed entitlement — which
+        # is what makes a real alarm possible on a free Apple account. There is
+        # no `com.apple.developer.alarmkit`; that key does not exist.
+        NSAlarmKitUsageDescription: >-
+          Somna rings the wake alarm you set, and ends the night's recording when
+          it does.
+
         NSMicrophoneUsageDescription: >-
           Somna listens to the sounds of your night so it can build a timeline
           of what happened while you slept. Audio never leaves your iPhone.
