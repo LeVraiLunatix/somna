@@ -24,6 +24,8 @@ struct EmptyStateView: View {
                 Text(title)
                     .font(SomnaFont.sectionTitle)
                     .foregroundStyle(SomnaColor.textPrimary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 Text(message)
                     .font(SomnaFont.secondary)

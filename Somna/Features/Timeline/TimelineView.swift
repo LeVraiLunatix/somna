@@ -58,6 +58,8 @@ struct TimelineView: View {
             Text(String(localized: "timeline.empty.title", defaultValue: "Nothing was detected"))
                 .font(SomnaFont.sectionTitle)
                 .foregroundStyle(SomnaColor.textPrimary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
 
             Text(String(
                 localized: "timeline.empty.body",

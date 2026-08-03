@@ -209,6 +209,8 @@ struct TrendsView: View {
             Text(String(localized: "trends.empty.title", defaultValue: "Not enough nights yet"))
                 .font(SomnaFont.sectionTitle)
                 .foregroundStyle(SomnaColor.textPrimary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
 
             Text(String(
                 localized: "trends.empty.body",
