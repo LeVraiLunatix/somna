@@ -138,7 +138,19 @@ Source : [forums.developer.apple.com/forums/thread/797950](https://developer.app
 
 **Conséquence pour Somna.** AlarmKit est compatible avec le sideloading sur compte gratuit. C'est donc la bonne réponse au réveil, et probablement aussi à l'arrêt de la nuit.
 
-**Ce qui reste à confirmer.** Une extension widget est nécessaire pour les alarmes programmées avec un `CountdownDuration` — sans elle, le système peut interrompre l'alarme. Un réveil à heure fixe n'entre pas dans ce cas, mais il faut vérifier ce que la présentation de l'alarme exige avant de conclure qu'aucune extension n'est nécessaire. Si une extension s'avère requise, elle coûte **un App ID supplémentaire** sur le quota de trois d'un compte gratuit — un coût réel, mais pas un blocage.
+**Vérifié aussi : pas d'extension widget pour un réveil à heure fixe.**
+
+La session WWDC25 « Wake up to the AlarmKit API » est explicite : *« To use countdown functionality, you're required to provide a live activity for it. »* L'obligation est **bornée au décompte**. Pour une alarme `Alarm.Schedule.fixed(date)` qui ne fait que sonner, le système fournit lui-même l'interface : titre, nom de l'app, bouton d'arrêt, et bouton de report optionnel.
+
+Sources : [WWDCNotes — session 230](https://wwdcnotes.com/documentation/wwdc25-230-wake-up-to-the-alarmkit-api/) · [Apple — Wake up to the AlarmKit API](https://developer.apple.com/videos/play/wwdc2025/230/)
+
+**Conséquence pour Somna.** Le réveil ne coûte **aucun App ID supplémentaire**. L'app reste à un seul emplacement sur le quota de trois d'un compte gratuit. C'est ce qui rend la fonctionnalité non seulement possible mais bon marché.
+
+**Un point encore ouvert, et il est important.** Le bouton d'arrêt de l'interface système est exactement ce qu'il faut pour terminer la nuit sans déverrouiller — à condition que l'app soit *prévenue* quand l'utilisateur l'actionne. Il faut confirmer que `AlarmManager` expose bien ces changements d'état à l'app (un flux d'`alertingAlarms` ou équivalent), et surtout **que l'app est réveillée pour les recevoir** alors qu'elle tourne en arrière-plan avec le mode audio actif.
+
+Si ce lien existe, les points 4 et 5 se résolvent ensemble : le réveil sonne, l'utilisateur appuie sur Arrêter, la session se termine proprement. Sinon, l'alarme reste un réveil et l'arrêt de la nuit demande autre chose.
+
+C'est le genre de détail qui ne se tranche que sur un appareil. À mettre en tête de la liste des choses à éprouver lors du premier vrai test.
 
 ---
 
