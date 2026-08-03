@@ -47,7 +47,10 @@ final class AccessibilityAuditTests: XCTestCase {
                 // The message is built here, inside the callback, rather than
                 // carrying the issue out of it: `XCUIAccessibilityAuditIssue`
                 // is not `Sendable`, and Swift 6 is right to refuse.
-                let message = "\(screen) — \(issue.auditType): \(issue.compactDescription)"
+                // The element is named, not just the rule: "Contrast failed"
+                // with no subject sends you guessing across a whole screen.
+                let element = issue.element.map { "\($0.elementType) “\($0.label)”" } ?? "unknown element"
+                let message = "\(screen) — \(issue.compactDescription) [\(element)]"
                 XCTFail(message, file: file, line: line)
 
                 // Reported, then marked handled so the audit continues and one

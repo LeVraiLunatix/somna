@@ -39,8 +39,11 @@ struct SettingsView: View {
             accessibility
             about(store)
         }
-        .scrollContentBackground(.hidden)
-        .background(SomnaColor.backgroundPrimary)
+        // The system Form's own row colours are chosen against the system
+        // grouped background. Hiding that background and painting our own
+        // breaks the contrast contract those colours assume — which is what the
+        // audit caught here. Settings is the one screen where deferring to the
+        // platform beats matching the rest of the app.
         .navigationDestination(for: AppDestination.self) { destination in
             if case .premium = destination { PremiumView() }
         }
