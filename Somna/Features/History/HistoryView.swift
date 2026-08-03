@@ -1,3 +1,4 @@
+import OSLog
 import SwiftUI
 
 /// Backs the history list.
