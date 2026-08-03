@@ -324,20 +324,8 @@ struct SettingsView: View {
             // text keep the contrast ratios that were measured against each
             // other — four palettes would be four chances to ship something
             // unreadable in a dark bedroom.
-            Picker(
-                String(localized: "settings.palette", defaultValue: "Accent"),
-                selection: store.settings.palette
-            ) {
-                ForEach(ThemePalette.allCases) { palette in
-                    Label {
-                        Text(paletteTitle(palette))
-                    } icon: {
-                        Image(systemName: "circle.fill")
-                            .foregroundStyle(palette.swatch)
-                    }
-                    .tag(palette)
-                }
-            }
+            AccentSwatchPicker(selection: store.settings.palette,
+                               title: paletteTitle)
 
             Toggle(
                 String(localized: "settings.reducedEffects", defaultValue: "Reduce visual effects"),

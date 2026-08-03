@@ -36,7 +36,7 @@ struct RootView: View {
         .somnaAnimation(value: hasLaunched)
         .somnaAnimation(value: settings.settings.hasUnlockedBeta)
         .somnaAnimation(value: settings.settings.hasCompletedOnboarding)
-        .tint(settings.settings.palette.accentPrimary)
+        .somnaTint(settings.settings.palette)
         .environment(\.somnaPalette, settings.settings.palette)
         .preferredColorScheme(colorScheme)
     }
