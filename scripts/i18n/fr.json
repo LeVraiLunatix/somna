@@ -301,6 +301,42 @@
     "settings.channel.beta": "Bêta privée",
     "settings.medicalDisclaimer": "Somna n'est pas un dispositif médical. Elle ne pose aucun diagnostic, ne détecte pas l'apnée du sommeil et ne mesure pas les phases de sommeil. Si ton sommeil t'inquiète, parles-en à un médecin.",
 
+    "settings.premium": "Ce qui pourrait arriver plus tard",
+
+    "trends.title": "Tendances",
+    "trends.loading": "Chargement…",
+    "trends.noData": "Rien de ce type n'a été détecté sur ces nuits.",
+    "trends.empty.title": "Pas encore assez de nuits",
+    "trends.unit.hours": "h",
+    "trends.unit.minutes": "min",
+    "trends.calmness.title": "Le calme de tes nuits",
+    "trends.calmness.explanation": "Le score de tranquillité de chaque nuit, de 0 à 100. Il reflète le calme sonore de l'enregistrement, pas la qualité de ton sommeil.",
+    "trends.duration.title": "Durée d'enregistrement",
+    "trends.duration.explanation": "Heures d'audio captées chaque nuit. C'est du temps d'enregistrement, pas du temps de sommeil — Somna ne sait pas quand tu t'es endormi.",
+    "trends.snoring.title": "Ronflements détectés",
+    "trends.snoring.explanation": "Minutes de ronflement détectées chaque nuit. Si tu partages ta chambre, Somna ne peut pas savoir de qui il s'agit.",
+    "trends.coughs.title": "Toux détectées",
+    "trends.coughs.explanation": "Nombre de toux détectées chaque nuit. Une toux peut passer inaperçue, et d'autres sons peuvent être pris pour une toux.",
+    "trends.coverage.title": "Part réellement captée",
+    "trends.coverage.explanation": "La part de chaque session que Somna a réussi à enregistrer. Une baisse signale des interruptions, et rend les autres chiffres de cette nuit moins fiables.",
+
+    "premium.title": "Somna Plus",
+    "premium.badge": "Plus tard",
+    "premium.intro": "Rien de tout cela n'existe encore, et rien ici ne peut être acheté. C'est une esquisse de ce que Somna pourrait devenir — dis-moi ce que tu utiliserais vraiment.",
+    "premium.history.title": "Historique illimité",
+    "premium.history.detail": "Garder toutes les nuits, au lieu des plus récentes.",
+    "premium.trends.title": "Comparaison longue durée",
+    "premium.trends.detail": "Comparer des mois et des saisons, pas seulement les dernières semaines.",
+    "premium.models.title": "Meilleure détection",
+    "premium.models.detail": "Des modèles embarqués améliorés à mesure qu'ils arrivent.",
+    "premium.export.title": "Exports complets",
+    "premium.export.detail": "Emporter toutes tes nuits, dans un seul fichier.",
+    "premium.backup.title": "Sauvegarde chiffrée",
+    "premium.backup.detail": "Tes nuits, chiffrées, sur ton propre iCloud.",
+    "premium.freeForever": "L'enregistrement, l'analyse, les rapports et la suppression resteront gratuits. Rien de ce qui fonctionne aujourd'hui ne passera derrière un paiement.",
+
+    "export.disclaimer": "Enregistré avec Somna. Somna détecte des sons ; ce n'est pas un dispositif médical et elle ne mesure pas le sommeil.",
+
     "status.allowMicrophone": "Autoriser l'accès au micro",
     "status.calibration": "Calibration",
     "status.calibrationDone": "Faite",
@@ -410,6 +446,19 @@
     "settings.freed": {
       "en": "Freed %@.",
       "fr": "%@ libérés."
+    },
+
+    "trends.empty.body": {
+      "en": "Somna has %1$lld analysed nights and needs %2$lld before showing trends. A line through two points is not a trend, and drawing one would say more than the data can.",
+      "fr": "Somna a %1$lld nuits analysées et en attend %2$lld avant d'afficher des tendances. Une ligne entre deux points n'est pas une tendance, et la tracer dirait plus que les données ne permettent."
+    },
+    "trends.average": {
+      "en": "Average: %1$@ %2$@",
+      "fr": "Moyenne : %1$@ %2$@"
+    },
+    "trends.accessibility.summary": {
+      "en": "Average %1$@ %2$@ over %3$lld nights.",
+      "fr": "Moyenne de %1$@ %2$@ sur %3$lld nuits."
     },
 
     "onboarding.progress": {

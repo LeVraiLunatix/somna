@@ -37,10 +37,10 @@ enum AppTab: String, Hashable, CaseIterable, Sendable {
 
     /// Tabs whose screens actually exist.
     ///
-    /// Trends arrives with the charts that fill it. Shipping the tab first would
-    /// put a dead end in the tab bar — the one place in an app where a dead end
-    /// is permanently visible.
-    static let available: [AppTab] = [.home, .history, .settings]
+    /// Kept as an explicit list rather than `allCases`: a tab is only added once
+    /// its screen is real, because the tab bar is the one place in an app where
+    /// a dead end is permanently visible.
+    static let available: [AppTab] = [.home, .history, .trends, .settings]
 }
 
 /// Navigation state.

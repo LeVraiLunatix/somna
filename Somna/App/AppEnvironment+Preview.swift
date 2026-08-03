@@ -54,7 +54,8 @@ extension AppEnvironment {
                 clock: clock
             ),
             storage: StorageService(sessions: repository, files: files),
-            notifications: StubNotificationService()
+            notifications: StubNotificationService(),
+            export: ExportService(files: files)
         )
     }
 
@@ -84,7 +85,8 @@ extension AppEnvironment {
             power: power ?? self.power,
             analyser: analyser ?? self.analyser,
             storage: storage ?? self.storage,
-            notifications: notifications
+            notifications: notifications,
+            export: export
         )
     }
 }

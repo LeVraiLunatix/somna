@@ -80,8 +80,7 @@ struct RootView: View {
         case .settings:
             SettingsView()
         case .trends:
-            // Not reachable: `AppTab.available` excludes it until the charts exist.
-            SettingsView()
+            TrendsView()
         }
     }
 
@@ -98,6 +97,8 @@ struct RootView: View {
             TimelineView(sessionID: sessionID)
         case .storage:
             SystemStatusView()
+        case .premium:
+            PremiumView()
         default:
             SystemStatusView()
         }

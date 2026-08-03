@@ -41,6 +41,9 @@ struct SettingsView: View {
         }
         .scrollContentBackground(.hidden)
         .background(SomnaColor.backgroundPrimary)
+        .navigationDestination(for: AppDestination.self) { destination in
+            if case .premium = destination { PremiumView() }
+        }
         .disabled(store.isWorking)
         .confirmationDialog(
             Text(String(localized: "settings.confirm.title", defaultValue: "Are you sure?")),
@@ -297,6 +300,10 @@ struct SettingsView: View {
                 String(localized: "settings.channel", defaultValue: "Channel"),
                 value: String(localized: "settings.channel.beta", defaultValue: "Private beta")
             )
+
+            NavigationLink(value: AppDestination.premium) {
+                Text(String(localized: "settings.premium", defaultValue: "What might come later"))
+            }
         } header: {
             Text(String(localized: "settings.section.about", defaultValue: "About"))
         } footer: {

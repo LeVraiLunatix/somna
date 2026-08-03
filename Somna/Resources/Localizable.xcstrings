@@ -1548,6 +1548,23 @@
         }
       }
     },
+    "export.disclaimer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recorded with Somna. Somna detects sounds; it is not a medical device and does not measure sleep."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistré avec Somna. Somna détecte des sons ; ce n'est pas un dispositif médical et elle ne mesure pas le sommeil."
+          }
+        }
+      }
+    },
     "history.delete": {
       "extractionState": "manual",
       "localizations": {
@@ -3197,6 +3214,244 @@
         }
       }
     },
+    "premium.backup.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your nights, encrypted, on your own iCloud."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tes nuits, chiffrées, sur ton propre iCloud."
+          }
+        }
+      }
+    },
+    "premium.backup.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encrypted backup"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sauvegarde chiffrée"
+          }
+        }
+      }
+    },
+    "premium.badge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coming later"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plus tard"
+          }
+        }
+      }
+    },
+    "premium.export.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take every night with you, in one file."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emporter toutes tes nuits, dans un seul fichier."
+          }
+        }
+      }
+    },
+    "premium.export.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full exports"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exports complets"
+          }
+        }
+      }
+    },
+    "premium.freeForever": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recording, analysis, reports and deletion will stay free. Nothing that already works today will move behind a payment."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'enregistrement, l'analyse, les rapports et la suppression resteront gratuits. Rien de ce qui fonctionne aujourd'hui ne passera derrière un paiement."
+          }
+        }
+      }
+    },
+    "premium.history.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep every night, instead of the most recent ones."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garder toutes les nuits, au lieu des plus récentes."
+          }
+        }
+      }
+    },
+    "premium.history.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlimited history"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historique illimité"
+          }
+        }
+      }
+    },
+    "premium.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "None of this exists yet, and nothing here can be bought. It is a sketch of where Somna could go — tell me which of these you would actually use."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rien de tout cela n'existe encore, et rien ici ne peut être acheté. C'est une esquisse de ce que Somna pourrait devenir — dis-moi ce que tu utiliserais vraiment."
+          }
+        }
+      }
+    },
+    "premium.models.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Improved on-device models as they become available."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Des modèles embarqués améliorés à mesure qu'ils arrivent."
+          }
+        }
+      }
+    },
+    "premium.models.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Better detection"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meilleure détection"
+          }
+        }
+      }
+    },
+    "premium.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Somna Plus"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Somna Plus"
+          }
+        }
+      }
+    },
+    "premium.trends.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compare months and seasons, not just the last few weeks."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparer des mois et des saisons, pas seulement les dernières semaines."
+          }
+        }
+      }
+    },
+    "premium.trends.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Long-range comparison"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparaison longue durée"
+          }
+        }
+      }
+    },
     "report.band.calm": {
       "extractionState": "manual",
       "localizations": {
@@ -4652,6 +4907,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Somna ne commente jamais la façon dont tu as dormi. Elle ne le sait pas."
+          }
+        }
+      }
+    },
+    "settings.premium": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What might come later"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce qui pourrait arriver plus tard"
           }
         }
       }
@@ -6251,6 +6523,329 @@
           "stringUnit": {
             "state": "translated",
             "value": "Retirer des moments enregistrés"
+          }
+        }
+      }
+    },
+    "trends.accessibility.summary": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Average %1$@ %2$@ over %3$lld nights."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moyenne de %1$@ %2$@ sur %3$lld nuits."
+          }
+        }
+      }
+    },
+    "trends.average": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Average: %1$@ %2$@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moyenne : %1$@ %2$@"
+          }
+        }
+      }
+    },
+    "trends.calmness.explanation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The calmness score of each night, 0 to 100. It reflects how quiet the recording was, not how well you slept."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le score de tranquillité de chaque nuit, de 0 à 100. Il reflète le calme sonore de l'enregistrement, pas la qualité de ton sommeil."
+          }
+        }
+      }
+    },
+    "trends.calmness.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How quiet your nights were"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le calme de tes nuits"
+          }
+        }
+      }
+    },
+    "trends.coughs.explanation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How many coughs were detected each night. A cough can be missed, and other sounds can be mistaken for one."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre de toux détectées chaque nuit. Une toux peut passer inaperçue, et d'autres sons peuvent être pris pour une toux."
+          }
+        }
+      }
+    },
+    "trends.coughs.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coughs detected"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toux détectées"
+          }
+        }
+      }
+    },
+    "trends.coverage.explanation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The share of each session Somna managed to record. A dip here means interruptions, and makes that night's other numbers less reliable."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La part de chaque session que Somna a réussi à enregistrer. Une baisse signale des interruptions, et rend les autres chiffres de cette nuit moins fiables."
+          }
+        }
+      }
+    },
+    "trends.coverage.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How much was actually captured"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Part réellement captée"
+          }
+        }
+      }
+    },
+    "trends.duration.explanation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hours of audio captured each night. This is recording time, not sleep time — Somna cannot tell when you fell asleep."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heures d'audio captées chaque nuit. C'est du temps d'enregistrement, pas du temps de sommeil — Somna ne sait pas quand tu t'es endormi."
+          }
+        }
+      }
+    },
+    "trends.duration.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How long you recorded"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durée d'enregistrement"
+          }
+        }
+      }
+    },
+    "trends.empty.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Somna has %1$lld analysed nights and needs %2$lld before showing trends. A line through two points is not a trend, and drawing one would say more than the data can."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Somna a %1$lld nuits analysées et en attend %2$lld avant d'afficher des tendances. Une ligne entre deux points n'est pas une tendance, et la tracer dirait plus que les données ne permettent."
+          }
+        }
+      }
+    },
+    "trends.empty.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not enough nights yet"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore assez de nuits"
+          }
+        }
+      }
+    },
+    "trends.loading": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chargement…"
+          }
+        }
+      }
+    },
+    "trends.noData": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing of this kind was detected in these nights."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rien de ce type n'a été détecté sur ces nuits."
+          }
+        }
+      }
+    },
+    "trends.snoring.explanation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minutes of snoring detected each night. If you share a room, Somna cannot tell whose it was."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minutes de ronflement détectées chaque nuit. Si tu partages ta chambre, Somna ne peut pas savoir de qui il s'agit."
+          }
+        }
+      }
+    },
+    "trends.snoring.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snoring detected"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ronflements détectés"
+          }
+        }
+      }
+    },
+    "trends.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trends"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tendances"
+          }
+        }
+      }
+    },
+    "trends.unit.hours": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "h"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "h"
+          }
+        }
+      }
+    },
+    "trends.unit.minutes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "min"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "min"
           }
         }
       }

@@ -20,6 +20,7 @@ struct AppEnvironment: Sendable {
     let analyser: any NightAnalyzing
     let storage: any StorageManaging
     let notifications: any NotificationScheduling
+    let export: any NightExporting
 }
 
 extension AppEnvironment {
@@ -45,7 +46,8 @@ extension AppEnvironment {
                 sessions: NightSessionRepository(modelContainer: modelContainer),
                 files: NightFileStore()
             ),
-            notifications: NotificationService()
+            notifications: NotificationService(),
+            export: ExportService(files: NightFileStore())
         )
     }
 }
@@ -87,7 +89,9 @@ extension AppEnvironment {
             files: NightFileStore(root: FileManager.default.temporaryDirectory
                 .appending(path: "SomnaUnconfigured", directoryHint: .isDirectory))
         ),
-        notifications: StubNotificationService()
+        notifications: StubNotificationService(),
+        export: ExportService(files: NightFileStore(root: FileManager.default.temporaryDirectory
+            .appending(path: "SomnaUnconfigured", directoryHint: .isDirectory)))
     )
 }
 
