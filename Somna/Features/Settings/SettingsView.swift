@@ -99,7 +99,7 @@ struct SettingsView: View {
             NavigationLink(value: AppDestination.calibration) {
                 LabeledContent(
                     String(localized: "settings.calibration", defaultValue: "Room calibration"),
-                    value: calibrationSummary(store)
+                    value: calibrationSummary(store.wrappedValue)
                 )
             }
         } header: {

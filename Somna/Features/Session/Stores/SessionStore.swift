@@ -158,7 +158,6 @@ final class SessionStore {
             recorder: environment.recorder,
             files: environment.files,
             settings: environment.settings,
-            notifications: environment.notifications,
             clock: environment.clock
         )
 
