@@ -250,10 +250,29 @@ struct HistoryRow: View {
 
     let night: NightSession
 
+    private func statistics(_ night: NightSession, layout: AnyLayout) -> some View {
+        layout {
+            Label(
+                night.recordedDuration.formattedCompactDuration,
+                systemImage: "waveform"
+            )
+
+            if let stats = night.statistics {
+                if let snoring = stats.eventCountsByType[.snoring], snoring > 0 {
+                    Label("\(snoring)", systemImage: "zzz")
+                }
+                if stats.coughCount > 0 {
+                    Label("\(stats.coughCount)", systemImage: "lungs")
+                }
+            }
+        }
+    }
+
     var body: some View {
         SomnaCard {
             HStack(alignment: .firstTextBaseline) {
                 Text(night.startDate.formatted(date: .abbreviated, time: .omitted))
+                    .fixedSize(horizontal: false, vertical: true)
                     .font(SomnaFont.cardTitle)
                     .foregroundStyle(SomnaColor.textPrimary)
 
@@ -274,20 +293,14 @@ struct HistoryRow: View {
                 }
             }
 
-            HStack(spacing: SomnaSpacing.m) {
-                Label(
-                    night.recordedDuration.formattedCompactDuration,
-                    systemImage: "waveform"
-                )
-
-                if let stats = night.statistics {
-                    if let snoring = stats.eventCountsByType[.snoring], snoring > 0 {
-                        Label("\(snoring)", systemImage: "zzz")
-                    }
-                    if stats.coughCount > 0 {
-                        Label("\(stats.coughCount)", systemImage: "lungs")
-                    }
-                }
+            // A row of fixed columns clips at the larger text sizes.
+            // `ViewThatFits` keeps one line while it fits and wraps to a column
+            // when it does not, rather than truncating figures the user came
+            // to read.
+            ViewThatFits(in: .horizontal) {
+                statistics(night, layout: AnyLayout(HStackLayout(spacing: SomnaSpacing.m)))
+                statistics(night, layout: AnyLayout(VStackLayout(alignment: .leading,
+                                                                spacing: SomnaSpacing.xs)))
             }
             .font(SomnaFont.caption)
             .foregroundStyle(SomnaColor.textSecondary)

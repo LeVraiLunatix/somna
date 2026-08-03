@@ -70,6 +70,11 @@ struct CalmnessRing: View {
     let score: Int
     var showsCaption = true
 
+    /// The ring grows with the text inside it. A fixed 120-point circle holding
+    /// a Dynamic Type number clips it at the larger sizes — precisely where the
+    /// number most needs to be readable.
+    @ScaledMetric(relativeTo: .largeTitle) private var diameter: CGFloat = 120
+
     private var band: CalmnessScoreCalculator.Band {
         CalmnessScoreCalculator.Band(score: score)
     }
@@ -87,15 +92,17 @@ struct CalmnessRing: View {
 
                 VStack(spacing: 0) {
                     Text("\(score)")
-                        .font(.system(size: 34, weight: .semibold, design: .rounded))
+                        .font(.system(.largeTitle, design: .rounded, weight: .semibold))
                         .monospacedDigit()
                         .foregroundStyle(SomnaColor.textPrimary)
                     Text(bandTitle)
                         .font(SomnaFont.caption)
                         .foregroundStyle(SomnaColor.textSecondary)
+                        .multilineTextAlignment(.center)
+                        .minimumScaleFactor(0.7)
                 }
             }
-            .frame(width: 120, height: 120)
+            .frame(width: diameter, height: diameter)
 
             if showsCaption {
                 Text(String(

@@ -70,6 +70,7 @@ struct StatusRow: View {
             Text(label)
                 .font(SomnaFont.body)
                 .foregroundStyle(SomnaColor.textPrimary)
+                .fixedSize(horizontal: false, vertical: true)
 
             Spacer(minLength: SomnaSpacing.s)
 
@@ -79,6 +80,7 @@ struct StatusRow: View {
                 // Long values wrap instead of truncating: at AX5 a truncated
                 // status is indistinguishable from a missing one.
                 .multilineTextAlignment(.trailing)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(label), \(value)")

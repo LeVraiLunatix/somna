@@ -51,7 +51,7 @@ struct PlaybackPanel: View {
                 player.dismiss()
             } label: {
                 Image(systemName: "xmark.circle.fill")
-                    .font(.system(size: 22))
+                    .font(.system(.title3))
                     .foregroundStyle(SomnaColor.textTertiary)
             }
             .buttonStyle(.plain)
@@ -106,7 +106,7 @@ struct PlaybackPanel: View {
                 player.togglePlayPause()
             } label: {
                 Image(systemName: player.isPlaying ? "pause.circle.fill" : "play.circle.fill")
-                    .font(.system(size: 42))
+                    .font(.system(.largeTitle))
                     .foregroundStyle(SomnaColor.accentPrimary)
             }
             .buttonStyle(.plain)
@@ -155,7 +155,7 @@ struct PlaybackPanel: View {
     ) -> some View {
         Button(action: action) {
             Image(systemName: symbol)
-                .font(.system(size: 20))
+                .font(.system(.title3))
                 .foregroundStyle(enabled ? SomnaColor.textPrimary : SomnaColor.textTertiary)
         }
         .buttonStyle(.plain)

@@ -202,7 +202,7 @@ struct TrendsView: View {
     private func notEnoughData(have: Int, need: Int) -> some View {
         VStack(spacing: SomnaSpacing.m) {
             Image(systemName: "chart.xyaxis.line")
-                .font(.system(size: 40, weight: .light))
+                .font(.system(.largeTitle, weight: .light))
                 .foregroundStyle(SomnaColor.textTertiary)
                 .accessibilityHidden(true)
 
@@ -272,6 +272,7 @@ struct TrendsView: View {
                 ))
                 .font(SomnaFont.caption.monospacedDigit())
                 .foregroundStyle(SomnaColor.textSecondary)
+                .fixedSize(horizontal: false, vertical: true)
             }
 
             // Every chart explains what it is. A chart nobody can interpret is
@@ -279,6 +280,7 @@ struct TrendsView: View {
             Text(explanation)
                 .font(SomnaFont.caption)
                 .foregroundStyle(SomnaColor.textTertiary)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 }

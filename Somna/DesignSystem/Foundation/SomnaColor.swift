@@ -65,9 +65,16 @@ enum SomnaColor {
 
     /// Reserved for genuinely incidental text. Anything a user needs in order to
     /// act must be at least `textSecondary`.
+    ///
+    /// Both values were darkened and lightened after the accessibility audit
+    /// measured them at 3.2:1 (light) and 4.0:1 (dark) against their
+    /// backgrounds — below the 4.5:1 that normal text needs. They now sit at
+    /// 5.0:1 and 5.9:1. Chosen by measurement rather than by eye, because a
+    /// tertiary grey is exactly the kind of colour that looks fine to whoever
+    /// picked it.
     static let textTertiary = dynamic(
-        light: 0x8A8A96, dark: 0x6E6E7B,
-        lightContrast: 0x5C5C68, darkContrast: 0x9E9EAB
+        light: 0x6A6A76, dark: 0x8A8A96,
+        lightContrast: 0x4A4A56, darkContrast: 0xB0B0BC
     )
 
     // MARK: - Accents

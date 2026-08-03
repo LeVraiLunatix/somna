@@ -150,7 +150,7 @@ struct SessionView: View {
     private func finished(_ session: NightSession) -> some View {
         VStack(spacing: SomnaSpacing.l) {
             Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 44, weight: .light))
+                .font(.system(.largeTitle, weight: .light))
                 .foregroundStyle(SomnaColor.success)
                 .accessibilityHidden(true)
 
@@ -204,7 +204,7 @@ struct RunningSessionView: View {
                     .foregroundStyle(SomnaColor.textSecondary)
 
                 Text(store.status.recordedDuration.formattedCompactDuration)
-                    .font(.system(size: 56, weight: .light, design: .rounded))
+                    .font(.system(.largeTitle, design: .rounded, weight: .light))
                     .monospacedDigit()
                     .foregroundStyle(SomnaColor.textPrimary)
                     .contentTransition(.numericText())

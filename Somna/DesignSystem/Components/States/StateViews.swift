@@ -16,7 +16,7 @@ struct EmptyStateView: View {
     var body: some View {
         VStack(spacing: SomnaSpacing.l) {
             Image(systemName: symbolName)
-                .font(.system(size: 40, weight: .light))
+                .font(.system(.largeTitle, weight: .light))
                 .foregroundStyle(SomnaColor.textTertiary)
                 .accessibilityHidden(true)
 
@@ -53,7 +53,7 @@ struct ErrorStateView: View {
     var body: some View {
         VStack(spacing: SomnaSpacing.l) {
             Image(systemName: "exclamationmark.triangle")
-                .font(.system(size: 36, weight: .light))
+                .font(.system(.largeTitle, weight: .light))
                 .foregroundStyle(SomnaColor.warning)
                 .accessibilityHidden(true)
 

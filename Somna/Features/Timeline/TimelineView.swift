@@ -51,7 +51,7 @@ struct TimelineView: View {
     private var quietNight: some View {
         VStack(spacing: SomnaSpacing.m) {
             Image(systemName: "moon.zzz")
-                .font(.system(size: 40, weight: .light))
+                .font(.system(.largeTitle, weight: .light))
                 .foregroundStyle(SomnaColor.textTertiary)
                 .accessibilityHidden(true)
 
@@ -151,7 +151,7 @@ struct EventRow: View {
         SomnaCard {
             HStack(alignment: .top, spacing: SomnaSpacing.m) {
                 Image(systemName: event.effectiveType.symbolName)
-                    .font(.system(size: 18))
+                    .font(.system(.body))
                     .foregroundStyle(SomnaColor.confidence(event.effectiveConfidence))
                     .frame(width: 26)
                     .accessibilityHidden(true)
@@ -177,7 +177,7 @@ struct EventRow: View {
                 HStack(spacing: SomnaSpacing.m) {
                     Button(action: onPlay) {
                         Image(systemName: isCurrent ? "waveform" : "play.circle.fill")
-                            .font(.system(size: 26))
+                            .font(.system(.title2))
                             .foregroundStyle(SomnaColor.accentPrimary)
                     }
                     .buttonStyle(.plain)

@@ -16,6 +16,10 @@ final class LaunchSmokeTests: XCTestCase {
     /// beta tester sees.
     func testFreshInstallStartsInOnboarding() {
         let app = XCUIApplication()
+        // Settings survive between runs on a simulator, so a suite that
+        // completed onboarding would otherwise make this one launch straight
+        // into the app — a failure with nothing to do with what it tests.
+        app.launchArguments = ["-somna-reset"]
         app.launch()
 
         let onboarding = app.descendants(matching: .any)["onboarding.root"]
@@ -30,6 +34,7 @@ final class LaunchSmokeTests: XCTestCase {
     /// tester who reads carefully must not hit a wall before it.
     func testExplanatoryStepsAreReachableWithoutPermissions() {
         let app = XCUIApplication()
+        app.launchArguments = ["-somna-reset"]
         app.launch()
 
         XCTAssertTrue(app.descendants(matching: .any)["onboarding.root"].waitForExistence(timeout: 15))
@@ -54,6 +59,7 @@ final class LaunchSmokeTests: XCTestCase {
     /// must not offer a button that iOS will ignore.
     func testMicrophoneStepBlocksOnlyUntilAnswered() {
         let app = XCUIApplication()
+        app.launchArguments = ["-somna-reset"]
         app.launch()
 
         XCTAssertTrue(app.descendants(matching: .any)["onboarding.root"].waitForExistence(timeout: 15))

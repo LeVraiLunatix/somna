@@ -83,6 +83,13 @@ struct OnboardingView: View {
                     store.goBack()
                 } label: {
                     Text(String(localized: "action.back", defaultValue: "Back"))
+                        // A plain button is only as tappable as its label. The
+                        // audit measured this one under 44 points high, which on
+                        // the step where someone wants to go back and re-read is
+                        // exactly where a missed tap is most frustrating.
+                        .frame(minHeight: SomnaSpacing.minimumTapTarget)
+                        .frame(maxWidth: .infinity)
+                        .contentShape(.rect)
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(SomnaColor.textSecondary)
@@ -121,7 +128,7 @@ struct OnboardingStepLayout<Content: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: SomnaSpacing.l) {
             Image(systemName: symbolName)
-                .font(.system(size: 40, weight: .light))
+                .font(.system(.largeTitle, weight: .light))
                 .foregroundStyle(SomnaColor.accentPrimary)
                 .accessibilityHidden(true)
 
