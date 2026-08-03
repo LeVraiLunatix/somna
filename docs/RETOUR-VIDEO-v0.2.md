@@ -64,3 +64,23 @@ Autrement dit : les corrections v0.2 tiennent sur un vrai appareil.
 ## Toujours pas su
 
 **Aucune nuit n'a été enregistrée.** Le test portait sur l'interface. Écran verrouillé, interruptions, batterie sur huit heures, comportement d'AlarmKit en arrière-plan, et ce que la classification donne sur de vrais sons : tout cela reste le risque R11.
+
+---
+
+## Deuxième passe — captures du 4 août (accents)
+
+### 4. Les quatre pastilles d'accent avaient toujours la même couleur — corrigé
+
+Sur les quatre captures du menu, les pastilles sont **identiques entre elles** et prennent à chaque fois la couleur déjà sélectionnée : grises avec Encre, turquoise avec Marée, ambre avec Aube, bleues avec Minuit.
+
+Cause : les lignes du `Picker` portaient `Image(systemName: "circle.fill").foregroundStyle(palette.swatch)`. Dans un menu, SwiftUI rend l'icône d'une ligne comme image **template** et la teinte avec la teinte du menu — le `foregroundStyle` est jeté. Le seul contrôle dont le travail est de montrer une couleur ne montrait rien, et le faisait proprement.
+
+Corrigé par une rangée de vraies formes hors menu (`AccentSwatchPicker`). Les quatre accents sont visibles d'un coup, et la sélection porte une coche et un anneau : quatre cercles saturés se ressemblent pour un œil daltonien, et Encre se lit à peine comme une couleur.
+
+### 5. « Suivre iOS » et « 7 jours » restaient bleu Minuit — corrigé
+
+Visible surtout sur IMG_4597 : accent Aube, barre d'onglets ambre, et la valeur du sélecteur d'apparence **ainsi que la pastille de la ligne repliée** en bleu Minuit. Deux accents sur un écran, dont un que personne n'avait choisi.
+
+Cause : `.tint` couvre les contrôles SwiftUI, mais la valeur d'un `Picker` de `Form` est dessinée par une cellule de liste UIKit, qui lit le `tintColor` de la **fenêtre**. Celui-ci vaut l'asset compilé `AccentColor` — Minuit, définitivement, puisqu'un asset ne peut pas être dynamique.
+
+Corrigé par `somnaTint(_:)` : la teinte descend jusqu'aux fenêtres UIKit, en conservant le fournisseur dynamique pour que clair/sombre et Augmenter le contraste continuent de s'appliquer.
