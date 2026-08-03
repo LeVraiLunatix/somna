@@ -35,7 +35,10 @@ struct OnboardingView: View {
             ProgressView(value: store.progress)
                 .tint(SomnaColor.accentPrimary)
                 .padding(.horizontal, SomnaSpacing.l)
-                .padding(.top, SomnaSpacing.s)
+                // A progress bar is four points tall, and giving it an
+                // accessibility label makes it an element the audit measures as
+                // a hit region. The bar stays thin; its element grows.
+                .frame(minHeight: SomnaSpacing.minimumTapTarget)
                 .accessibilityLabel(Text(String(
                     localized: "onboarding.progress",
                     defaultValue: "Step \(store.step.rawValue + 1) of \(OnboardingStore.Step.allCases.count)"

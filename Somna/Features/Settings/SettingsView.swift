@@ -173,6 +173,18 @@ struct SettingsView: View {
                 value: String(localized: "settings.none", defaultValue: "None")
             )
 
+            // Promoted out of the section footer. Footer chrome is styled for
+            // incidental notes, and the audit measured it below the contrast a
+            // sentence like this one needs. What Somna does with someone's
+            // recordings is not an incidental note.
+            Text(String(
+                localized: "settings.privacy.footer",
+                defaultValue: "Somna has no account and no server. Nothing is ever uploaded, and no speech is ever transcribed."
+            ))
+            .font(SomnaFont.secondary)
+            .foregroundStyle(SomnaColor.textSecondary)
+            .fixedSize(horizontal: false, vertical: true)
+
             Button(role: .destructive) {
                 store.pendingDeletion = .rawAudio
             } label: {
@@ -186,11 +198,6 @@ struct SettingsView: View {
             }
         } header: {
             Text(String(localized: "settings.section.privacy", defaultValue: "Privacy"))
-        } footer: {
-            Text(String(
-                localized: "settings.privacy.footer",
-                defaultValue: "Somna has no account and no server. Nothing is ever uploaded, and no speech is ever transcribed."
-            ))
         }
     }
 

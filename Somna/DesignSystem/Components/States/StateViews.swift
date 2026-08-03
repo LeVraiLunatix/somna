@@ -29,6 +29,7 @@ struct EmptyStateView: View {
                     .font(SomnaFont.secondary)
                     .foregroundStyle(SomnaColor.textSecondary)
                     .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             Button(actionTitle, action: action)
@@ -62,12 +63,14 @@ struct ErrorStateView: View {
                     .font(SomnaFont.sectionTitle)
                     .foregroundStyle(SomnaColor.textPrimary)
                     .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 if let suggestion = error.recoverySuggestion {
                     Text(suggestion)
                         .font(SomnaFont.secondary)
                         .foregroundStyle(SomnaColor.textSecondary)
                         .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
 
