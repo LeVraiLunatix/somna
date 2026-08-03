@@ -18,6 +18,8 @@ struct AppEnvironment: Sendable {
     let recorder: any AudioRecording
     let power: any PowerMonitoring
     let analyser: any NightAnalyzing
+    let storage: any StorageManaging
+    let notifications: any NotificationScheduling
 }
 
 extension AppEnvironment {
@@ -38,7 +40,12 @@ extension AppEnvironment {
                 files: NightFileStore(),
                 classifier: SoundAnalysisClassifier(),
                 clock: SystemClock()
-            )
+            ),
+            storage: StorageService(
+                sessions: NightSessionRepository(modelContainer: modelContainer),
+                files: NightFileStore()
+            ),
+            notifications: NotificationService()
         )
     }
 }
@@ -74,7 +81,13 @@ extension AppEnvironment {
                 .appending(path: "SomnaUnconfigured", directoryHint: .isDirectory)),
             classifier: StubSoundClassifier(),
             clock: SystemClock()
-        )
+        ),
+        storage: StorageService(
+            sessions: UnconfiguredSessionRepository(),
+            files: NightFileStore(root: FileManager.default.temporaryDirectory
+                .appending(path: "SomnaUnconfigured", directoryHint: .isDirectory))
+        ),
+        notifications: StubNotificationService()
     )
 }
 

@@ -34,6 +34,13 @@ enum AppTab: String, Hashable, CaseIterable, Sendable {
         case .settings: "gearshape"
         }
     }
+
+    /// Tabs whose screens actually exist.
+    ///
+    /// Trends arrives with the charts that fill it. Shipping the tab first would
+    /// put a dead end in the tab bar — the one place in an app where a dead end
+    /// is permanently visible.
+    static let available: [AppTab] = [.home, .history, .settings]
 }
 
 /// Navigation state.

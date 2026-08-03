@@ -36,10 +36,12 @@ extension AppEnvironment {
             fatalError("Preview container could not be created: \(error)")
         }
 
+        let repository = NightSessionRepository(modelContainer: container)
+
         return AppEnvironment(
             clock: clock,
             permissions: StubPermissionService(microphone: microphone, notifications: notifications),
-            sessions: NightSessionRepository(modelContainer: container),
+            sessions: repository,
             settings: InMemorySettingsRepository(settings),
             files: files,
             haptics: SilentHapticFeedback(),
@@ -50,7 +52,9 @@ extension AppEnvironment {
                 files: files,
                 classifier: StubSoundClassifier(),
                 clock: clock
-            )
+            ),
+            storage: StorageService(sessions: repository, files: files),
+            notifications: StubNotificationService()
         )
     }
 
@@ -64,6 +68,7 @@ extension AppEnvironment {
         files: (any NightFileStoring)? = nil,
         recorder: (any AudioRecording)? = nil,
         analyser: (any NightAnalyzing)? = nil,
+        storage: (any StorageManaging)? = nil,
         permissions: (any PermissionRequesting)? = nil,
         power: (any PowerMonitoring)? = nil
     ) -> AppEnvironment {
@@ -77,7 +82,9 @@ extension AppEnvironment {
             calibration: calibration,
             recorder: recorder ?? self.recorder,
             power: power ?? self.power,
-            analyser: analyser ?? self.analyser
+            analyser: analyser ?? self.analyser,
+            storage: storage ?? self.storage,
+            notifications: notifications
         )
     }
 }

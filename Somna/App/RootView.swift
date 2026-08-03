@@ -45,34 +45,71 @@ struct RootView: View {
     }
 
     private var mainApp: some View {
-        NavigationStack(path: router.path(for: .home)) {
-            HomeView(
-                onStartSession: { router.push(.session, in: .home) },
-                onShowDiagnostics: { router.push(.storage, in: .home) },
-                onOpenNight: { router.push(.nightReport(sessionID: $0), in: .home) }
-            )
-            .navigationDestination(for: AppDestination.self) { destination in
-                switch destination {
-                case .session:
-                    SessionView()
-                case .nightReport(let sessionID):
-                    NightReportView(sessionID: sessionID) {
-                        router.push(.timeline(sessionID: sessionID), in: .home)
+        TabView(selection: Bindable(router).selectedTab) {
+            ForEach(AppTab.available, id: \.self) { tab in
+                Tab(title(for: tab), systemImage: tab.symbolName, value: tab) {
+                    NavigationStack(path: router.path(for: tab)) {
+                        screen(for: tab)
+                            .navigationDestination(for: AppDestination.self, destination: destination)
                     }
-                case .timeline(let sessionID):
-                    TimelineView(sessionID: sessionID)
-                case .storage:
-                    SystemStatusView()
-                default:
-                    // Unreachable: no code path pushes the other destinations
-                    // until their screens exist in Phase 4C.
-                    SystemStatusView()
                 }
             }
         }
         .withPlaybackPanel()
         .environment(router)
         .environment(player)
+    }
+
+    @ViewBuilder
+    private func screen(for tab: AppTab) -> some View {
+        switch tab {
+        case .home:
+            HomeView(
+                onStartSession: { router.push(.session, in: .home) },
+                onShowDiagnostics: { router.push(.storage, in: .home) },
+                onOpenNight: { router.push(.nightReport(sessionID: $0), in: .home) }
+            )
+        case .history:
+            HistoryView(
+                onOpenNight: { router.push(.nightReport(sessionID: $0), in: .history) },
+                onStartSession: {
+                    router.selectedTab = .home
+                    router.push(.session, in: .home)
+                }
+            )
+        case .settings:
+            SettingsView()
+        case .trends:
+            // Not reachable: `AppTab.available` excludes it until the charts exist.
+            SettingsView()
+        }
+    }
+
+    @ViewBuilder
+    private func destination(_ destination: AppDestination) -> some View {
+        switch destination {
+        case .session:
+            SessionView()
+        case .nightReport(let sessionID):
+            NightReportView(sessionID: sessionID) {
+                router.push(.timeline(sessionID: sessionID), in: router.selectedTab)
+            }
+        case .timeline(let sessionID):
+            TimelineView(sessionID: sessionID)
+        case .storage:
+            SystemStatusView()
+        default:
+            SystemStatusView()
+        }
+    }
+
+    private func title(for tab: AppTab) -> String {
+        switch tab {
+        case .home: String(localized: "tab.home", defaultValue: "Tonight")
+        case .history: String(localized: "tab.history", defaultValue: "Nights")
+        case .trends: String(localized: "tab.trends", defaultValue: "Trends")
+        case .settings: String(localized: "tab.settings", defaultValue: "Settings")
+        }
     }
 
     /// Reconciles nights the app died in the middle of, and clears files that
