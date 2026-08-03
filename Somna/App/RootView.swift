@@ -9,37 +9,24 @@ import SwiftUI
 struct RootView: View {
 
     @Environment(\.somna) private var environment
+    @Environment(AppSettings.self) private var settings
     @State private var router = AppRouter()
     /// Owned here rather than per screen: playback has to survive navigation, or
     /// comparing three events would mean restarting the audio on every scroll.
     @State private var player = ClipPlayer()
-    @State private var hasCompletedOnboarding: Bool?
 
     var body: some View {
         Group {
-            switch hasCompletedOnboarding {
-            case .none:
-                // Settings are read synchronously from UserDefaults, so this is
-                // one frame at most — no spinner, which would flash and look
-                // like a stutter.
-                Color.clear
-            case .some(false):
-                OnboardingView {
-                    hasCompletedOnboarding = true
-                }
-                .transition(.opacity)
-            case .some(true):
-                mainApp
-                    .transition(.opacity)
+            if settings.settings.hasCompletedOnboarding {
+                mainApp.transition(.opacity)
+            } else {
+                OnboardingView().transition(.opacity)
             }
         }
         .task {
-            if hasCompletedOnboarding == nil {
-                hasCompletedOnboarding = environment.settings.load().hasCompletedOnboarding
-            }
             await recoverInterruptedNights()
         }
-        .somnaAnimation(value: hasCompletedOnboarding)
+        .somnaAnimation(value: settings.settings.hasCompletedOnboarding)
         .tint(SomnaColor.accentPrimary)
         .preferredColorScheme(colorScheme)
     }
@@ -131,8 +118,12 @@ struct RootView: View {
     }
 
     /// Appearance follows the user's setting, and `nil` means "follow iOS".
+    ///
+    /// Read from the observable store, not from the repository: a plain
+    /// `load()` here created no dependency, which is exactly why choosing the
+    /// light theme used to change nothing.
     private var colorScheme: ColorScheme? {
-        switch environment.settings.load().theme {
+        switch settings.settings.theme {
         case .system: nil
         case .dark: .dark
         case .light: .light
@@ -144,17 +135,24 @@ struct RootView: View {
 // Previews are compiled into Release builds too, so they must not reach
 // `AppEnvironment.preview()`, which is DEBUG-only on purpose: preview
 // scaffolding has no business shipping in a beta.
-#Preview("Onboarding") {
+private func previewRoot(_ environment: AppEnvironment) -> some View {
     RootView()
-        .environment(\.somna, .preview(microphone: .undetermined, notifications: .undetermined))
+        .environment(\.somna, environment)
+        .environment(AppSettings(
+            repository: environment.settings,
+            notifications: environment.notifications
+        ))
+}
+
+#Preview("Onboarding") {
+    previewRoot(.preview(microphone: .undetermined, notifications: .undetermined))
 }
 
 #Preview("Main app") {
-    RootView()
-        .environment(\.somna, .preview(settings: {
-            var settings = UserSettings.default
-            settings.hasCompletedOnboarding = true
-            return settings
-        }()))
+    previewRoot(.preview(settings: {
+        var settings = UserSettings.default
+        settings.hasCompletedOnboarding = true
+        return settings
+    }()))
 }
 #endif

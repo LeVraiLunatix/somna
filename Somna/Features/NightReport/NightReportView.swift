@@ -65,6 +65,7 @@ final class NightReportStore {
             sessions: environment.sessions,
             analyser: environment.analyser,
             settings: environment.settings,
+            notifications: environment.notifications,
             clock: environment.clock
         )
 

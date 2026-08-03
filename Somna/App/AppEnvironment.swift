@@ -46,7 +46,9 @@ extension AppEnvironment {
                 sessions: NightSessionRepository(modelContainer: modelContainer),
                 files: NightFileStore()
             ),
-            notifications: NotificationService(),
+            notifications: NotificationService(
+                sessions: NightSessionRepository(modelContainer: modelContainer)
+            ),
             export: ExportService(files: NightFileStore())
         )
     }

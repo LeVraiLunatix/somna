@@ -324,6 +324,57 @@
         }
       }
     },
+    "calibration.again": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Measure again"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mesurer à nouveau"
+          }
+        }
+      }
+    },
+    "calibration.current": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actuelle"
+          }
+        }
+      }
+    },
+    "calibration.instruction": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Put your iPhone where it spends the night, then stay quiet for fifteen seconds."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pose ton iPhone là où il passe la nuit, puis reste silencieux pendant quinze secondes."
+          }
+        }
+      }
+    },
     "calibration.issue.highAmbientNoise": {
       "extractionState": "manual",
       "localizations": {
@@ -392,6 +443,91 @@
         }
       }
     },
+    "calibration.measure": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Measure now"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mesurer maintenant"
+          }
+        }
+      }
+    },
+    "calibration.measured": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Measured"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mesurée le"
+          }
+        }
+      }
+    },
+    "calibration.measuring": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listening…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Écoute en cours…"
+          }
+        }
+      }
+    },
+    "calibration.needsMicrophone": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibration needs the microphone. Allow it in iOS Settings and come back."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La calibration a besoin du micro. Autorise-le dans les Réglages iOS puis reviens."
+          }
+        }
+      }
+    },
+    "calibration.never": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Never measured"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jamais mesurée"
+          }
+        }
+      }
+    },
     "calibration.rating.excellent": {
       "extractionState": "manual",
       "localizations": {
@@ -439,6 +575,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "Emplacement à améliorer"
+          }
+        }
+      }
+    },
+    "calibration.stale": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This measurement is over a month old. Rooms change — a new one takes fifteen seconds."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette mesure a plus d'un mois. Les pièces changent — une nouvelle prend quinze secondes."
+          }
+        }
+      }
+    },
+    "calibration.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Room calibration"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibration de la pièce"
+          }
+        }
+      }
+    },
+    "calibration.why": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Why this matters"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pourquoi c'est utile"
+          }
+        }
+      }
+    },
+    "calibration.why.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Somna compares every sound to how quiet your room is when nothing is happening. Without that reference it falls back to values that match no particular bedroom, and detection gets noticeably less reliable."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Somna compare chaque son au niveau de calme de ta chambre quand rien ne se passe. Sans cette référence, elle retombe sur des valeurs qui ne correspondent à aucune chambre en particulier, et la détection devient nettement moins fiable."
           }
         }
       }
@@ -2143,40 +2347,6 @@
         }
       }
     },
-    "notification.morning.body": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Somna has finished going over what it heard."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Somna a fini de repasser sur ce qu'elle a entendu."
-          }
-        }
-      }
-    },
-    "notification.morning.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your night is ready to read"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ta nuit est prête à lire"
-          }
-        }
-      }
-    },
     "notification.ready.body": {
       "extractionState": "manual",
       "localizations": {
@@ -2217,13 +2387,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Seven nights of trends are waiting for you."
+            "value": "Your recorded nights are waiting in Trends."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sept nuits de tendances t'attendent."
+            "value": "Tes nuits enregistrées t'attendent dans les Tendances."
           }
         }
       }
@@ -4547,6 +4717,57 @@
         }
       }
     },
+    "settings.calibration": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Room calibration"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibration de la pièce"
+          }
+        }
+      }
+    },
+    "settings.calibration.never": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Never measured"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jamais mesurée"
+          }
+        }
+      }
+    },
+    "settings.calibration.stale": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Over a month old"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plus d'un mois"
+          }
+        }
+      }
+    },
     "settings.channel": {
       "extractionState": "manual",
       "localizations": {
@@ -4843,23 +5064,6 @@
         }
       }
     },
-    "settings.morningSummary": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Morning summary"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Résumé du matin"
-          }
-        }
-      }
-    },
     "settings.none": {
       "extractionState": "manual",
       "localizations": {
@@ -4900,13 +5104,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Somna never comments on how you slept. It does not know."
+            "value": "Somna never comments on how you slept — it does not know. The report notification is sent when an analysis actually finishes, not on a timer, so it never announces a night you did not record."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Somna ne commente jamais la façon dont tu as dormi. Elle ne le sait pas."
+            "value": "Somna ne commente jamais la façon dont tu as dormi — elle ne le sait pas. La notification de rapport part quand une analyse se termine vraiment, pas sur une minuterie : elle n'annoncera jamais une nuit que tu n'as pas enregistrée."
           }
         }
       }
@@ -5026,6 +5230,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Me rappeler à"
+          }
+        }
+      }
+    },
+    "settings.reportReady": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tell me when a report is ready"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Me prévenir quand un rapport est prêt"
           }
         }
       }
@@ -5519,6 +5740,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rapport hebdomadaire"
+          }
+        }
+      }
+    },
+    "settings.weeklyTime": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send it on Sunday at"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'envoyer le dimanche à"
           }
         }
       }

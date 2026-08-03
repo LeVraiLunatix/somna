@@ -8,9 +8,8 @@ import SwiftUI
 struct OnboardingView: View {
 
     @Environment(\.somna) private var environment
+    @Environment(AppSettings.self) private var appSettings
     @State private var store: OnboardingStore?
-
-    let onFinished: () -> Void
 
     var body: some View {
         ZStack {
@@ -22,11 +21,10 @@ struct OnboardingView: View {
         }
         .accessibilityIdentifier("onboarding.root")
         .task {
-            if store == nil { store = OnboardingStore(environment: environment) }
+            if store == nil {
+                store = OnboardingStore(environment: environment, appSettings: appSettings)
+            }
             await store?.start()
-        }
-        .onChange(of: store?.hasFinished ?? false) { _, finished in
-            if finished { onFinished() }
         }
     }
 
@@ -182,7 +180,12 @@ struct OnboardingPoint: View {
 
 #if DEBUG
 #Preview {
-    OnboardingView(onFinished: {})
-        .environment(\.somna, .preview(microphone: .undetermined, notifications: .undetermined))
+    let environment = AppEnvironment.preview(microphone: .undetermined, notifications: .undetermined)
+    return OnboardingView()
+        .environment(\.somna, environment)
+        .environment(AppSettings(
+            repository: environment.settings,
+            notifications: environment.notifications
+        ))
 }
 #endif

@@ -13,6 +13,7 @@ struct AnalyzeNightUseCase: Sendable {
     let sessions: any NightSessionRepositing
     let analyser: any NightAnalyzing
     let settings: any SettingsStoring
+    let notifications: any NotificationScheduling
     let clock: any Clocking
 
     @discardableResult
@@ -64,6 +65,12 @@ struct AnalyzeNightUseCase: Sendable {
 
             try await sessions.replaceEvents(outcome.events, for: sessionID)
             try await sessions.save(session)
+
+            // The one place a "your report is ready" notification can honestly
+            // be sent: a report has just been produced.
+            if settings.load().morningSummaryEnabled {
+                await notifications.notifyReportReady(sessionID: sessionID)
+            }
 
             Log.analysis.info("Analysed \(Log.short(sessionID), privacy: .public): \(outcome.events.count, privacy: .public) event(s)")
             return session

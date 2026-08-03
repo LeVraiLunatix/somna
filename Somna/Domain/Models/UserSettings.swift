@@ -73,8 +73,11 @@ struct UserSettings: Equatable, Sendable, Codable {
     var eveningReminderEnabled: Bool
     /// Minutes from midnight, so the value is timezone-independent.
     var eveningReminderMinutes: Int
+    /// Sent when an analysis finishes, not on a timer — see `NotificationService`.
     var morningSummaryEnabled: Bool
     var weeklyReportEnabled: Bool
+    /// Minutes from midnight, like the evening reminder.
+    var weeklyReportMinutes: Int
 
     /// Both default to `false` and stay `false` in v0.1: nothing in this version
     /// sends anything anywhere. They exist so the choice is recorded as opt-in
@@ -95,6 +98,7 @@ struct UserSettings: Equatable, Sendable, Codable {
         eveningReminderMinutes: 22 * 60 + 30,
         morningSummaryEnabled: false,
         weeklyReportEnabled: false,
+        weeklyReportMinutes: 9 * 60,
         cloudProcessingConsent: false,
         analyticsConsent: false,
         reducedVisualEffects: false,

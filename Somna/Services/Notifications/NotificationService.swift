@@ -20,6 +20,8 @@ protocol NotificationScheduling: Sendable {
 /// no reminder says anything about how they slept — Somna does not know.
 struct NotificationService: NotificationScheduling {
 
+    let sessions: any NightSessionRepositing
+
     private enum Identifier {
         static let eveningReminder = "somna.reminder.evening"
         static let morningSummary = "somna.summary.morning"
@@ -35,7 +37,6 @@ struct NotificationService: NotificationScheduling {
         // combination it came from.
         center.removePendingNotificationRequests(withIdentifiers: [
             Identifier.eveningReminder,
-            Identifier.morningSummary,
             Identifier.weeklyReport,
         ])
 
@@ -55,33 +56,45 @@ struct NotificationService: NotificationScheduling {
             )
         }
 
-        if settings.morningSummaryEnabled {
-            await schedule(
-                identifier: Identifier.morningSummary,
-                title: String(localized: "notification.morning.title",
-                              defaultValue: "Your night is ready to read"),
-                body: String(localized: "notification.morning.body",
-                             defaultValue: "Somna has finished going over what it heard."),
-                at: DateComponents(hour: 8, minute: 0)
-            )
-        }
+        // The morning summary is deliberately **not** scheduled here.
+        //
+        // It used to be a daily repeating notification at 08:00 announcing that
+        // a report was ready — every morning, whether a night had been recorded
+        // or not. For an app whose entire premise is never claiming more than
+        // the data supports, telling someone their night is ready when no night
+        // exists was the worst defect in the project.
+        //
+        // It is now sent by `notifyReportReady(sessionID:)`, from the analysis
+        // pipeline, when a report genuinely exists. No time to configure either:
+        // it arrives when it is true.
 
-        if settings.weeklyReportEnabled {
+        // The weekly report is only scheduled once there is something to report
+        // on. The same reasoning, one week at a time.
+        if settings.weeklyReportEnabled, await hasRecordedNights() {
             await schedule(
                 identifier: Identifier.weeklyReport,
                 title: String(localized: "notification.weekly.title",
                               defaultValue: "Your week in sound"),
                 body: String(localized: "notification.weekly.body",
-                             defaultValue: "Seven nights of trends are waiting for you."),
-                at: DateComponents(hour: 9, minute: 0, weekday: 1)
+                             defaultValue: "Your recorded nights are waiting in Trends."),
+                at: DateComponents(
+                    hour: settings.weeklyReportMinutes / 60,
+                    minute: settings.weeklyReportMinutes % 60,
+                    weekday: 1
+                )
             )
         }
+    }
+
+    private func hasRecordedNights() async -> Bool {
+        ((try? await sessions.sessions(limit: 1, offset: 0)) ?? []).isEmpty == false
     }
 
     func cancelAll() async {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
 
+    /// Sent only when a report actually exists, and only if the user asked for it.
     func notifyReportReady(sessionID: UUID) async {
         guard await isAuthorised() else { return }
 

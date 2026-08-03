@@ -26,15 +26,17 @@ final class SettingsStore {
         }
     }
 
+    /// Reads and writes through the app-wide store rather than holding a copy.
+    ///
+    /// A local copy is what let the theme drift: this screen saved a value the
+    /// rest of the app never learned about.
     var settings: UserSettings {
-        didSet {
-            guard settings != oldValue else { return }
-            environment.settings.save(settings)
-            Task { await environment.notifications.refresh(for: settings) }
-        }
+        get { appSettings.settings }
+        set { appSettings.update { $0 = newValue } }
     }
 
     private(set) var storage: StorageBreakdown = .empty
+    private(set) var calibration: CalibrationProfile?
     private(set) var microphone: MicrophonePermission = .undetermined
     private(set) var notifications: NotificationPermission = .undetermined
     private(set) var isWorking = false
@@ -43,10 +45,16 @@ final class SettingsStore {
     var pendingDeletion: PendingDeletion?
 
     private let environment: AppEnvironment
+    private let appSettings: AppSettings
 
-    init(environment: AppEnvironment) {
+    init(environment: AppEnvironment, appSettings: AppSettings) {
         self.environment = environment
-        settings = environment.settings.load()
+        self.appSettings = appSettings
+    }
+
+    var isCalibrationStale: Bool {
+        guard let calibration else { return true }
+        return calibration.isStale(now: environment.clock.now)
     }
 
     var appVersion: String { Bundle.main.displayVersion }
@@ -56,6 +64,7 @@ final class SettingsStore {
         microphone = await environment.permissions.microphonePermission()
         notifications = await environment.permissions.notificationPermission()
         storage = (try? await environment.storage.breakdown()) ?? .empty
+        calibration = try? await environment.sessions.latestCalibration()
     }
 
     func requestNotifications() async {

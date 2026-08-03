@@ -237,10 +237,8 @@
 
     "notification.evening.title": "Somna est prête pour cette nuit",
     "notification.evening.body": "Branche ton iPhone et pose-le près du lit quand tu veux.",
-    "notification.morning.title": "Ta nuit est prête à lire",
-    "notification.morning.body": "Somna a fini de repasser sur ce qu'elle a entendu.",
     "notification.weekly.title": "Ta semaine en sons",
-    "notification.weekly.body": "Sept nuits de tendances t'attendent.",
+    "notification.weekly.body": "Tes nuits enregistrées t'attendent dans les Tendances.",
     "notification.ready.title": "Ton rapport de nuit est prêt",
     "notification.ready.body": "Ouvre Somna pour voir ce qu'elle a entendu.",
 
@@ -262,9 +260,8 @@
     "settings.enableNotifications": "Activer les notifications",
     "settings.eveningReminder": "Rappel du soir",
     "settings.reminderTime": "Me rappeler à",
-    "settings.morningSummary": "Résumé du matin",
     "settings.weeklyReport": "Rapport hebdomadaire",
-    "settings.notifications.footer": "Somna ne commente jamais la façon dont tu as dormi. Elle ne le sait pas.",
+    "settings.notifications.footer": "Somna ne commente jamais la façon dont tu as dormi — elle ne le sait pas. La notification de rapport part quand une analyse se termine vraiment, pas sur une minuterie : elle n'annoncera jamais une nuit que tu n'as pas enregistrée.",
     "settings.processing": "Traitement",
     "settings.processing.local": "Sur cet iPhone uniquement",
     "settings.cloud": "Traitement dans le cloud",
@@ -336,6 +333,25 @@
     "premium.freeForever": "L'enregistrement, l'analyse, les rapports et la suppression resteront gratuits. Rien de ce qui fonctionne aujourd'hui ne passera derrière un paiement.",
 
     "export.disclaimer": "Enregistré avec Somna. Somna détecte des sons ; ce n'est pas un dispositif médical et elle ne mesure pas le sommeil.",
+
+    "calibration.title": "Calibration de la pièce",
+    "calibration.why": "Pourquoi c'est utile",
+    "calibration.why.body": "Somna compare chaque son au niveau de calme de ta chambre quand rien ne se passe. Sans cette référence, elle retombe sur des valeurs qui ne correspondent à aucune chambre en particulier, et la détection devient nettement moins fiable.",
+    "calibration.current": "Actuelle",
+    "calibration.measured": "Mesurée le",
+    "calibration.never": "Jamais mesurée",
+    "calibration.stale": "Cette mesure a plus d'un mois. Les pièces changent — une nouvelle prend quinze secondes.",
+    "calibration.instruction": "Pose ton iPhone là où il passe la nuit, puis reste silencieux pendant quinze secondes.",
+    "calibration.measure": "Mesurer maintenant",
+    "calibration.measuring": "Écoute en cours…",
+    "calibration.again": "Mesurer à nouveau",
+    "calibration.needsMicrophone": "La calibration a besoin du micro. Autorise-le dans les Réglages iOS puis reviens.",
+
+    "settings.calibration": "Calibration de la pièce",
+    "settings.calibration.never": "Jamais mesurée",
+    "settings.calibration.stale": "Plus d'un mois",
+    "settings.reportReady": "Me prévenir quand un rapport est prêt",
+    "settings.weeklyTime": "L'envoyer le dimanche à",
 
     "status.allowMicrophone": "Autoriser l'accès au micro",
     "status.calibration": "Calibration",

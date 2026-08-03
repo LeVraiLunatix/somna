@@ -12,6 +12,9 @@ struct SomnaApp: App {
     private let environment: AppEnvironment
     private let startupError: SomnaError?
 
+    /// Created once, here, so every screen observes the same settings.
+    @State private var settings: AppSettings
+
     init() {
         // Building the container is the one thing that can fail before any UI
         // exists. It is caught rather than allowed to trap: a beta tester whose
@@ -34,6 +37,16 @@ struct SomnaApp: App {
             environment = .unconfigured
             startupError = .persistenceUnavailable(underlying: String(describing: type(of: error)))
         }
+
+        // Built from the resolved environment, so it reads the same repository
+        // the rest of the app writes to — including in degraded mode, where the
+        // Settings screen still has to work well enough to erase data.
+        _settings = State(
+            initialValue: AppSettings(
+                repository: environment.settings,
+                notifications: environment.notifications
+            )
+        )
     }
 
     var body: some Scene {
@@ -47,6 +60,7 @@ struct SomnaApp: App {
                 }
             }
             .environment(\.somna, environment)
+            .environment(settings)
         }
     }
 }

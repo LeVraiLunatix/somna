@@ -41,9 +41,11 @@ final class OnboardingStore {
     private(set) var hasFinished = false
 
     private let environment: AppEnvironment
+    private let appSettings: AppSettings
 
-    init(environment: AppEnvironment) {
+    init(environment: AppEnvironment, appSettings: AppSettings) {
         self.environment = environment
+        self.appSettings = appSettings
     }
 
     var progress: Double {
@@ -98,10 +100,11 @@ final class OnboardingStore {
         finish()
     }
 
+    /// Routed through `AppSettings` rather than written straight to the
+    /// repository: the root view observes that store, and a direct write would
+    /// leave someone staring at the last onboarding screen after finishing it.
     private func finish() {
-        var settings = environment.settings.load()
-        settings.hasCompletedOnboarding = true
-        environment.settings.save(settings)
+        appSettings.markOnboardingComplete()
         hasFinished = true
     }
 

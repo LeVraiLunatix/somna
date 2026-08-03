@@ -8,6 +8,7 @@ import SwiftUI
 struct SettingsView: View {
 
     @Environment(\.somna) private var environment
+    @Environment(AppSettings.self) private var appSettings
     @State private var store: SettingsStore?
 
     var body: some View {
@@ -22,7 +23,9 @@ struct SettingsView: View {
         .accessibilityIdentifier("settings.root")
         .navigationTitle(Text(String(localized: "settings.title", defaultValue: "Settings")))
         .task {
-            if store == nil { store = SettingsStore(environment: environment) }
+            if store == nil {
+                store = SettingsStore(environment: environment, appSettings: appSettings)
+            }
             await store?.load()
         }
     }
@@ -89,6 +92,16 @@ struct SettingsView: View {
                 String(localized: "settings.highQuality", defaultValue: "Higher audio quality"),
                 isOn: store.settings.useHighQualityAudio
             )
+
+            // The onboarding promises this screen exists. Until now it did not,
+            // which made the promise a lie and left anyone who skipped the step
+            // without a measured noise floor for good.
+            NavigationLink(value: AppDestination.calibration) {
+                LabeledContent(
+                    String(localized: "settings.calibration", defaultValue: "Room calibration"),
+                    value: calibrationSummary(store)
+                )
+            }
         } header: {
             Text(String(localized: "settings.section.recording", defaultValue: "Recording"))
         } footer: {
@@ -134,20 +147,33 @@ struct SettingsView: View {
                 }
 
                 Toggle(
-                    String(localized: "settings.morningSummary", defaultValue: "Morning summary"),
+                    String(localized: "settings.reportReady",
+                           defaultValue: "Tell me when a report is ready"),
                     isOn: binding.settings.morningSummaryEnabled
                 )
+
                 Toggle(
                     String(localized: "settings.weeklyReport", defaultValue: "Weekly report"),
                     isOn: binding.settings.weeklyReportEnabled
                 )
+
+                if store.settings.weeklyReportEnabled {
+                    DatePicker(
+                        String(localized: "settings.weeklyTime", defaultValue: "Send it on Sunday at"),
+                        selection: Binding(
+                            get: { reminderDate(store.settings.weeklyReportMinutes) },
+                            set: { binding.wrappedValue.settings.weeklyReportMinutes = minutes(from: $0) }
+                        ),
+                        displayedComponents: .hourAndMinute
+                    )
+                }
             }
         } header: {
             Text(String(localized: "settings.section.notifications", defaultValue: "Notifications"))
         } footer: {
             Text(String(
                 localized: "settings.notifications.footer",
-                defaultValue: "Somna never comments on how you slept. It does not know."
+                defaultValue: "Somna never comments on how you slept — it does not know. The report notification is sent when an analysis actually finishes, not on a timer, so it never announces a night you did not record."
             ))
         }
     }
@@ -350,6 +376,18 @@ struct SettingsView: View {
         case .dark: String(localized: "settings.theme.dark", defaultValue: "Dark")
         case .light: String(localized: "settings.theme.light", defaultValue: "Light")
         }
+    }
+
+    /// One line summarising calibration, so the row says something before it is
+    /// tapped rather than being a door with no sign on it.
+    private func calibrationSummary(_ store: SettingsStore) -> String {
+        guard let calibration = store.calibration else {
+            return String(localized: "settings.calibration.never", defaultValue: "Never measured")
+        }
+        if store.isCalibrationStale {
+            return String(localized: "settings.calibration.stale", defaultValue: "Over a month old")
+        }
+        return calibration.createdAt.formatted(date: .abbreviated, time: .omitted)
     }
 
     private func reminderDate(_ minutes: Int) -> Date {
