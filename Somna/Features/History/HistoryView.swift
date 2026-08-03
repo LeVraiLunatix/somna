@@ -110,10 +110,18 @@ final class HistoryStore {
         var updated = session
         updated.isFavorite.toggle()
         updated.updatedAt = environment.clock.now
-        try? await environment.sessions.save(updated)
 
-        if let index = nights.firstIndex(where: { $0.id == session.id }) {
-            nights[index] = updated
+        do {
+            try await environment.sessions.save(updated)
+            if let index = nights.firstIndex(where: { $0.id == session.id }) {
+                nights[index] = updated
+            }
+        } catch {
+            // The list is left untouched rather than showing a bookmark that
+            // will be gone after a reload. Silently accepting the failure would
+            // read as "the app forgot", which is worse than an honest refusal.
+            Log.ui.error("Night favourite could not be saved")
+            state = .failed(.persistenceUnavailable(underlying: "favourite"))
         }
     }
 }

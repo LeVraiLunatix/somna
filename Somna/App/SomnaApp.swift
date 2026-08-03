@@ -21,6 +21,10 @@ struct SomnaApp: App {
             let container = try ModelContainerFactory.makeContainer()
             environment = .live(modelContainer: container)
             startupError = nil
+
+            #if DEBUG
+            LaunchArguments.apply(to: environment.settings)
+            #endif
         } catch let error as SomnaError {
             Log.app.fault("Launching in degraded mode: persistence unavailable")
             environment = .unconfigured

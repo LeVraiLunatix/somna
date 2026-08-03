@@ -122,7 +122,14 @@ actor AudioRecordingEngine: AudioRecording {
             stopReason: reason
         )
 
-        try? writeManifest(outcome)
+        do {
+            try writeManifest(outcome)
+        } catch {
+            // Not fatal — the segments are on disk and the database row is
+            // written — but the manifest is the recovery path, so losing it
+            // silently would defeat the one thing it exists for.
+            Log.storage.error("Final manifest could not be written; recovery would fall back to the database alone")
+        }
         Log.audio.info("Recording stopped: \(reason.rawValue, privacy: .public), \(self.completedSegments.count, privacy: .public) segment(s)")
 
         self.sessionID = nil

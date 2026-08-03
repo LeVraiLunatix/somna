@@ -67,8 +67,17 @@ final class NightReportStore {
             settings: environment.settings,
             clock: environment.clock
         )
-        _ = try? await useCase(sessionID: sessionID)
-        await load()
+
+        do {
+            _ = try await useCase(sessionID: sessionID)
+            await load()
+        } catch let error as SomnaError {
+            // Surfaced rather than swallowed: a button that does nothing leaves
+            // the user tapping it again. The recording itself is untouched.
+            state = .failed(error)
+        } catch {
+            state = .failed(.persistenceUnavailable(underlying: "analysis"))
+        }
     }
 
     func playbackItems() -> [PlaybackItem] {
