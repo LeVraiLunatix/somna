@@ -60,6 +60,10 @@ alimentent automatiquement les notes de version de la source AltStore (Phase 7).
 - Le rapport masque ses statistiques quand l'audio est inexploitable, et place la qualité
   d'enregistrement avant les chiffres.
 
+- Phase 4C — Réglages complets avec suppression des données et rétention, historique filtrable,
+  tendances refusant de s'afficher sans données suffisantes, export local, vitrine Premium
+  non achetable, et barre d'onglets.
+
 ### Corrigé
 - Les cibles de test désactivent l'isolation MainActor par défaut : `XCTestCase` déclare ses
   initialiseurs et ses hooks de cycle de vie comme `nonisolated`, ce qui rendait toute
