@@ -1,0 +1,92 @@
+# Somna — Retours de la bêta v0.1
+
+> Issus du premier test réel sur appareil. Rangés par ce qu'ils coûtent à un utilisateur, pas par ordre d'arrivée.
+
+---
+
+## Bugs
+
+### 1. Le thème clair ne s'applique pas
+
+**Symptôme.** Choisir « Clair » dans les Réglages ne change rien : l'app reste en sombre.
+
+**Cause, confirmée dans le code.** `RootView.colorScheme` lit le thème ainsi :
+
+```swift
+private var colorScheme: ColorScheme? {
+    switch environment.settings.load().theme { … }
+}
+```
+
+`environment.settings.load()` est un simple appel de fonction. Il ne crée **aucune dépendance observable** : quand `SettingsStore` écrit le nouveau thème dans `UserDefaults`, rien ne dit à SwiftUI que `RootView` doit être réévalué. L'écran de réglages se met à jour, la racine non.
+
+**Portée réelle.** Le problème n'est pas limité au thème. Toute la lecture des réglages hors de l'écran Réglages a le même défaut : `RootView` lit aussi `hasCompletedOnboarding` de cette façon, et la sensibilité d'analyse est relue à chaque session sans que rien n'observe son changement. Le thème est simplement le seul endroit où ça se voit.
+
+**Correction.** Un store de réglages `@Observable` unique, tenu à la racine et injecté, remplaçant les appels dispersés à `settings.load()`. Le repository reste la couche de persistance ; ce qui manque est la couche observable au-dessus.
+
+---
+
+### 2. La calibration est impossible à refaire
+
+**Symptôme.** Aucune entrée dans les Réglages pour lancer ou relancer la calibration.
+
+**Ce qui aggrave le cas.** L'onboarding dit, en toutes lettres :
+
+> « La calibration a besoin du micro. Tu pourras la faire plus tard depuis les Réglages. »
+
+Ce n'est donc pas une fonctionnalité manquante, c'est **une promesse que l'app ne tient pas**. Quelqu'un qui saute la calibration au premier lancement — ce que l'onboarding l'encourage à faire s'il est dans une pièce bruyante — n'a plus aucun moyen de la faire.
+
+Et sans calibration, il n'y a pas de plancher de bruit de référence : les seuils de détection tombent sur des valeurs par défaut qui ne correspondent à aucune chambre en particulier. La qualité de détection en dépend directement.
+
+**Correction.** Une section Calibration dans les Réglages : état actuel (faite / jamais faite / ancienne), date, verdict, et un bouton pour (re)mesurer. Le service et l'évaluateur existent déjà — c'est l'écran qui manque, pas le mécanisme. `CalibrationProfile.isStale(now:)` est déjà écrit et n'est appelé nulle part.
+
+---
+
+## Demandes
+
+### 3. Section Personnalisation
+
+Variantes de logo, thèmes alternatifs, nouveaux logos, versions Liquid Glass.
+
+**Ce qui est facile.** Les couleurs sont déjà des tokens sémantiques centralisés dans un seul fichier. Ajouter des palettes revient à faire de `SomnaColor` un sélecteur entre plusieurs jeux de valeurs — précisément ce que cette centralisation rendait possible. Aucun écran ne change.
+
+**Ce qui est faisable mais mérite d'être su.** Les icônes alternatives passent par `setAlternateIconName` et une déclaration `CFBundleAlternateIcons`. Ça fonctionne en sideloading, sans entitlement. Chaque variante est un jeu de trois PNG, et le générateur d'icône existant peut les produire à partir de paramètres.
+
+**Ce qui n'est pas possible tel quel.** iOS n'applique pas de matériau à une icône d'app : une icône « Liquid Glass » doit avoir cet aspect **peint dans l'image**. On peut le simuler de façon convaincante — reflets, réfraction, bord lumineux — mais c'est du rendu figé, pas l'effet système. À dire dans l'interface plutôt qu'à laisser croire.
+
+En revanche, le vrai Liquid Glass peut être étendu **dans** l'app : c'est là qu'il est réel, et `GlassSurface` est déjà le point d'entrée unique.
+
+---
+
+### 4. Animation de lancement
+
+**Ce qui est demandé.** Un « S » apparaît, puis « omna » sort du S en glissant vers la droite. Le mot devient ensuite la barre de chargement : il se remplit du bleu de l'app avec de petites vagues animées. Le chargement terminé, zoom au milieu du mot et fondu vers l'app.
+
+**Contrainte technique à connaître.** L'écran de lancement d'iOS (`UILaunchScreen`) est **statique** — aucune animation n'y est possible. Cette séquence doit donc jouer *après* le lancement, en SwiftUI, dans le premier écran de l'app.
+
+**Le vrai piège.** Le cahier des charges dit : *« L'application doit démarrer rapidement. Ne bloque pas le lancement. »* Une barre de chargement qui ne suit pas un chargement réel est une mise en scène — et c'est exactement le genre de théâtre que cette app refuse partout ailleurs.
+
+La séquence doit donc être **adossée au travail réel du démarrage** : ouverture du conteneur SwiftData, récupération des nuits interrompues, nettoyage des orphelins. Si ce travail finit avant l'animation, l'animation s'écourte au lieu d'être rallongée. Sur un appareil rapide avec peu de nuits, elle durera une fraction de seconde — et c'est le bon comportement.
+
+**Notes de réalisation.**
+- Remplissage : une forme d'onde animée, masquée par le mot (`.mask(Text("Somna"))`). Deux sinusoïdes déphasées lues comme des vagues.
+- Le glissement de « omna » hors du S : `matchedGeometryEffect` ou un simple décalage animé, l'un et l'autre suffisent.
+- **Reduce Motion doit court-circuiter toute la séquence** vers un fondu simple. Une animation d'ouverture est exactement ce que ce réglage existe pour supprimer.
+- Le zoom final ne doit pas retarder l'interactivité : l'app est utilisable dès la fin du fondu.
+
+---
+
+## Ordre proposé
+
+1. **Thème** — bug visible, et sa correction assainit toute la lecture des réglages.
+2. **Calibration dans les Réglages** — l'onboarding promet quelque chose qui n'existe pas, et la qualité de détection en dépend.
+3. **Animation de lancement** — forte valeur perçue, isolée, ne touche à rien d'autre.
+4. **Personnalisation** — la plus grosse, et celle qui gagne le plus à être faite après un thème qui fonctionne.
+
+---
+
+## Question ouverte
+
+Le retour porte sur l'interface. **Rien n'est encore su de l'enregistrement lui-même** : écran verrouillé, interruptions, batterie sur une nuit entière, et surtout ce que la classification donne sur de vrais sons.
+
+C'est le risque R11 de la Phase 1, et il reste le seul écart entre « l'app est complète » et « l'app fonctionne ».
