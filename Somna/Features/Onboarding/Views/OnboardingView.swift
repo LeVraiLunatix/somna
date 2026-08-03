@@ -130,6 +130,8 @@ struct OnboardingView: View {
 /// seven screens that happen to follow each other.
 struct OnboardingStepLayout<Content: View>: View {
 
+    @Environment(\.somnaPalette) private var palette
+
     let symbolName: String
     let title: String
     let subtitle: String
@@ -159,6 +161,8 @@ struct OnboardingStepLayout<Content: View>: View {
 
 /// A numbered or bulleted point inside a step.
 struct OnboardingPoint: View {
+
+    @Environment(\.somnaPalette) private var palette
 
     let symbolName: String
     let text: String
