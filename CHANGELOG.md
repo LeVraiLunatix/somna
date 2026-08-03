@@ -71,7 +71,13 @@ alimentent automatiquement les notes de version de la source AltStore (Phase 7).
 - Phase 8 — Audit d'accessibilité système sur chaque écran, y compris à la plus grande taille de
   texte, exécuté à chaque push. Trente problèmes trouvés et corrigés.
 
+- v0.2 — Réveil AlarmKit qui sonne à travers le mode silencieux et termine la nuit, séquence
+  d'ouverture adossée au travail réel du démarrage, et quatre accents avec autant d'icônes d'app.
+- Calibration refaisable depuis les Réglages.
+
 ### Corrigé
+- La notification « ta nuit est prête » partait tous les matins à 8 h, qu'une nuit existe ou non.
+- Le thème clair ne s'appliquait pas : aucune dépendance observable sur les réglages.
 - Contraste : `textTertiary` était sous le seuil de 4,5:1 dans les deux modes.
 - Treize tailles de police fixes ignoraient Dynamic Type.
 - Le bouton Retour de l'onboarding et la barre de progression avaient des zones tactiles trop

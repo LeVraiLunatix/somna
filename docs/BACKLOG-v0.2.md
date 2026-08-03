@@ -1,12 +1,14 @@
 # Somna — Retours de la bêta v0.1
 
 > Issus du premier test réel sur appareil. Rangés par ce qu'ils coûtent à un utilisateur, pas par ordre d'arrivée.
+>
+> **Tous traités.** CI verte au run `30848478604` — 267 tests unitaires et 12 audits d'accessibilité. Rien n'est publié.
 
 ---
 
 ## Bugs
 
-### 1. Le thème clair ne s'applique pas
+### 1. ✅ Le thème clair ne s'applique pas
 
 **Symptôme.** Choisir « Clair » dans les Réglages ne change rien : l'app reste en sombre.
 
@@ -26,7 +28,7 @@ private var colorScheme: ColorScheme? {
 
 ---
 
-### 2. La calibration est impossible à refaire
+### 2. ✅ La calibration est impossible à refaire
 
 **Symptôme.** Aucune entrée dans les Réglages pour lancer ou relancer la calibration.
 
@@ -44,7 +46,7 @@ Et sans calibration, il n'y a pas de plancher de bruit de référence : les seui
 
 ## Demandes
 
-### 3. Section Personnalisation
+### 3. ✅ Section Personnalisation
 
 Variantes de logo, thèmes alternatifs, nouveaux logos, versions Liquid Glass.
 
@@ -58,7 +60,7 @@ En revanche, le vrai Liquid Glass peut être étendu **dans** l'app : c'est là 
 
 ---
 
-### 4. Animation de lancement
+### 4. ✅ Animation de lancement
 
 **Ce qui est demandé.** Un « S » apparaît, puis « omna » sort du S en glissant vers la droite. Le mot devient ensuite la barre de chargement : il se remplit du bleu de l'app avec de petites vagues animées. Le chargement terminé, zoom au milieu du mot et fondu vers l'app.
 
@@ -74,7 +76,7 @@ La séquence doit donc être **adossée au travail réel du démarrage** : ouver
 - **Reduce Motion doit court-circuiter toute la séquence** vers un fondu simple. Une animation d'ouverture est exactement ce que ce réglage existe pour supprimer.
 - Le zoom final ne doit pas retarder l'interactivité : l'app est utilisable dès la fin du fondu.
 
-### 3. Notification mensongère : « ta nuit est prête » sans nuit
+### 3. ✅ Notification mensongère : « ta nuit est prête » sans nuit
 
 **Symptôme.** Notification reçue à 8 h annonçant que le rapport de la nuit était prêt, alors qu'aucune session n'avait été lancée.
 
@@ -103,7 +105,7 @@ Elle se déclenche tous les matins, qu'une nuit existe ou non.
 
 ---
 
-### 4. Arrêter la nuit sans avoir à ouvrir l'app
+### 4. ✅ Arrêter la nuit sans avoir à ouvrir l'app
 
 **Ce qui existe.** Le bouton « Terminer la nuit » sur l'écran de session. Il faut donc déverrouiller, ouvrir Somna, et le trouver.
 
@@ -117,7 +119,7 @@ Elle se déclenche tous les matins, qu'une nuit existe ou non.
 
 ---
 
-### 5. Un vrai réveil dans l'app
+### 5. ✅ Un vrai réveil dans l'app
 
 **Ce qui est demandé.** Régler une heure de réveil dans Somna, qui sonne vraiment, et qui termine la nuit.
 
@@ -170,3 +172,23 @@ C'est le genre de détail qui ne se tranche que sur un appareil. À mettre en t�
 Le retour porte sur l'interface. **Rien n'est encore su de l'enregistrement lui-même** : écran verrouillé, interruptions, batterie sur une nuit entière, et surtout ce que la classification donne sur de vrais sons.
 
 C'est le risque R11 de la Phase 1, et il reste le seul écart entre « l'app est complète » et « l'app fonctionne ».
+
+
+---
+
+## Ce qui a été livré
+
+| Point | Ce qui a changé |
+|---|---|
+| Notification mensongère | Envoyée par le pipeline d'analyse quand un rapport existe, plus par une minuterie. Le rapport hebdomadaire n'est programmé que s'il existe une nuit. |
+| Thème | `AppSettings`, store observable unique à la racine. Corrige aussi `hasCompletedOnboarding` et la lecture de la sensibilité. |
+| Calibration | Écran dédié, atteignable depuis Réglages › Enregistrement, avec l'état, la date et un avertissement au-delà d'un mois. |
+| Réveil | AlarmKit, sonne à travers le mode silencieux et les Concentrations. **L'arrêt de la nuit ne dépend pas de lui** : un minuteur interne termine la session au même instant. |
+| Animation de lancement | Le S, puis le mot, puis le remplissage — adossé au travail réel du démarrage, jamais rallongé. Reduce Motion la supprime. |
+| Personnalisation | Quatre accents et autant d'icônes. Seuls les accents varient : les contrastes mesurés restent intacts. |
+
+## Ce qui reste vrai
+
+**Aucune vraie nuit n'a encore été enregistrée.** Enregistrement écran verrouillé, interruptions réelles, batterie sur huit heures, classification de sons réels, et maintenant le comportement d'AlarmKit en arrière-plan : rien de tout cela n'a tourné sur un appareil.
+
+C'est toujours le seul écart entre « l'app est complète » et « l'app fonctionne ».
