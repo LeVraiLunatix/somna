@@ -32,17 +32,24 @@ struct OnboardingView: View {
 
     private func content(_ store: OnboardingStore) -> some View {
         VStack(spacing: 0) {
-            ProgressView(value: store.progress)
-                .tint(SomnaColor.accentPrimary)
-                .padding(.horizontal, SomnaSpacing.l)
-                // A progress bar is four points tall, and giving it an
-                // accessibility label makes it an element the audit measures as
-                // a hit region. The bar stays thin; its element grows.
-                .frame(minHeight: SomnaSpacing.minimumTapTarget)
-                .accessibilityLabel(Text(String(
+            // The step is shown rather than hidden inside the bar's label.
+            // A four-point progress bar carrying an accessibility label is an
+            // element the audit measures as an undersized hit region — and
+            // sighted users benefit from seeing where they are just as much.
+            VStack(spacing: SomnaSpacing.xs) {
+                ProgressView(value: store.progress)
+                    .tint(SomnaColor.accentPrimary)
+                    .accessibilityHidden(true)
+
+                Text(String(
                     localized: "onboarding.progress",
                     defaultValue: "Step \(store.step.rawValue + 1) of \(OnboardingStore.Step.allCases.count)"
-                )))
+                ))
+                .font(SomnaFont.caption)
+                .foregroundStyle(SomnaColor.textSecondary)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+            }
+            .padding(.horizontal, SomnaSpacing.l)
 
             ScrollView {
                 stepContent(store)

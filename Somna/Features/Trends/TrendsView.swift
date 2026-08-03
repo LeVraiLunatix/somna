@@ -217,6 +217,7 @@ struct TrendsView: View {
             .font(SomnaFont.secondary)
             .foregroundStyle(SomnaColor.textSecondary)
             .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
         }
         .padding(SomnaSpacing.xl)
     }

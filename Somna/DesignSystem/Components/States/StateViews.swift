@@ -32,9 +32,16 @@ struct EmptyStateView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            Button(actionTitle, action: action)
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
+            Button(action: action) {
+                // A bare string label truncates rather than wrapping, and the
+                // call to action is the one word an empty state cannot afford
+                // to lose.
+                Text(actionTitle)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
         }
         .padding(SomnaSpacing.xl)
         .frame(maxWidth: .infinity)
