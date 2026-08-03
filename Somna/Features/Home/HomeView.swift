@@ -11,6 +11,7 @@ struct HomeView: View {
 
     let onStartSession: () -> Void
     let onShowDiagnostics: () -> Void
+    let onOpenNight: (UUID) -> Void
 
     var body: some View {
         ZStack {
@@ -129,7 +130,16 @@ struct HomeView: View {
             }
 
         case .recentNight(let session), .idle(.some(let session)):
-            NightSummaryCard(session: session)
+            Button {
+                onOpenNight(session.id)
+            } label: {
+                NightSummaryCard(session: session)
+            }
+            .buttonStyle(.plain)
+            .accessibilityHint(Text(String(
+                localized: "home.openNight",
+                defaultValue: "Opens the full report for this night"
+            )))
 
         case .idle(.none):
             EmptyView()
@@ -226,14 +236,14 @@ struct NightSummaryCard: View {
 #if DEBUG
 #Preview("First run") {
     NavigationStack {
-        HomeView(onStartSession: {}, onShowDiagnostics: {})
+        HomeView(onStartSession: {}, onShowDiagnostics: {}, onOpenNight: { _ in })
     }
     .environment(\.somna, .preview())
 }
 
 #Preview("Microphone blocked") {
     NavigationStack {
-        HomeView(onStartSession: {}, onShowDiagnostics: {})
+        HomeView(onStartSession: {}, onShowDiagnostics: {}, onOpenNight: { _ in })
     }
     .environment(\.somna, .preview(microphone: .permanentlyDenied))
 }

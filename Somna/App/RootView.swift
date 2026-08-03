@@ -10,6 +10,9 @@ struct RootView: View {
 
     @Environment(\.somna) private var environment
     @State private var router = AppRouter()
+    /// Owned here rather than per screen: playback has to survive navigation, or
+    /// comparing three events would mean restarting the audio on every scroll.
+    @State private var player = ClipPlayer()
     @State private var hasCompletedOnboarding: Bool?
 
     var body: some View {
@@ -45,22 +48,31 @@ struct RootView: View {
         NavigationStack(path: router.path(for: .home)) {
             HomeView(
                 onStartSession: { router.push(.session, in: .home) },
-                onShowDiagnostics: { router.push(.storage, in: .home) }
+                onShowDiagnostics: { router.push(.storage, in: .home) },
+                onOpenNight: { router.push(.nightReport(sessionID: $0), in: .home) }
             )
             .navigationDestination(for: AppDestination.self) { destination in
                 switch destination {
                 case .session:
                     SessionView()
+                case .nightReport(let sessionID):
+                    NightReportView(sessionID: sessionID) {
+                        router.push(.timeline(sessionID: sessionID), in: .home)
+                    }
+                case .timeline(let sessionID):
+                    TimelineView(sessionID: sessionID)
                 case .storage:
                     SystemStatusView()
                 default:
                     // Unreachable: no code path pushes the other destinations
-                    // until their screens exist in Phase 4B and 4C.
+                    // until their screens exist in Phase 4C.
                     SystemStatusView()
                 }
             }
         }
+        .withPlaybackPanel()
         .environment(router)
+        .environment(player)
     }
 
     /// Reconciles nights the app died in the middle of, and clears files that

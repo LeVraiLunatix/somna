@@ -161,6 +161,56 @@
     "summary.qualityUnusable": "L'enregistrement est trop dégradé pour en tirer quoi que ce soit. Cela ne dit rien de ta nuit — seulement de l'audio.",
     "summary.tooShort": "Cette session était trop courte pour que Somna détecte quoi que ce soit.",
 
+    "home.openNight": "Ouvre le rapport complet de cette nuit",
+
+    "player.close": "Fermer le lecteur",
+    "player.play": "Lire",
+    "player.pause": "Pause",
+    "player.previous": "Moment précédent",
+    "player.back5": "Reculer de 5 secondes",
+    "player.forward5": "Avancer de 5 secondes",
+    "player.rate": "Vitesse",
+    "player.progress": "Position de lecture",
+
+    "report.title": "Ta nuit",
+    "report.loading": "Ouverture de ta nuit…",
+    "report.statistics": "Ce que Somna a entendu",
+    "report.keyMoments": "À écouter",
+    "report.calmness.caption": "Le calme sonore de l'enregistrement. Pas une mesure de ton sommeil.",
+    "report.band.veryCalm": "Très calme",
+    "report.band.calm": "Calme",
+    "report.band.someActivity": "Un peu agitée",
+    "report.band.restless": "Agitée",
+    "report.quality.excellent": "Enregistrement excellent",
+    "report.quality.good": "Bon enregistrement",
+    "report.quality.poor": "L'enregistrement a rencontré des problèmes",
+    "report.quality.unusable": "Cet enregistrement n'est pas exploitable",
+    "report.stat.recorded": "Enregistré",
+    "report.stat.quiet": "Rien détecté",
+    "report.stat.snoring": "Ronflements",
+    "report.stat.coughs": "Toux",
+    "report.stat.speech": "Paroles",
+    "report.stat.calmest": "Période la plus calme",
+    "report.stat.asleep": "Probablement endormi vers",
+    "report.stat.awake": "Probablement réveillé vers",
+
+    "timeline.title": "Chronologie",
+    "timeline.loading": "Chargement de ta nuit…",
+    "timeline.empty.title": "Rien n'a été détecté",
+    "timeline.empty.body": "Soit la nuit a été remarquablement calme, soit le micro ne captait pas grand-chose. La section qualité d'enregistrement indique ce qui est le plus probable.",
+    "timeline.play": "Écouter ce moment",
+    "timeline.noClip": "L'audio de ce moment n'est plus conservé.",
+    "timeline.save": "Enregistrer ce moment",
+    "timeline.unsave": "Retirer des moments enregistrés",
+    "timeline.correct": "En réalité c'était…",
+    "timeline.corrected": "corrigé par toi",
+    "timeline.filter.all": "Tout",
+    "timeline.filter.snoring": "Ronflements",
+    "timeline.filter.coughing": "Toux",
+    "timeline.filter.speech": "Paroles",
+    "timeline.filter.environment": "Autour de toi",
+    "timeline.filter.favourites": "Enregistrés",
+
     "status.allowMicrophone": "Autoriser l'accès au micro",
     "status.calibration": "Calibration",
     "status.calibrationDone": "Faite",
@@ -233,6 +283,29 @@
     "session.elapsed": {
       "en": "Recording for %@",
       "fr": "Enregistrement depuis %@"
+    },
+
+    "report.calmness.accessibility": {
+      "en": "Calmness %1$lld out of 100, %2$@. This reflects how quiet the recording was, not the quality of your sleep.",
+      "fr": "Tranquillité %1$lld sur 100, %2$@. Cela reflète le calme sonore de l'enregistrement, pas la qualité de ton sommeil."
+    },
+    "report.range": {
+      "en": "%1$@ to %2$@ · %3$@ recorded",
+      "fr": "De %1$@ à %2$@ · %3$@ enregistrés"
+    },
+    "report.coverage": {
+      "en": "%lld%% of the session was captured.",
+      "fr": "%lld%% de la session a été captée."
+    },
+    "report.seeTimeline": {
+      "plural": true,
+      "en": { "one": "See the whole night (1 event)", "other": "See the whole night (%lld events)" },
+      "fr": { "one": "Voir toute la nuit (1 événement)", "other": "Voir toute la nuit (%lld événements)" }
+    },
+    "timeline.episodes": {
+      "plural": true,
+      "en": { "one": "1 episode", "other": "%lld episodes" },
+      "fr": { "one": "1 épisode", "other": "%lld épisodes" }
     },
 
     "onboarding.progress": {
