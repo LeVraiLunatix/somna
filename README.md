@@ -22,8 +22,8 @@ Somna est un journal nocturne pour iPhone. Il écoute les sons de la nuit, déte
 | 3B | Fondations : design system, services, environnement | ✅ [Terminée](docs/05-PHASE-3B-DESIGN-ET-SERVICES.md) |
 | 4A | Onboarding, accueil, localisation FR/EN | ✅ [Terminée](docs/06-PHASE-4A-ONBOARDING-ET-ACCUEIL.md) |
 | 5 | Moteur audio | ✅ [Terminée](docs/07-PHASE-5-MOTEUR-AUDIO.md) — non vérifiée sur appareil |
-| 4B | Rapport, timeline, lecteur audio | ⏳ En cours |
-| 4C | Historique, tendances, réglages, barre d'onglets | ⏸️ |
+| 4B | Rapport, timeline, lecteur audio | ✅ [Terminée](docs/10-PHASE-4B-RAPPORT-ET-TIMELINE.md) |
+| 4C | Historique, tendances, réglages, barre d'onglets | ⏳ En cours |
 | 6A | Analyse : algorithmes purs et résumé | ✅ [Terminée](docs/08-PHASE-6A-ANALYSE.md) |
 | 6B | Analyse : classification SoundAnalysis | ✅ [Terminée](docs/09-PHASE-6B-CLASSIFICATION.md) |
 | 7 | Distribution (Release + AltStore) | ⏸️ |
@@ -102,6 +102,7 @@ tests sur simulateur, archive non signée et packaging IPA. Voir
 | [07 — Moteur audio](docs/07-PHASE-5-MOTEUR-AUDIO.md) | Segmentation, interruptions, récupération, limites non vérifiées |
 | [08 — Analyse](docs/08-PHASE-6A-ANALYSE.md) | Groupement, score, qualité, résumé structurellement honnête |
 | [09 — Classification](docs/09-PHASE-6B-CLASSIFICATION.md) | SoundAnalysis, zones candidates, règles d'arbitrage, extraits |
+| [10 — Rapport et timeline](docs/10-PHASE-4B-RAPPORT-ET-TIMELINE.md) | Lecteur, rapport, corrections, refus d'afficher des chiffres non fondés |
 | [CHANGELOG](CHANGELOG.md) | Journal de version |
 
 ---

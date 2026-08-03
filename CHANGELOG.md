@@ -55,6 +55,11 @@ alimentent automatiquement les notes de version de la source AltStore (Phase 7).
   candidates depuis les métriques nocturnes, arbitrage par règles, extraction des extraits
   audio, et analyse déclenchée juste après la nuit.
 
+- Phase 4B — Rapport de nuit, chronologie filtrable avec correction des événements, et lecteur
+  d'extraits persistant entre les écrans.
+- Le rapport masque ses statistiques quand l'audio est inexploitable, et place la qualité
+  d'enregistrement avant les chiffres.
+
 ### Corrigé
 - Les cibles de test désactivent l'isolation MainActor par défaut : `XCTestCase` déclare ses
   initialiseurs et ses hooks de cycle de vie comme `nonisolated`, ce qui rendait toute
