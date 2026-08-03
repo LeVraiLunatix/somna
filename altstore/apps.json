@@ -1,0 +1,33 @@
+{
+  "name": "Somna",
+  "identifier": "com.somna.source",
+  "subtitle": "Every night tells a story.",
+  "description": "A nightly journal for iPhone. Somna listens while you sleep and builds a timeline of what it heard, with the audio behind every event so you can check it yourself. Everything stays on your device. Somna is not a medical device.",
+  "iconURL": "https://raw.githubusercontent.com/LeVraiLunatix/somna/main/altstore/icon.png",
+  "website": "https://github.com/LeVraiLunatix/somna",
+  "tintColor": "#3153B8",
+  "apps": [
+    {
+      "name": "Somna",
+      "bundleIdentifier": "com.somna.app",
+      "developerName": "LeVraiLunatix",
+      "subtitle": "Every night tells a story.",
+      "localizedDescription": "Somna records the sounds of your night and turns them into a timeline you can read in the morning.\n\nEvery detection keeps its audio, so you can listen and decide for yourself whether Somna got it right. Detections are worded by confidence: \"cough detected\", \"likely cough\", or \"cough-like sound\".\n\nEverything happens on your iPhone. No account, no server, nothing uploaded, and speech is never transcribed.\n\nSomna is not a medical device. It does not diagnose anything, does not detect sleep apnea, and does not measure sleep stages.\n\nPrivate beta. Expect rough edges, and please report them.",
+      "iconURL": "https://raw.githubusercontent.com/LeVraiLunatix/somna/main/altstore/icon.png",
+      "tintColor": "#3153B8",
+      "category": "lifestyle",
+      "screenshots": [],
+      "versions": [],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": [
+          {
+            "name": "Microphone",
+            "usageDescription": "Somna listens to the sounds of your night so it can build a timeline of what happened while you slept. Audio never leaves your iPhone."
+          }
+        ]
+      }
+    }
+  ],
+  "news": []
+}

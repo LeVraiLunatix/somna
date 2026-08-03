@@ -1,0 +1,203 @@
+name: Release
+
+# Publishes a build. Runs only on a tag, never on a push to a branch, so
+# releasing is always a deliberate act.
+#
+#   git tag v0.1.0 && git push origin v0.1.0
+#
+# Everything before this workflow exists is preparation; this is the only thing
+# in the repository that produces something the public can download.
+
+on:
+  push:
+    tags:
+      - "v*"
+  # Available manually so the chain can be rehearsed without cutting a tag.
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to build, without the leading v (e.g. 0.1.0)"
+        required: true
+      dry_run:
+        description: "Build and package, but publish nothing"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+env:
+  NSUnbufferedIO: YES
+
+jobs:
+  release:
+    name: Build, package and publish
+    runs-on: macos-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          # The feed is committed back to main, so the full history is needed.
+          fetch-depth: 0
+
+      - name: Select the newest installed Xcode
+        run: |
+          XCODE=$(ls -d /Applications/Xcode*.app | sort -V | tail -1)
+          sudo xcode-select -s "${XCODE}"
+          xcodebuild -version
+
+      - name: Verify the iOS 26 SDK is available
+        run: |
+          SDK=$(xcodebuild -showsdks | sed -n 's/.*-sdk iphoneos\([0-9][0-9.]*\).*/\1/p' | sort -V | tail -1)
+          MAJOR="${SDK%%.*}"
+          if [ -z "${SDK}" ] || [ "${MAJOR}" -lt 26 ]; then
+            echo "::error::Somna targets iOS 26 but the newest iOS SDK here is '${SDK:-none}'."
+            exit 1
+          fi
+
+      - name: Resolve version numbers
+        id: version
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            MARKETING="${GITHUB_REF#refs/tags/v}"
+          else
+            MARKETING="${{ github.event.inputs.version }}"
+          fi
+          echo "marketing=${MARKETING}" >> "$GITHUB_OUTPUT"
+          echo "build=${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
+          echo "Releasing Somna ${MARKETING} (${GITHUB_RUN_NUMBER})"
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Validate project and translations
+        run: |
+          python3 -m pip install --quiet --break-system-packages pyyaml || python3 -m pip install --quiet pyyaml
+          python3 scripts/validate-project.py
+          python3 scripts/generate-strings.py --check
+
+      - name: Generate the Xcode project
+        run: xcodegen generate --spec project.yml
+
+      # A release that ships failing tests is worse than no release: beta
+      # testers cannot tell a known bug from a new one.
+      - name: Select a simulator
+        id: simulator
+        run: |
+          chmod +x scripts/ci/*.sh
+          echo "udid=$(scripts/ci/select-simulator.sh)" >> "$GITHUB_OUTPUT"
+
+      - name: Run the full test suite
+        run: |
+          xcodebuild test \
+            -project Somna.xcodeproj \
+            -scheme Somna \
+            -configuration Debug \
+            -destination "id=${{ steps.simulator.outputs.udid }}" \
+            MARKETING_VERSION="${{ steps.version.outputs.marketing }}" \
+            CURRENT_PROJECT_VERSION="${{ steps.version.outputs.build }}" \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Archive for device (unsigned)
+        run: |
+          xcodebuild archive \
+            -project Somna.xcodeproj \
+            -scheme Somna \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath build/Somna.xcarchive \
+            MARKETING_VERSION="${{ steps.version.outputs.marketing }}" \
+            CURRENT_PROJECT_VERSION="${{ steps.version.outputs.build }}" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGN_ENTITLEMENTS=""
+
+      - name: Package unsigned IPA
+        id: package
+        run: |
+          scripts/ci/make-ipa.sh \
+            build/Somna.xcarchive \
+            "build/Somna-${{ steps.version.outputs.marketing }}.ipa"
+
+      - name: Verify the packaged Info.plist
+        run: |
+          PLIST=build/Somna.xcarchive/Products/Applications/Somna.app/Info.plist
+          plutil -extract UIBackgroundModes json -o - "${PLIST}" | grep -q "audio"
+          plutil -extract NSMicrophoneUsageDescription raw -o - "${PLIST}" > /dev/null
+          test "$(plutil -extract CFBundleShortVersionString raw -o - "${PLIST}")" = "${{ steps.version.outputs.marketing }}"
+          # The privacy manifest has to be inside the bundle, not merely in the repo.
+          test -f build/Somna.xcarchive/Products/Applications/Somna.app/PrivacyInfo.xcprivacy
+          echo "Bundle checks passed."
+
+      - name: Extract release notes
+        id: notes
+        run: |
+          # Everything under "## [Non publié]" up to the next version heading.
+          awk '/^## \[Non publié\]/{flag=1; next} /^## \[/{flag=0} flag' CHANGELOG.md \
+            > release-notes.md
+          if [ ! -s release-notes.md ]; then
+            echo "Private beta build." > release-notes.md
+          fi
+          echo "Release notes:"; cat release-notes.md
+
+      - name: Upload the IPA as a build artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: Somna-${{ steps.version.outputs.marketing }}-ipa
+          path: build/*.ipa
+          if-no-files-found: error
+
+      # ---------------------------------------------------------------------
+      # Publishing. Skipped entirely on a dry run.
+      # ---------------------------------------------------------------------
+      - name: Publish the GitHub Release
+        if: github.event_name == 'push' || github.event.inputs.dry_run == 'false'
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v${{ steps.version.outputs.marketing }}"
+          IPA="build/Somna-${{ steps.version.outputs.marketing }}.ipa"
+
+          gh release create "${TAG}" "${IPA}" \
+            --title "Somna ${{ steps.version.outputs.marketing }}" \
+            --notes-file release-notes.md \
+            --prerelease
+
+          echo "url=$(gh release view "${TAG}" --json assets --jq '.assets[0].url')" >> "$GITHUB_OUTPUT"
+          echo "size=$(stat -f%z "${IPA}")" >> "$GITHUB_OUTPUT"
+
+      - name: Update the AltStore source
+        if: github.event_name == 'push' || github.event.inputs.dry_run == 'false'
+        run: |
+          python3 scripts/ci/update-altstore-source.py \
+            --version "${{ steps.version.outputs.marketing }}" \
+            --build "${{ steps.version.outputs.build }}" \
+            --size "${{ steps.publish.outputs.size }}" \
+            --url "${{ steps.publish.outputs.url }}" \
+            --notes-file release-notes.md
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add altstore/apps.json
+          git commit -m "chore(altstore): publie ${{ steps.version.outputs.marketing }} (${{ steps.version.outputs.build }})"
+          # The tag build starts detached, so the commit is pushed to main explicitly.
+          git push origin HEAD:main
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### Somna ${{ steps.version.outputs.marketing }} (${{ steps.version.outputs.build }})"
+            echo ""
+            if [ "${{ github.event_name }}" = "push" ] || [ "${{ github.event.inputs.dry_run }}" = "false" ]; then
+              echo "Publiée. La source AltStore référence désormais cette version."
+            else
+              echo "**Répétition à vide.** L'IPA est disponible en artefact, rien n'a été publié."
+            fi
+            echo ""
+            echo "L'IPA n'est pas signé : AltStore le signe sur l'appareil avec le compte Apple du testeur."
+          } >> "$GITHUB_STEP_SUMMARY"

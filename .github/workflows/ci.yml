@@ -155,7 +155,11 @@ jobs:
           plutil -extract NSMicrophoneUsageDescription raw -o - "${PLIST}" > /dev/null
           test "$(plutil -extract CFBundleShortVersionString raw -o - "${PLIST}")" = "${{ steps.version.outputs.marketing }}"
           test "$(plutil -extract CFBundleVersion raw -o - "${PLIST}")" = "${{ steps.version.outputs.build }}"
-          echo "Info.plist checks passed."
+          # The privacy manifest has to be inside the bundle, not merely in the
+          # repository: a resource that fails to be copied is invisible until
+          # someone inspects a shipped build.
+          test -f build/Somna.xcarchive/Products/Applications/Somna.app/PrivacyInfo.xcprivacy
+          echo "Bundle checks passed."
 
       # ---------------------------------------------------------------------
       # Artifacts
