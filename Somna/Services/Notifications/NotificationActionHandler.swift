@@ -28,13 +28,22 @@ final class NotificationActionHandler: NSObject, UNUserNotificationCenterDelegat
         onStopNight()
     }
 
-    /// Shown while Somna is in the foreground too. The banner is how someone
-    /// checks the night is still running without leaving the app open on the
-    /// session screen all night.
+    /// No banner while Somna is in front.
+    ///
+    /// A banner over Somna's own screens tells nobody anything they cannot
+    /// already see — the session screen shows the running night better than a
+    /// notification about it does — and it covers the app to do so. It goes to
+    /// Notification Center and the lock screen, which is where it is useful.
+    ///
+    /// This is not cosmetic. Before this delegate existed iOS suppressed
+    /// foreground notifications by default; asking for banners made one appear
+    /// over whichever screen happened to be up, and the accessibility audit
+    /// started failing on a different screen each run with an issue it could not
+    /// attribute to any element.
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification
     ) async -> UNNotificationPresentationOptions {
-        [.banner, .list]
+        [.list]
     }
 }
