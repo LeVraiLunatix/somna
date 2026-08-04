@@ -381,6 +381,10 @@
     "report.analysing": "Lecture en cours…",
     "timeline.empty.tooShort": "Cette session était trop courte pour que Somna détecte quoi que ce soit.",
 
+    "notification.night.title": "Somna écoute",
+    "notification.night.body": "Appuie longuement sur cette notification pour arrêter la nuit sans déverrouiller.",
+    "notification.night.stop": "Arrêter la nuit",
+
     "status.allowMicrophone": "Autoriser l'accès au micro",
     "status.calibration": "Calibration",
     "status.calibrationDone": "Faite",

@@ -10,6 +10,7 @@ struct SessionView: View {
     @Environment(\.somnaPalette) private var palette
 
     @Environment(\.somna) private var environment
+    @Environment(SessionCommandBus.self) private var commands
     @Environment(\.dismiss) private var dismiss
     @State private var store: SessionStore?
 
@@ -25,6 +26,11 @@ struct SessionView: View {
         .task {
             if store == nil { store = SessionStore(environment: environment) }
             await store?.runPreflight()
+        }
+        // Its own task: the command stream never ends, so anything sequenced
+        // after it in the same task would never run.
+        .task(id: store == nil) {
+            await store?.observeCommands(commands)
         }
     }
 

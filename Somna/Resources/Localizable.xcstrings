@@ -2500,6 +2500,57 @@
         }
       }
     },
+    "notification.night.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press and hold this notification to end the night without unlocking."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appuie longuement sur cette notification pour arrêter la nuit sans déverrouiller."
+          }
+        }
+      }
+    },
+    "notification.night.stop": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "End the night"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arrêter la nuit"
+          }
+        }
+      }
+    },
+    "notification.night.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Somna is listening"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Somna écoute"
+          }
+        }
+      }
+    },
     "notification.ready.body": {
       "extractionState": "manual",
       "localizations": {

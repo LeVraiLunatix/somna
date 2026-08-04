@@ -1,6 +1,7 @@
 import OSLog
 import SwiftData
 import SwiftUI
+import UserNotifications
 
 /// Application entry point and composition root.
 ///
@@ -14,6 +15,15 @@ struct SomnaApp: App {
 
     /// Created once, here, so every screen observes the same settings.
     @State private var settings: AppSettings
+
+    /// One bus for the whole app, so the lock-screen button reaches the running
+    /// session wherever the user happens to have left the UI.
+    @State private var commands = SessionCommandBus()
+
+    /// Held, not just assigned: `UNUserNotificationCenter.delegate` is a weak
+    /// reference, and a delegate nobody retains is a stop button that silently
+    /// stops working.
+    @State private var notificationDelegate: NotificationActionHandler?
 
     init() {
         // Building the container is the one thing that can fail before any UI
@@ -62,6 +72,23 @@ struct SomnaApp: App {
             }
             .environment(\.somna, environment)
             .environment(settings)
+            .environment(commands)
+            .task {
+                guard notificationDelegate == nil else { return }
+                let bus = commands
+                let handler = NotificationActionHandler {
+                    Task { @MainActor in bus.send(.stopNight) }
+                }
+                notificationDelegate = handler
+
+                let center = UNUserNotificationCenter.current()
+                center.delegate = handler
+                // Registered at launch, not when a night starts: iOS matches a
+                // notification against the categories known when it is
+                // delivered, so a late registration yields a notification with
+                // no buttons on it.
+                center.setNotificationCategories([NightControlNotification.category])
+            }
         }
     }
 }

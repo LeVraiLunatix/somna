@@ -8,6 +8,9 @@ protocol NotificationScheduling: Sendable {
     func cancelAll() async
     /// Tells the user their report is ready. Only ever sent after a real analysis.
     func notifyReportReady(sessionID: UUID) async
+    /// Puts the running night on the lock screen, with the button that ends it.
+    func showNightRunning() async
+    func hideNightRunning() async
 }
 
 /// Local notifications.
@@ -94,6 +97,36 @@ struct NotificationService: NotificationScheduling {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
 
+    /// Posted when a night starts, removed when it ends.
+    ///
+    /// Delivered immediately rather than on a trigger, so it is already on the
+    /// lock screen by the time the phone goes down — the moment someone is most
+    /// likely to want to check that the night really started.
+    func showNightRunning() async {
+        guard await isAuthorised() else { return }
+        let request = UNNotificationRequest(
+            identifier: NightControlNotification.requestIdentifier,
+            content: NightControlNotification.content,
+            trigger: nil
+        )
+        do {
+            try await UNUserNotificationCenter.current().add(request)
+        } catch {
+            // A missing lock-screen control does not justify failing a night.
+            // The in-app stop button is unaffected.
+            Log.app.error("Could not show the night control: \(error.localizedDescription, privacy: .public)")
+        }
+    }
+
+    func hideNightRunning() async {
+        let center = UNUserNotificationCenter.current()
+        let identifiers = [NightControlNotification.requestIdentifier]
+        center.removePendingNotificationRequests(withIdentifiers: identifiers)
+        // Removing it from Notification Center too: a button offering to end a
+        // night that ended hours ago is worse than no button.
+        center.removeDeliveredNotifications(withIdentifiers: identifiers)
+    }
+
     /// Sent only when a report actually exists, and only if the user asked for it.
     func notifyReportReady(sessionID: UUID) async {
         guard await isAuthorised() else { return }
@@ -156,4 +189,6 @@ struct StubNotificationService: NotificationScheduling {
     func refresh(for settings: UserSettings) async {}
     func cancelAll() async {}
     func notifyReportReady(sessionID: UUID) async {}
+    func showNightRunning() async {}
+    func hideNightRunning() async {}
 }

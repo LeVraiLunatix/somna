@@ -52,6 +52,23 @@ final class SessionStore {
         self.environment = environment
     }
 
+    /// Starts listening for commands raised outside this screen — today, the
+    /// lock-screen button. Cheap enough to call on every appearance: the task
+    /// dies with the view, and the bus buffers nothing.
+    func observeCommands(_ bus: SessionCommandBus) async {
+        for await command in bus.stream() {
+            switch command {
+            case .stopNight:
+                // Guarded rather than trusted. The notification can outlive the
+                // night it referred to — the app may have been killed and
+                // relaunched — and stopping a night that already ended would
+                // run the morning analysis a second time.
+                guard isRunning else { continue }
+                await stop(reason: .userRequested)
+            }
+        }
+    }
+
     var canStart: Bool {
         !checks.contains { $0.severity == .blocking } && phase == .preparing
     }
@@ -171,6 +188,7 @@ final class SessionStore {
             environment.haptics.play(.sessionStarted)
             phase = .running
             observeStatus()
+            await environment.notifications.showNightRunning()
             await scheduleWakeAlarm(for: session)
         } catch let error as SomnaError {
             environment.haptics.play(.errorOccurred)
@@ -190,6 +208,7 @@ final class SessionStore {
         guard isRunning else { return }
         phase = .stopping
         statusTask?.cancel()
+        await environment.notifications.hideNightRunning()
         autoStopTask?.cancel()
         autoStopTask = nil
 
