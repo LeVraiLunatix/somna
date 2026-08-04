@@ -113,7 +113,9 @@ Elle se déclenche tous les matins, qu'une nuit existe ou non.
 
 **Pistes, avec leur coût réel.**
 
-- **Live Activity avec un bouton d'arrêt** sur l'écran verrouillé. C'est la réponse la plus directe. Coût : une extension widget, donc **un App ID supplémentaire** sur le quota de trois d'un compte Apple gratuit. Somna en occuperait deux.
+- ~~**Live Activity avec un bouton d'arrêt**~~ — **tranché : non.** Coût : une extension widget, donc un binaire séparé avec son propre bundle ID. Un compte gratuit n'active que trois apps *et extensions* à la fois, et AltStore en occupe déjà une : Somna prendrait deux emplacements sur trois, et chaque testeur devrait désinstaller quelque chose pour l'installer.
+- ~~**Now Playing (`MPRemoteCommandCenter`)**~~ — **tranché : non.** Poserait un bouton d'arrêt sans aucune extension, mais seulement pour une app qu'iOS considère en train de jouer, donc en passant la session de `.record` à `.playAndRecord`. Somna occuperait le créneau Now Playing toute la nuit : elle capterait le bouton play/pause des écouteurs et déplacerait ce sur quoi l'utilisateur s'est endormi. Se déclarer lecteur multimédia pour emprunter le bouton d'un lecteur multimédia n'est pas une option pour ce projet.
+- **Fait : une notification avec une action.** Posée au démarrage de la nuit, retirée à sa fin, portant « Arrêter la nuit ». Sans `.foreground` ni `.authenticationRequired`, donc traitée en arrière-plan sans déverrouillage. Aucun App ID, aucun effet sur la session audio. Moins joli qu'une Live Activity, et honnête sur ce que c'est.
 - **Bouton d'arrêt dans la notification** de session en cours : plus léger, pas d'extension, mais suppose une notification persistante.
 - **Arrêt automatique par l'alarme** — voir le point suivant. C'est probablement le plus élégant : on se réveille, l'alarme sonne, la nuit se termine.
 
