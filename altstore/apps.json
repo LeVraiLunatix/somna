@@ -12,7 +12,7 @@
       "bundleIdentifier": "com.somna.app",
       "developerName": "LeVraiLunatix",
       "subtitle": "Every night tells a story.",
-      "localizedDescription": "Somna records the sounds of your night and turns them into a timeline you can read in the morning.\n\nEvery detection keeps its audio, so you can listen and decide for yourself whether Somna got it right. Detections are worded by confidence: \"cough detected\", \"likely cough\", or \"cough-like sound\".\n\nEverything happens on your iPhone. No account, no server, nothing uploaded, and speech is never transcribed.\n\nSomna is not a medical device. It does not diagnose anything, does not detect sleep apnea, and does not measure sleep stages.\n\nPrivate beta. Expect rough edges, and please report them.",
+      "localizedDescription": "Somna records the sounds of your night and turns them into a timeline you can read in the morning.\n\nEvery detection keeps its audio, so you can listen and decide for yourself whether Somna got it right. Detections are worded by confidence: \"cough detected\", \"likely cough\", or \"cough-like sound\".\n\nEverything happens on your iPhone. No account, no server, nothing uploaded, and speech is never transcribed.\n\nSomna is not a medical device. It does not diagnose anything, does not detect sleep apnea, and does not measure sleep stages.\n\nPublic beta. Expect rough edges, and please report them.",
       "iconURL": "https://raw.githubusercontent.com/LeVraiLunatix/somna/main/altstore/icon.png",
       "tintColor": "#3153B8",
       "category": "lifestyle",

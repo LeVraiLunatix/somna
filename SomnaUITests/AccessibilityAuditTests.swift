@@ -22,7 +22,7 @@ final class AccessibilityAuditTests: XCTestCase {
         contentSize: String? = nil
     ) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = ["-somna-reset", "-somna-skip-gate"]
+        app.launchArguments = ["-somna-reset"]
         if skipOnboarding {
             app.launchArguments.append("-somna-skip-onboarding")
         }

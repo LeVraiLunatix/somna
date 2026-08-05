@@ -11,7 +11,7 @@ Somna est un journal nocturne pour iPhone. Il écoute les sons de la nuit, déte
 
 ## Statut
 
-**v0.1 — bêta privée. Fonctionnellement complète, jamais éprouvée sur un appareil.**
+**v0.1 — bêta publique. L'interface, l'enregistrement et l'arrêt depuis l'écran verrouillé ont tourné sur un vrai iPhone ; une nuit entière de huit heures, jamais.**
 
 | Phase | Contenu | Statut |
 |---|---|---|
@@ -111,7 +111,7 @@ tests sur simulateur, archive non signée et packaging IPA. Voir
 
 ---
 
-## Installation (bêta privée)
+## Installation (bêta publique)
 
 La distribution passe par **AltStore / SideStore**, via un IPA non signé publié en GitHub Release et signé sur l'appareil avec le compte Apple du testeur.
 

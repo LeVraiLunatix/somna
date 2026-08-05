@@ -18,8 +18,6 @@ enum LaunchArguments {
     /// Clears stored settings before launch, so a test starts from a known state.
     static let resetSettings = "-somna-reset"
 
-    /// Skips the private-beta gate. UI tests are not testers.
-    static let skipGate = "-somna-skip-gate"
 
     static var isSkippingOnboarding: Bool {
         ProcessInfo.processInfo.arguments.contains(skipOnboarding)
@@ -29,9 +27,6 @@ enum LaunchArguments {
         ProcessInfo.processInfo.arguments.contains(resetSettings)
     }
 
-    static var isSkippingGate: Bool {
-        ProcessInfo.processInfo.arguments.contains(skipGate)
-    }
 
     /// Applies whatever the launch arguments ask for.
     static func apply(to settings: any SettingsStoring) {
@@ -41,14 +36,6 @@ enum LaunchArguments {
         if isSkippingOnboarding {
             var current = settings.load()
             current.hasCompletedOnboarding = true
-            settings.save(current)
-        }
-        if isSkippingGate || isSkippingOnboarding {
-            // Skipping onboarding implies skipping the gate: a test that asked
-            // to start inside the app did not mean "inside the app, behind a
-            // password field".
-            var current = settings.load()
-            current.hasUnlockedBeta = true
             settings.save(current)
         }
     }

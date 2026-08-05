@@ -1,6 +1,6 @@
 # Installer Somna
 
-> Bêta privée. Somna n'est pas sur l'App Store et ne le sera pas pendant la bêta.
+> Bêta publique. Somna n'est pas sur l'App Store et ne le sera pas pendant la bêta.
 
 ---
 

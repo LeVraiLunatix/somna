@@ -94,8 +94,6 @@ struct UserSettings: Equatable, Sendable, Codable {
 
     var reducedVisualEffects: Bool
     var hasCompletedOnboarding: Bool
-    /// Remembered so nobody types a beta code every morning at 6 a.m.
-    var hasUnlockedBeta: Bool
 
     static let `default` = UserSettings(
         theme: .system,
@@ -114,8 +112,7 @@ struct UserSettings: Equatable, Sendable, Codable {
         cloudProcessingConsent: false,
         analyticsConsent: false,
         reducedVisualEffects: false,
-        hasCompletedOnboarding: false,
-        hasUnlockedBeta: false
+        hasCompletedOnboarding: false
     )
 }
 
