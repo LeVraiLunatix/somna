@@ -37,6 +37,13 @@ actor AudioRecordingEngine: AudioRecording {
     private var currentLevel: Float = 0
     private var bytesWritten: Int64 = 0
 
+    /// The `recordedDuration` at the last status publish.
+    ///
+    /// Measured in captured audio rather than wall-clock time: it advances only
+    /// while audio is actually arriving, so a paused or interrupted engine
+    /// cannot keep ticking a clock that has stopped counting.
+    private var lastPublishedDuration: TimeInterval = 0
+
     private var pendingMetrics: [AudioMetrics] = []
     private var metricsWriter: MetricsWriter?
 
@@ -84,6 +91,7 @@ actor AudioRecordingEngine: AudioRecording {
         completedSegments = []
         gaps = []
         recordedDuration = 0
+        lastPublishedDuration = 0
         bytesWritten = 0
 
         apply(.start)
@@ -275,6 +283,17 @@ actor AudioRecordingEngine: AudioRecording {
         do {
             try writer.write(converted)
             recordedDuration += Double(converted.frameLength) / AudioConstants.sampleRate
+
+            // Status used to be published only from `apply(_:)`, which runs on
+            // state transitions. So one status went out when recording began and
+            // then nothing: the clock, the level meter and the size on the
+            // running screen all sat frozen at their first values for the whole
+            // night. Everything they describe changes here, in the capture path,
+            // which is where they have to be published from.
+            if recordedDuration - lastPublishedDuration >= AudioConstants.statusPublishInterval {
+                lastPublishedDuration = recordedDuration
+                publishStatus()
+            }
         } catch {
             apply(.failure(.engineFailedToStart))
             return

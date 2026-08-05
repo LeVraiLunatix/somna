@@ -12,6 +12,7 @@ actor StubAudioRecorder: AudioRecording {
     private var sessionID: UUID?
     private var startDate: Date?
     private var continuation: AsyncStream<RecordingStatus>.Continuation?
+    private var tickTask: Task<Void, Never>?
 
     private let clock: any Clocking
     /// Set to make `start` fail, so error paths can be exercised.
@@ -52,6 +53,29 @@ actor StubAudioRecorder: AudioRecording {
         }
 
         transition(.engineStarted)
+        startTicking()
+    }
+
+    /// Keeps reporting while recording.
+    ///
+    /// The stub used to publish only on state transitions, which is exactly the
+    /// shape of the bug the real engine had: one status when recording began and
+    /// then silence, so a preview of the session screen showed a clock frozen at
+    /// zero and nothing said why. A stub that models a broken recorder cannot
+    /// show a screen working.
+    private func startTicking() {
+        tickTask?.cancel()
+        tickTask = Task { [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(AudioConstants.statusPublishInterval))
+                guard let self, await self.state.isCapturing else { return }
+                await self.publish()
+            }
+        }
+    }
+
+    private func publish() {
+        continuation?.yield(currentStatus())
     }
 
     func stop(reason: StopReason) async throws -> RecordingOutcome {
@@ -70,6 +94,8 @@ actor StubAudioRecorder: AudioRecording {
             stopReason: reason
         )
 
+        tickTask?.cancel()
+        tickTask = nil
         state = .idle
         self.sessionID = nil
         self.startDate = nil

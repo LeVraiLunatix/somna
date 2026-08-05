@@ -20,6 +20,16 @@ enum AudioConstants {
     /// Uncompressed PCM at the same sample rate would be ≈ 920 MB.
     static let defaultBitRate: Int = 32_000
 
+    /// How often the running session screen is refreshed, in seconds of
+    /// captured audio.
+    ///
+    /// One second, because that is the granularity the screen shows: the clock
+    /// reads `m:ss`, so publishing faster would wake the main actor to redraw
+    /// pixels that cannot have changed. Buffers arrive several times a second
+    /// and this runs for eight hours on a phone that has to survive the night —
+    /// the difference between 1 Hz and 10 Hz is nearly 300 000 needless hops.
+    static let statusPublishInterval: TimeInterval = 1
+
     /// Offered in Settings for users who would rather spend the disk space.
     static let highQualityBitRate: Int = 64_000
 
