@@ -104,8 +104,24 @@ Une nouvelle version apparaît dans l'onglet **Browse** ou **My Apps**. La mise 
 | « Impossible de vérifier l'app » | Certificat pas encore approuvé — étape 4 |
 | L'app se ferme au lancement | Profil expiré — rafraîchis |
 | « Unable to install » dans AltStore | Trois apps ou extensions déjà actives (AltStore compte dedans), ou 10 App IDs créés dans les 7 derniers jours |
+| « The data couldn't be read because it isn't in the correct format » | **Ce n'est pas Somna.** Voir ci-dessous — ça touche toutes les apps installées via AltStore |
 | Aucun son détecté après une nuit | Micro obstrué ou trop loin — la section **Qualité d'enregistrement** du rapport le dira |
 | L'enregistrement s'est arrêté seul | Batterie vide, ou app balayée hors du multitâche |
+
+### L'erreur 3840, en détail
+
+Le message complet dit « Encountered unknown tag html on line 1 », domaine `NSCocoaErrorDomain`, code 3840. Il décrit l'échec d'un parseur, pas la cause.
+
+Ce qui se passe : AltStore te connecte à Apple via `gsa.apple.com/grandslam/GsService2`. Apple répond **401 Unauthorized** sous forme de page HTML ; AltStore attend un plist et essaie de parser cette page. La connexion à Apple a donc échoué **avant** que l'app n'entre en jeu — c'est pourquoi toutes les apps échouent, pas seulement Somna.
+
+C'est un [bug connu d'AltStore](https://github.com/altstoreio/AltStore/issues/1698), ouvert depuis janvier 2026 et [toujours sans réponse](https://github.com/altstoreio/AltStore/issues/1747). **Aucun correctif officiel n'existe.** Ce qui suit traite le refus d'authentification, pas le bug d'affichage :
+
+1. **Déconnecte puis reconnecte ton Apple ID dans AltStore.** Un jeton expiré produit exactement ce 401.
+2. **Utilise un mot de passe pour application** (généré sur [account.apple.com](https://account.apple.com) → Connexion et sécurité) plutôt que ton mot de passe principal.
+3. **Attends une heure.** Apple limite les tentatives de connexion, et chaque échec aggrave la suivante — tant que la limite tient, les deux étapes précédentes resteront sans effet.
+4. **Passe en Wi-Fi.** AltStore Classic a besoin d'AltServer joignable sur le même réseau.
+
+---
 
 Pour tout le reste : ouvre une [issue](https://github.com/LeVraiLunatix/somna/issues) avec la version indiquée dans **Réglages → À propos**, et une capture de l'écran **Diagnostics** (icône stéthoscope, en haut de l'accueil).
 
