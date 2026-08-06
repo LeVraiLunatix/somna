@@ -3860,6 +3860,125 @@
         }
       }
     },
+    "quality.highConstantNoise": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A steady noise, such as a fan, masked quieter sounds."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un bruit constant, un ventilateur par exemple, a masqué les sons plus discrets."
+          }
+        }
+      }
+    },
+    "quality.levelTooLow": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The recording was very quiet throughout."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'enregistrement est resté très faible du début à la fin."
+          }
+        }
+      }
+    },
+    "quality.mediaPlaying": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A television or music was playing for part of the night."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une télévision ou de la musique jouait pendant une partie de la nuit."
+          }
+        }
+      }
+    },
+    "quality.microphoneObstructed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Something may have covered the microphone. Leave the bottom edge clear."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quelque chose a peut-être couvert le micro. Laisse la tranche du bas dégagée."
+          }
+        }
+      }
+    },
+    "quality.phoneTooFar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your iPhone may have been too far from the bed. Aim for under a metre."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ton iPhone était peut-être trop loin du lit. Vise moins d'un mètre."
+          }
+        }
+      }
+    },
+    "quality.sessionInterrupted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recording stopped and resumed at least once during the night."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'enregistrement s'est arrêté puis a repris au moins une fois pendant la nuit."
+          }
+        }
+      }
+    },
+    "quality.shortSession": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The session was too short for patterns to emerge."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La session était trop courte pour qu'une tendance se dégage."
+          }
+        }
+      }
+    },
     "report.analyse": {
       "extractionState": "manual",
       "localizations": {

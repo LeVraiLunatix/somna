@@ -33,6 +33,21 @@ enum AudioConstants {
     /// Offered in Settings for users who would rather spend the disk space.
     static let highQualityBitRate: Int = 64_000
 
+    /// How long Somna waits before trying to resume an interrupted recording
+    /// on its own.
+    ///
+    /// `AVAudioSession.interruptionNotification` with `.ended` is not
+    /// guaranteed. iOS routinely omits it when the interruption resolves while
+    /// the app is in the background — which for an overnight recorder is every
+    /// interruption. An engine that only resumes on that notification therefore
+    /// records until the first interruption and then nothing, while the session
+    /// stays alive and the report says the night was captured.
+    ///
+    /// Twenty seconds: short enough that a night loses seconds rather than
+    /// hours, long enough not to spin against a resource genuinely held by
+    /// something else.
+    static let resumeRetryInterval: Duration = .seconds(20)
+
     /// How much captured audio passes between manifest rewrites.
     ///
     /// The manifest used to be written only when a segment closed — every ten

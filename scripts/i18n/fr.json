@@ -365,7 +365,14 @@
     "error.exportEmpty.title": "Il n'y a plus d'audio à exporter",
     "error.exportEmpty.suggestion": "L'audio brut est conservé selon la durée réglée dans les Réglages. Les extraits des événements sont toujours là.",
     "common.cancel": "Annuler",
-    "common.ok": "OK"
+    "common.ok": "OK",
+    "quality.phoneTooFar": "Ton iPhone était peut-être trop loin du lit. Vise moins d'un mètre.",
+    "quality.microphoneObstructed": "Quelque chose a peut-être couvert le micro. Laisse la tranche du bas dégagée.",
+    "quality.highConstantNoise": "Un bruit constant, un ventilateur par exemple, a masqué les sons plus discrets.",
+    "quality.mediaPlaying": "Une télévision ou de la musique jouait pendant une partie de la nuit.",
+    "quality.levelTooLow": "L'enregistrement est resté très faible du début à la fin.",
+    "quality.sessionInterrupted": "L'enregistrement s'est arrêté puis a repris au moins une fois pendant la nuit.",
+    "quality.shortSession": "La session était trop courte pour qu'une tendance se dégage."
   },
   "infoplist": {
     "NSMicrophoneUsageDescription": {

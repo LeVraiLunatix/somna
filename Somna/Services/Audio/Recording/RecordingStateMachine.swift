@@ -40,6 +40,14 @@ enum RecordingEvent: Equatable, Sendable {
     /// a guarantee: the flag is routinely absent after long interruptions such as
     /// a phone call, even when resuming would work.
     case interruptionEnded(shouldResume: Bool)
+    /// Somna's own retry timer, not an iOS notification.
+    ///
+    /// `interruptionEnded` is not guaranteed to arrive. iOS routinely omits it
+    /// for an interruption that resolves while the app is in the background —
+    /// which, for an app that records overnight, is every interruption. Waiting
+    /// for it means a night that stops at its first phone call and stays stopped
+    /// until morning.
+    case resumeAttemptDue
     case engineResumed
     /// The media daemon restarted; every audio object is now invalid.
     case mediaServicesReset(at: Date)
@@ -76,7 +84,8 @@ enum RecordingStateMachine {
              (.recording, .interruptionBegan(let date)):
             return .interrupted(since: date)
 
-        case (.interrupted(let since), .interruptionEnded):
+        case (.interrupted(let since), .interruptionEnded),
+             (.interrupted(let since), .resumeAttemptDue):
             // Somna attempts to resume even when iOS omits the `shouldResume`
             // hint. The worst case is a restart that fails, which is recoverable;
             // honouring a hint that is routinely absent would abandon nights that

@@ -58,23 +58,35 @@ extension RecordingQuality {
 }
 
 extension RecordingIssue {
-    /// English source string; localised in Phase 4 alongside the event catalogue.
+    /// What went wrong with the audio, in words.
+    ///
+    /// These were left as bare English literals with a note saying they would be
+    /// localised in Phase 4. They were not, and they are among the few strings a
+    /// user is guaranteed to read on a night that went badly — so a French
+    /// tester whose night failed got the explanation in English.
     var advice: String {
         switch self {
         case .phoneTooFar:
-            "Your iPhone may have been too far from the bed. Aim for under a metre."
+            String(localized: "quality.phoneTooFar",
+                   defaultValue: "Your iPhone may have been too far from the bed. Aim for under a metre.")
         case .microphoneObstructed:
-            "Something may have covered the microphone. Leave the bottom edge clear."
+            String(localized: "quality.microphoneObstructed",
+                   defaultValue: "Something may have covered the microphone. Leave the bottom edge clear.")
         case .highConstantNoise:
-            "A steady noise, such as a fan, masked quieter sounds."
+            String(localized: "quality.highConstantNoise",
+                   defaultValue: "A steady noise, such as a fan, masked quieter sounds.")
         case .mediaPlaying:
-            "A television or music was playing for part of the night."
+            String(localized: "quality.mediaPlaying",
+                   defaultValue: "A television or music was playing for part of the night.")
         case .levelTooLow:
-            "The recording was very quiet throughout."
+            String(localized: "quality.levelTooLow",
+                   defaultValue: "The recording was very quiet throughout.")
         case .sessionInterrupted:
-            "Recording stopped and resumed at least once during the night."
+            String(localized: "quality.sessionInterrupted",
+                   defaultValue: "Recording stopped and resumed at least once during the night.")
         case .shortSession:
-            "The session was too short for patterns to emerge."
+            String(localized: "quality.shortSession",
+                   defaultValue: "The session was too short for patterns to emerge.")
         }
     }
 }

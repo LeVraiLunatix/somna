@@ -47,6 +47,48 @@ struct RecordingStateMachineTests {
         #expect(final == .recording)
     }
 
+    /// The failure this exists to prevent, stated as a test.
+    ///
+    /// `interruptionEnded` is not guaranteed to arrive — iOS routinely omits it
+    /// when the interruption resolves while the app is in the background, which
+    /// for an overnight recorder is every interruption. A real night stopped
+    /// after ten minutes and stayed stopped for the remaining eight hours, while
+    /// the session went on looking alive.
+    @Test("A recording resumes on its own timer when iOS never says the interruption ended")
+    func resumesWithoutAnyNotification() {
+        let final = run(from: .recording, [
+            .interruptionBegan(at: start),
+            // No `interruptionEnded` at all — only Somna's own retry.
+            .resumeAttemptDue,
+            .engineResumed,
+        ])
+
+        #expect(final == .recording)
+    }
+
+    /// A retry that fails must leave the night resumable rather than end it,
+    /// and must keep the *original* gap: a night interrupted at 04:40 and
+    /// resumed at 06:00 has an eighty-minute hole, not a hole starting at
+    /// whichever retry happened to succeed.
+    @Test("A failed retry returns to the original gap")
+    func failedRetryKeepsTheOriginalGap() {
+        let final = run(from: .recording, [
+            .interruptionBegan(at: start),
+            .resumeAttemptDue,
+            .failure(.inputUnavailable),
+            .resumeAttemptDue,
+        ])
+
+        #expect(final == .resuming(since: start))
+    }
+
+    /// The timer keeps firing; a tick that arrives once capture is back must do
+    /// nothing rather than restart the engine under a running recording.
+    @Test("A retry that arrives while recording is ignored")
+    func retryWhileRecordingIsIgnored() {
+        #expect(RecordingStateMachine.next(from: .recording, on: .resumeAttemptDue) == nil)
+    }
+
     /// iOS omits the `shouldResume` hint after long interruptions such as a
     /// phone call, even when resuming would work. Honouring the absent flag
     /// would abandon nights that could have continued.

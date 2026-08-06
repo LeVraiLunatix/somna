@@ -37,6 +37,10 @@ actor AudioRecordingEngine: AudioRecording {
     private var currentLevel: Float = 0
     private var bytesWritten: Int64 = 0
 
+    /// Retries resuming while interrupted, because iOS may never say the
+    /// interruption ended.
+    private var resumeWatchdog: Task<Void, Never>?
+
     /// The `recordedDuration` at the last manifest rewrite.
     private var lastManifestDuration: TimeInterval = 0
 
@@ -166,6 +170,39 @@ actor AudioRecordingEngine: AudioRecording {
 
         state = next
         publishStatus()
+
+        // The watchdog exists only while a recording is interrupted, and only
+        // for as long as resuming is still meaningful.
+        if case .interrupted = next {
+            startResumeWatchdog()
+        } else {
+            resumeWatchdog?.cancel()
+            resumeWatchdog = nil
+        }
+    }
+
+    /// Tries to resume on Somna's own schedule.
+    ///
+    /// The engine used to resume only on `interruptionEnded`. A night whose
+    /// interruption never produced that notification stayed interrupted until
+    /// morning while the session went on looking alive — eight hours of a report
+    /// built on the ten minutes captured before the phone rang.
+    private func startResumeWatchdog() {
+        guard resumeWatchdog == nil else { return }
+
+        resumeWatchdog = Task { [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(for: AudioConstants.resumeRetryInterval)
+                guard !Task.isCancelled, let self else { return }
+                await self.retryResume()
+            }
+        }
+    }
+
+    private func retryResume() async {
+        guard case .interrupted = state else { return }
+        apply(.resumeAttemptDue)
+        await attemptResume()
     }
 
     private func publishStatus() {
@@ -409,6 +446,8 @@ actor AudioRecordingEngine: AudioRecording {
     private func teardown() async {
         eventTask?.cancel()
         eventTask = nil
+        resumeWatchdog?.cancel()
+        resumeWatchdog = nil
 
         engine.inputNode.removeTap(onBus: 0)
         engine.stop()
