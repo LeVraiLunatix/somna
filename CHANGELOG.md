@@ -10,6 +10,23 @@ alimentent automatiquement les notes de version de la source AltStore (Phase 7).
 
 ## [Non publié]
 
+### Corrigé
+- Démarrer une nuit ne coupe plus la musique en cours. La session d'enregistrement
+  déclare désormais `.mixWithOthers`, ce qui impose la catégorie `.playAndRecord` :
+  l'option qui dit « ne fais taire personne » n'est acceptée que sur celle-là.
+- Les AirPods restent en pleine qualité pendant l'enregistrement. Seul
+  `.allowBluetoothA2DP` est autorisé, jamais `.allowBluetooth` — ce dernier est le
+  profil mains-libres, qui aurait fait sonner la musique comme un appel.
+- Le micro intégré du téléphone est forcé en entrée. Sans cela, une nuit passée avec
+  des écouteurs aurait été enregistrée depuis les écouteurs, par un micro qui quitte
+  la chambre en même temps que celui qui le porte.
+
+---
+
+## [0.1.0] — 2026-08-05
+
+Première bêta publique.
+
 ### Ajouté
 - Phase 1 — Analyse de faisabilité complète : contraintes iOS de l'enregistrement nocturne,
   capacités réelles du microphone, stratégies audio / ML / stockage / distribution, registre des risques.
