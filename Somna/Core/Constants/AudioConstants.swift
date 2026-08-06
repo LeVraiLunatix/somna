@@ -33,6 +33,18 @@ enum AudioConstants {
     /// Offered in Settings for users who would rather spend the disk space.
     static let highQualityBitRate: Int = 64_000
 
+    /// How much captured audio passes between manifest rewrites.
+    ///
+    /// The manifest used to be written only when a segment closed — every ten
+    /// minutes — so a night that ended without a clean stop recovered with
+    /// whatever duration the last rotation had recorded. A night shorter than a
+    /// single segment recovered as **zero**, which the report showed as `0:00`
+    /// beside audio that was plainly on disk.
+    ///
+    /// Fifteen seconds costs a few kilobytes written atomically, against
+    /// knowing within fifteen seconds how much of a night survived a crash.
+    static let manifestInterval: TimeInterval = 15
+
     /// Ten minutes. A crash costs at most one segment, never the night.
     static let segmentDuration: TimeInterval = 10 * 60
 

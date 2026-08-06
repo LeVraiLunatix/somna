@@ -9,10 +9,16 @@ struct SessionView: View {
 
     @Environment(\.somnaPalette) private var palette
 
-    @Environment(\.somna) private var environment
-    @Environment(SessionCommandBus.self) private var commands
     @Environment(\.dismiss) private var dismiss
-    @State private var store: SessionStore?
+
+    /// Owned by the app, not by this screen.
+    ///
+    /// It used to be `@State` here, which tied the running night's state — and,
+    /// worse, the listener for the lock-screen stop button — to whether this
+    /// view happened to be in the hierarchy. Kept optional so the rest of the
+    /// screen reads unchanged.
+    @Environment(SessionStore.self) private var injectedStore
+    private var store: SessionStore? { injectedStore }
 
     var body: some View {
         ZStack {
@@ -23,15 +29,7 @@ struct SessionView: View {
         .navigationTitle(Text(String(localized: "session.title", defaultValue: "Tonight")))
         .navigationBarBackButtonHidden(store?.isRunning == true)
         .interactiveDismissDisabled(store?.isRunning == true)
-        .task {
-            if store == nil { store = SessionStore(environment: environment) }
-            await store?.runPreflight()
-        }
-        // Its own task: the command stream never ends, so anything sequenced
-        // after it in the same task would never run.
-        .task(id: store == nil) {
-            await store?.observeCommands(commands)
-        }
+        .task { await store?.runPreflight() }
     }
 
     @ViewBuilder

@@ -37,6 +37,9 @@ actor AudioRecordingEngine: AudioRecording {
     private var currentLevel: Float = 0
     private var bytesWritten: Int64 = 0
 
+    /// The `recordedDuration` at the last manifest rewrite.
+    private var lastManifestDuration: TimeInterval = 0
+
     /// The `recordedDuration` at the last status publish.
     ///
     /// Measured in captured audio rather than wall-clock time: it advances only
@@ -92,6 +95,7 @@ actor AudioRecordingEngine: AudioRecording {
         gaps = []
         recordedDuration = 0
         lastPublishedDuration = 0
+        lastManifestDuration = 0
         bytesWritten = 0
 
         apply(.start)
@@ -294,6 +298,14 @@ actor AudioRecordingEngine: AudioRecording {
                 lastPublishedDuration = recordedDuration
                 publishStatus()
             }
+
+            // Recovery reads the manifest, so a night is only recoverable up to
+            // the last time one was written. Tying that to segment rotation made
+            // the first ten minutes of every night unrecoverable.
+            if recordedDuration - lastManifestDuration >= AudioConstants.manifestInterval {
+                lastManifestDuration = recordedDuration
+                try? writeInterimManifest()
+            }
         } catch {
             apply(.failure(.engineFailedToStart))
             return
@@ -345,10 +357,10 @@ actor AudioRecordingEngine: AudioRecording {
             completedSegments.append(segment)
             bytesWritten += segment.fileSize
 
-            // Written after every segment rather than at the end, because the
-            // situations worth recovering from are precisely those where the end
-            // never arrives.
-            try? appendToManifest(segment)
+            // Rewritten as each segment closes, on top of the periodic writes,
+            // so the newly completed segment is in it immediately rather than up
+            // to fifteen seconds later.
+            try? writeInterimManifest()
         }
 
         self.writer = nil
@@ -363,7 +375,8 @@ actor AudioRecordingEngine: AudioRecording {
 
     // MARK: - Manifest
 
-    private func appendToManifest(_ segment: AudioSegment) throws {
+    /// The manifest as it stands mid-night.
+    private func writeInterimManifest() throws {
         guard let sessionID, let startDate else { return }
 
         let manifest = NightManifest(

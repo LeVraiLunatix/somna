@@ -16,6 +16,12 @@ struct SomnaApp: App {
     /// Created once, here, so every screen observes the same settings.
     @State private var settings: AppSettings
 
+    /// Lives as long as the app does.
+    ///
+    /// A running night outlives whatever screen started it — the phone is
+    /// locked, the user is asleep — so its state cannot belong to a view.
+    @State private var session: SessionStore
+
     /// One bus for the whole app, so the lock-screen button reaches the running
     /// session wherever the user happens to have left the UI.
     @State private var commands = SessionCommandBus()
@@ -58,6 +64,7 @@ struct SomnaApp: App {
                 appIcon: environment.appIcon
             )
         )
+        _session = State(initialValue: SessionStore(environment: environment))
     }
 
     var body: some Scene {
@@ -73,6 +80,14 @@ struct SomnaApp: App {
             .environment(\.somna, environment)
             .environment(settings)
             .environment(commands)
+            .environment(session)
+            // Subscribed here rather than from the session screen: the
+            // lock-screen stop button is pressed with no screen on display, and
+            // a listener that lives on a view is a listener that is not there
+            // when it matters. The command was silently dropped, the night ran
+            // on unstopped, and the report showed 0:00 beside audio that was on
+            // disk.
+            .task { await session.observeCommands(commands) }
             .task {
                 guard notificationDelegate == nil else { return }
                 let bus = commands
