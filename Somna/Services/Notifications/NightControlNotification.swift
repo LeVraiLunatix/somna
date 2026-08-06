@@ -15,11 +15,15 @@ import UserNotifications
 ///
 /// **Why not Now Playing.** `MPRemoteCommandCenter` would put a stop button on
 /// the lock screen with no extension at all — but only for an app iOS considers
-/// to be playing, which means moving the recording session from `.record` to
-/// `.playAndRecord`. Somna would then occupy the Now Playing slot all night:
-/// it would take over the headphone play/pause button and displace whatever the
-/// user actually fell asleep to. Declaring itself a media player to borrow a
-/// media player's button is the kind of half-truth this app does not tell.
+/// to be *the* app that is playing. The recording session is already
+/// `.playAndRecord`; what stands in the way is `.mixWithOthers`, which is
+/// precisely the flag that lets someone's music keep going while Somna listens.
+/// Becoming the Now Playing app means dropping it, taking the slot for the whole
+/// night, capturing the headphone play/pause button, and displacing whatever the
+/// user fell asleep to — the exact complaint that made `.mixWithOthers` necessary
+/// in the first place. Declaring itself a media player to borrow a media
+/// player's button is the kind of half-truth this app does not tell, and here it
+/// would cost the feature it was meant to sit beside.
 ///
 /// A notification action costs nothing, is handled in the background, and needs
 /// no unlock. It is less pretty than a Live Activity and it is honest about what

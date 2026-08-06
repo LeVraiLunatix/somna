@@ -11,22 +11,65 @@ import OSLog
 struct AudioSessionController: Sendable {
 
     /// Configures and activates the session for an overnight recording.
+    ///
+    /// Three decisions here, each of which was wrong once.
+    ///
+    /// **`.playAndRecord` rather than `.record`, for `.mixWithOthers`.** Somna
+    /// still plays nothing during a session. But starting a `.record` session
+    /// stops whatever else is playing, and `.mixWithOthers` — the option that
+    /// says "do not silence anyone" — is only accepted on `.playAndRecord`,
+    /// `.playback` and `.multiRoute`. Falling asleep to music is not an edge
+    /// case; an app that kills it at the moment you settle is one people stop
+    /// opening. The wider category is the price of not doing that.
+    ///
+    /// **`.allowBluetoothA2DP` and deliberately *not* `.allowBluetooth`.** The
+    /// latter is the hands-free profile — the one used for phone calls. Allowing
+    /// it lets iOS pull AirPods into HFP, which is mono and roughly telephone
+    /// quality: the music someone fell asleep to would suddenly sound like a
+    /// call. A2DP alone keeps playback at full quality.
+    ///
+    /// **`.default` mode rather than `.measurement`:** unlike calibration, an
+    /// eight-hour recording benefits from the input processing iOS applies, and
+    /// the levels are compared against the calibration floor rather than used as
+    /// absolute measurements.
     func activateForRecording() throws {
         let session = AVAudioSession.sharedInstance()
 
         do {
-            // `.record` rather than `.playAndRecord`: Somna plays nothing during
-            // a session, and the narrower category is less likely to be preempted.
-            //
-            // `.default` mode rather than `.measurement`: unlike calibration,
-            // an eight-hour recording benefits from the input processing iOS
-            // applies, and the levels are compared against the calibration floor
-            // rather than used as absolute measurements.
-            try session.setCategory(.record, mode: .default, options: [])
+            try session.setCategory(
+                .playAndRecord,
+                mode: .default,
+                options: [.mixWithOthers, .allowBluetoothA2DP]
+            )
             try session.setActive(true)
         } catch {
             Log.audio.error("Recording session could not be activated")
             throw AudioError.sessionUnavailable
+        }
+
+        preferBuiltInMicrophone(session)
+    }
+
+    /// Records the room, not the ear.
+    ///
+    /// With headphones connected, iOS would otherwise be free to take its input
+    /// from them — so a night spent wearing AirPods would be a recording of the
+    /// inside of someone's ear canal, from a microphone that leaves the bedroom
+    /// whenever they do. The phone is the thing sitting still beside the bed all
+    /// night, and its microphone is the one every calibration was measured
+    /// against.
+    ///
+    /// Failure is logged and tolerated: recording from a less good microphone
+    /// beats not recording.
+    private func preferBuiltInMicrophone(_ session: AVAudioSession) {
+        guard let builtIn = session.availableInputs?.first(where: { $0.portType == .builtInMic }) else {
+            Log.audio.info("No built-in microphone offered; keeping the default input")
+            return
+        }
+        do {
+            try session.setPreferredInput(builtIn)
+        } catch {
+            Log.audio.error("Could not select the built-in microphone; keeping the default input")
         }
     }
 
