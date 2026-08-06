@@ -7,14 +7,28 @@ import OSLog
 /// anything anywhere itself — the user decides where an export goes, which is
 /// the whole point of offering one in a local-first app.
 ///
-/// **Whole recordings are never exported.** Sharing eight hours of a bedroom is
-/// a privacy decision with consequences for anyone else who was in the room, and
-/// it is not one to make casually from a share sheet. Reports, event data and
-/// individually chosen clips are.
+/// **A whole night's audio can be exported, behind a confirmation.** This used
+/// to be refused outright, on the grounds that sharing eight hours of a bedroom
+/// is a privacy decision with consequences for anyone else who was in the room.
+/// That reasoning was right about the risk and wrong about who decides: the
+/// recording is the user's, and an app that keeps hours of their audio for a
+/// week while offering no way to reach it has taken something without saying so.
+///
+/// So the refusal became a confirmation. The screen says plainly how long the
+/// recording is and that anyone audible in the room is in it, and the export
+/// happens only after that is acknowledged — deliberate rather than casual,
+/// which was the defensible part of the original rule.
 protocol NightExporting: Sendable {
     func exportJSON(session: NightSession, events: [NightEvent]) throws -> URL
     func exportCSV(session: NightSession, events: [NightEvent]) throws -> URL
     func summaryText(session: NightSession) -> String
+
+    /// The night's raw audio, as a single archive of its segments.
+    ///
+    /// A night is stored as ten-minute segments — around 48 files for a full
+    /// night — so handing over a folder as one archive is the only form that
+    /// survives a share sheet intact.
+    func exportAudio(session: NightSession) throws -> URL
 }
 
 struct ExportService: NightExporting {
@@ -87,7 +101,54 @@ struct ExportService: NightExporting {
         return "\(date)\n\n\(body)\n\n\(disclaimer)"
     }
 
+    func exportAudio(session: NightSession) throws -> URL {
+        let segments = files.segmentsDirectory(for: session.id)
+
+        let contents = (try? FileManager.default.contentsOfDirectory(
+            at: segments,
+            includingPropertiesForKeys: nil
+        )) ?? []
+        let audio = contents.filter { $0.pathExtension == "m4a" }
+
+        // An empty export is worse than a refused one: it looks like the night
+        // was silent rather than like there is nothing to give.
+        guard !audio.isEmpty else { throw SomnaError.exportEmpty }
+
+        return try zip(segments, named: "somna-\(fileStamp(session.startDate))-audio.zip")
+    }
+
     // MARK: - Helpers
+
+    /// Zips a directory using the coordinator's `.forUploading` option.
+    ///
+    /// This is the system's own archiver — no dependency, and it produces the
+    /// zip iOS itself would. The coordinator hands back a temporary URL that is
+    /// deleted when the accessor returns, so the archive is copied out before
+    /// then rather than shared from under itself.
+    private func zip(_ directory: URL, named name: String) throws -> URL {
+        try FileManager.default.createDirectory(at: exportDirectory, withIntermediateDirectories: true)
+        let destination = exportDirectory.appending(path: name)
+        try? FileManager.default.removeItem(at: destination)
+
+        var coordinationError: NSError?
+        var copyError: (any Error)?
+
+        NSFileCoordinator().coordinate(
+            readingItemAt: directory,
+            options: [.forUploading],
+            error: &coordinationError
+        ) { temporary in
+            do {
+                try FileManager.default.copyItem(at: temporary, to: destination)
+            } catch {
+                copyError = error
+            }
+        }
+
+        if let coordinationError { throw coordinationError }
+        if let copyError { throw copyError }
+        return destination
+    }
 
     private func write(_ data: Data, named name: String) throws -> URL {
         try FileManager.default.createDirectory(at: exportDirectory, withIntermediateDirectories: true)

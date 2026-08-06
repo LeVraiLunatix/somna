@@ -52,6 +52,39 @@ final class NightReportStore {
         return []
     }
 
+    // MARK: - Export
+
+    /// The file waiting to be handed to the share sheet, if any.
+    var exportedFile: URL?
+    var isExporting = false
+    var exportError: SomnaError?
+    /// Set when the user asks for the audio, cleared once they decide.
+    var isConfirmingAudioExport = false
+
+    func exportAudio() async {
+        guard let session, !isExporting else { return }
+        isExporting = true
+        defer { isExporting = false }
+        do {
+            exportedFile = try environment.export.exportAudio(session: session)
+        } catch let error as SomnaError {
+            exportError = error
+        } catch {
+            exportError = .corruptedFile
+        }
+    }
+
+    func exportData() async {
+        guard let session, !isExporting else { return }
+        isExporting = true
+        defer { isExporting = false }
+        do {
+            exportedFile = try environment.export.exportJSON(session: session, events: events)
+        } catch {
+            exportError = .corruptedFile
+        }
+    }
+
     /// A night long enough to analyse, that has not been analysed yet.
     var awaitsAnalysis: Bool {
         guard let session else { return false }
@@ -132,12 +165,99 @@ struct NightReportView: View {
         .accessibilityIdentifier("report.root")
         .navigationTitle(Text(String(localized: "report.title", defaultValue: "Your night")))
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            if let store, store.session != nil {
+                ToolbarItem(placement: .topBarTrailing) { shareMenu(store) }
+            }
+        }
         .task {
             if store == nil {
                 store = NightReportStore(environment: environment, sessionID: sessionID)
             }
             await store?.load()
         }
+    }
+
+    private func shareMenu(_ store: NightReportStore) -> some View {
+        @Bindable var store = store
+
+        return Menu {
+            Button {
+                store.isConfirmingAudioExport = true
+            } label: {
+                Label(
+                    String(localized: "report.export.audio", defaultValue: "Export the night's audio"),
+                    systemImage: "waveform"
+                )
+            }
+
+            Button {
+                Task { await store.exportData() }
+            } label: {
+                Label(
+                    String(localized: "report.export.data", defaultValue: "Export the data (JSON)"),
+                    systemImage: "curlybraces"
+                )
+            }
+
+            if let session = store.session {
+                ShareLink(item: environment.export.summaryText(session: session)) {
+                    Label(
+                        String(localized: "report.export.summary", defaultValue: "Share the summary"),
+                        systemImage: "text.quote"
+                    )
+                }
+            }
+        } label: {
+            Label(
+                String(localized: "report.export", defaultValue: "Export"),
+                systemImage: "square.and.arrow.up"
+            )
+        }
+        .disabled(store.isExporting)
+        // The audio is the one export that carries other people's voices, so it
+        // is the one that asks first. The dialog states the length rather than
+        // saying "this is long", because a number is what makes someone pause.
+        .confirmationDialog(
+            Text(String(localized: "report.export.audio.confirm.title",
+                        defaultValue: "Export the whole night?")),
+            isPresented: $store.isConfirmingAudioExport,
+            titleVisibility: .visible
+        ) {
+            Button(String(localized: "report.export.audio.confirm.action",
+                          defaultValue: "Export"), role: .destructive) {
+                Task { await store.exportAudio() }
+            }
+            Button(String(localized: "common.cancel", defaultValue: "Cancel"), role: .cancel) {}
+        } message: {
+            Text(audioExportWarning(store))
+        }
+        .sheet(item: Binding(
+            get: { store.exportedFile.map(ExportedFile.init) },
+            set: { if $0 == nil { store.exportedFile = nil } }
+        )) { file in
+            ShareSheet(url: file.url)
+        }
+        .alert(
+            Text(store.exportError?.errorDescription ?? ""),
+            isPresented: Binding(
+                get: { store.exportError != nil },
+                set: { if !$0 { store.exportError = nil } }
+            ),
+            presenting: store.exportError
+        ) { _ in
+            Button(String(localized: "common.ok", defaultValue: "OK"), role: .cancel) {}
+        } message: { error in
+            Text(error.recoverySuggestion ?? "")
+        }
+    }
+
+    private func audioExportWarning(_ store: NightReportStore) -> String {
+        let length = (store.session?.recordedDuration ?? 0).formattedDuration()
+        return String(
+            localized: "report.export.audio.confirm.body",
+            defaultValue: "This is \(length) of continuous recording of your room. Anyone who was audible is in it. It leaves Somna only where you send it."
+        )
     }
 
     @ViewBuilder

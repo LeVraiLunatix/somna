@@ -29,6 +29,10 @@ enum SomnaError: Error, Equatable, Sendable {
 
     /// A session ended with too little usable audio to analyse.
     case recordingTooShort(recorded: TimeInterval, minimum: TimeInterval)
+
+    /// An export was asked for a night whose audio is no longer on disk —
+    /// usually because retention removed it.
+    case exportEmpty
 }
 
 extension SomnaError: LocalizedError {
@@ -56,6 +60,9 @@ extension SomnaError: LocalizedError {
         case .recordingTooShort:
             String(localized: "error.tooShort.title",
                    defaultValue: "This session was too short to analyse")
+        case .exportEmpty:
+            String(localized: "error.exportEmpty.title",
+                   defaultValue: "There is no audio left to export")
         }
     }
 
@@ -82,6 +89,9 @@ extension SomnaError: LocalizedError {
         case .recordingTooShort:
             String(localized: "error.tooShort.suggestion",
                    defaultValue: "Somna needs a few minutes of audio before it can detect anything.")
+        case .exportEmpty:
+            String(localized: "error.exportEmpty.suggestion",
+                   defaultValue: "Raw audio is kept for the retention period set in Settings. The event clips are still here.")
         }
     }
 }

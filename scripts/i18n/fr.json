@@ -12,12 +12,10 @@
     "Never use clinical vocabulary here - VocabularyTests guards the English",
     "side, and the same discipline applies to French."
   ],
-
   "translations": {
     "action.back": "Retour",
     "action.continue": "Continuer",
     "action.retry": "Réessayer",
-
     "audio.engineFailed.title": "L'enregistrement n'a pas pu démarrer",
     "audio.engineFailed.suggestion": "Réessaie. Si cela se reproduit, redémarre ton iPhone.",
     "audio.inputUnavailable.title": "Aucune entrée micro disponible",
@@ -26,11 +24,9 @@
     "audio.interrupted.suggestion": "Ce qui a été enregistré avant l'interruption a été conservé.",
     "audio.sessionUnavailable.title": "Somna n'a pas pu accéder au micro",
     "audio.sessionUnavailable.suggestion": "Une autre app utilise peut-être le micro. Ferme-la et réessaie.",
-
     "calibration.rating.excellent": "Emplacement excellent",
     "calibration.rating.good": "Bon emplacement",
     "calibration.rating.improve": "Emplacement à améliorer",
-
     "error.corruptedFile.title": "Un enregistrement n'a pas pu être lu",
     "error.corruptedFile.suggestion": "Le reste de la nuit n'est pas affecté. Cet extrait a été ignoré.",
     "error.environment.title": "Somna n'est pas encore prête",
@@ -45,7 +41,6 @@
     "error.storage.suggestion": "Libère de l'espace, ou supprime d'anciennes nuits depuis les Réglages.",
     "error.tooShort.title": "Cette session était trop courte pour être analysée",
     "error.tooShort.suggestion": "Somna a besoin de quelques minutes d'audio avant de pouvoir détecter quoi que ce soit.",
-
     "home.calmnessNote": "La tranquillité reflète le calme sonore de l'enregistrement. Ce n'est pas une mesure de ton sommeil.",
     "home.diagnostics": "Diagnostics",
     "home.first.title": "Ta première nuit",
@@ -57,7 +52,6 @@
     "home.start": "Démarrer ce soir",
     "home.stat.calmness": "Tranquillité",
     "home.stat.recorded": "Enregistré",
-
     "onboarding.calibration.title": "Mesurer ta chambre",
     "onboarding.calibration.subtitle": "Quinze secondes de silence, pour que Somna sache à quoi ressemble le calme chez toi.",
     "onboarding.calibration.instruction": "Pose ton iPhone là où il passera la nuit, puis reste silencieux.",
@@ -67,13 +61,11 @@
     "onboarding.calibration.needsMic": "La calibration a besoin du micro. Tu pourras la faire plus tard depuis les Réglages.",
     "onboarding.finish": "Commencer à utiliser Somna",
     "onboarding.skip": "Plus tard",
-
     "onboarding.how.title": "Comment ça marche",
     "onboarding.how.subtitle": "Trois choses, une fois par nuit.",
     "onboarding.how.step1": "Lance Somna avant de t'endormir.",
     "onboarding.how.step2": "Laisse ton iPhone près du lit, branché.",
     "onboarding.how.step3": "Découvre ta nuit au réveil.",
-
     "onboarding.limits.title": "Ce que Somna peut et ne peut pas faire",
     "onboarding.limits.subtitle": "À savoir avant de lui faire confiance.",
     "onboarding.limits.can": "Elle détecte des sons probables : ronflements, toux, paroles, portes, pluie.",
@@ -82,13 +74,11 @@
     "onboarding.limits.noMedical": "Ce n'est pas un dispositif médical et elle ne pose aucun diagnostic.",
     "onboarding.limits.mistakes": "Elle se trompe parfois. Chaque événement garde son audio pour que tu puisses vérifier.",
     "onboarding.limits.sharedRoom": "Si tu partages ta chambre, Somna ne peut pas savoir qui a fait un son. Elle dira « ronflement détecté », jamais « tu as ronflé ».",
-
     "onboarding.mic.title": "Somna a besoin du micro",
     "onboarding.mic.subtitle": "C'est le seul capteur qu'elle utilise.",
     "onboarding.mic.allow": "Autoriser l'accès au micro",
     "onboarding.mic.granted": "Accès au micro autorisé",
     "onboarding.mic.denied": "Sans le micro, Somna ne peut pas enregistrer de nuit. Tu peux toujours parcourir les nuits déjà enregistrées.",
-
     "onboarding.notifications.title": "Des rappels discrets",
     "onboarding.notifications.subtitle": "Entièrement facultatifs. Somna fonctionne sans.",
     "onboarding.notifications.evening": "Un rappel le soir, si tu en veux un.",
@@ -96,36 +86,29 @@
     "onboarding.notifications.allow": "Autoriser les notifications",
     "onboarding.notifications.on": "Les notifications sont activées.",
     "onboarding.notifications.off": "Les notifications sont désactivées. Tu pourras les activer plus tard dans les Réglages.",
-
     "onboarding.privacy.title": "Tout reste sur cet iPhone",
     "onboarding.privacy.subtitle": "Aucun compte, aucun serveur, aucun envoi.",
     "onboarding.privacy.local": "Les enregistrements sont stockés dans le dossier de Somna, chiffrés par iOS.",
     "onboarding.privacy.retention": "L'audio brut est supprimé au bout de sept jours par défaut. C'est toi qui choisis.",
     "onboarding.privacy.noTranscription": "Somna ne transcrit jamais ce qui est dit — ni par toi, ni par personne d'autre.",
     "onboarding.privacy.deletion": "Tu peux tout effacer à tout moment depuis les Réglages.",
-
     "onboarding.welcome.title": "Somna",
     "onboarding.welcome.tagline": "Chaque nuit raconte une histoire.",
     "onboarding.welcome.body": "Somna écoute pendant que tu dors et construit une chronologie de ce qui s'est passé, pour que tu puisses l'écouter toi-même au réveil.",
-
     "permission.granted": "Autorisé",
     "permission.denied": "Bloqué dans les Réglages iOS",
     "permission.off": "Désactivé",
     "permission.provisional": "Livraison discrète",
     "permission.undetermined": "Pas encore demandé",
-
     "action.done": "Terminé",
-
     "analysis.classifier.title": "Somna n'a pas pu analyser cette nuit",
     "analysis.classifier.suggestion": "Ton enregistrement est intact. Réessaie l'analyse depuis la page de la nuit.",
     "analysis.noAudio.title": "L'audio de cette nuit n'a pas pu être lu",
     "analysis.noAudio.suggestion": "Les fichiers ont peut-être été supprimés. Rien d'autre sur l'appareil n'est affecté.",
     "analysis.cancelled.title": "L'analyse a été arrêtée",
     "analysis.cancelled.suggestion": "Tu peux la relancer quand tu veux.",
-
     "session.analysing": "Lecture de ta nuit…",
     "session.analysing.detail": "Somna repasse sur les moments où elle a entendu quelque chose. Cela prend une à deux minutes.",
-
     "session.title": "Cette nuit",
     "session.prepare.title": "Avant de dormir",
     "session.prepare.body": "Somna écoutera jusqu'à ce que tu l'arrêtes. L'enregistrement continue écran verrouillé.",
@@ -139,7 +122,6 @@
     "session.state.interrupted": "Suspendu par iOS",
     "session.interrupted": "Interrompu — Somna tente de reprendre",
     "session.finished.title": "Nuit enregistrée",
-
     "session.check.microphone": "Micro",
     "session.check.microphone.ok": "Autorisé",
     "session.check.microphone.blocked": "Bloqué — autorise-le dans les Réglages iOS",
@@ -155,14 +137,11 @@
     "session.check.calibration.missing": "Pas faite — la détection sera moins fiable",
     "session.check.placement": "Placement",
     "session.check.placement.detail": "Sur une surface stable, à moins d'un mètre du lit, micro dégagé.",
-
     "summary.overallCalm": "Ta nuit est restée globalement calme.",
     "summary.nothingDetected": "Somna n'a rien détecté du tout. Soit la nuit a été remarquablement calme, soit le micro ne captait pas grand-chose.",
     "summary.qualityUnusable": "L'enregistrement est trop dégradé pour en tirer quoi que ce soit. Cela ne dit rien de ta nuit — seulement de l'audio.",
     "summary.tooShort": "Cette session était trop courte pour que Somna détecte quoi que ce soit.",
-
     "home.openNight": "Ouvre le rapport complet de cette nuit",
-
     "player.close": "Fermer le lecteur",
     "player.play": "Lire",
     "player.pause": "Pause",
@@ -171,7 +150,6 @@
     "player.forward5": "Avancer de 5 secondes",
     "player.rate": "Vitesse",
     "player.progress": "Position de lecture",
-
     "report.title": "Ta nuit",
     "report.loading": "Ouverture de ta nuit…",
     "report.statistics": "Ce que Somna a entendu",
@@ -193,7 +171,6 @@
     "report.stat.calmest": "Période la plus calme",
     "report.stat.asleep": "Probablement endormi vers",
     "report.stat.awake": "Probablement réveillé vers",
-
     "timeline.title": "Chronologie",
     "timeline.loading": "Chargement de ta nuit…",
     "timeline.empty.title": "Rien n'a été détecté",
@@ -210,14 +187,11 @@
     "timeline.filter.speech": "Paroles",
     "timeline.filter.environment": "Autour de toi",
     "timeline.filter.favourites": "Enregistrés",
-
     "action.cancel": "Annuler",
-
     "tab.home": "Cette nuit",
     "tab.history": "Nuits",
     "tab.trends": "Tendances",
     "tab.settings": "Réglages",
-
     "history.title": "Nuits",
     "history.loading": "Chargement…",
     "history.empty.title": "Aucune nuit pour l'instant",
@@ -234,14 +208,12 @@
     "history.query.quietest": "Plus calmes d'abord",
     "history.query.interrupted": "Interrompues",
     "history.query.saved": "Favoris",
-
     "notification.evening.title": "Somna est prête pour cette nuit",
     "notification.evening.body": "Branche ton iPhone et pose-le près du lit quand tu veux.",
     "notification.weekly.title": "Ta semaine en sons",
     "notification.weekly.body": "Tes nuits enregistrées t'attendent dans les Tendances.",
     "notification.ready.title": "Ton rapport de nuit est prêt",
     "notification.ready.body": "Ouvre Somna pour voir ce qu'elle a entendu.",
-
     "settings.title": "Réglages",
     "settings.loading": "Chargement…",
     "settings.section.recording": "Enregistrement",
@@ -297,9 +269,7 @@
     "settings.channel": "Canal",
     "settings.channel.beta": "Bêta privée",
     "settings.medicalDisclaimer": "Somna n'est pas un dispositif médical. Elle ne pose aucun diagnostic, ne détecte pas l'apnée du sommeil et ne mesure pas les phases de sommeil. Si ton sommeil t'inquiète, parles-en à un médecin.",
-
     "settings.premium": "Ce qui pourrait arriver plus tard",
-
     "trends.title": "Tendances",
     "trends.loading": "Chargement…",
     "trends.noData": "Rien de ce type n'a été détecté sur ces nuits.",
@@ -316,7 +286,6 @@
     "trends.coughs.explanation": "Nombre de toux détectées chaque nuit. Une toux peut passer inaperçue, et d'autres sons peuvent être pris pour une toux.",
     "trends.coverage.title": "Part réellement captée",
     "trends.coverage.explanation": "La part de chaque session que Somna a réussi à enregistrer. Une baisse signale des interruptions, et rend les autres chiffres de cette nuit moins fiables.",
-
     "premium.title": "Somna Plus",
     "premium.badge": "Plus tard",
     "premium.intro": "Rien de tout cela n'existe encore, et rien ici ne peut être acheté. C'est une esquisse de ce que Somna pourrait devenir — dis-moi ce que tu utiliserais vraiment.",
@@ -331,9 +300,7 @@
     "premium.backup.title": "Sauvegarde chiffrée",
     "premium.backup.detail": "Tes nuits, chiffrées, sur ton propre iCloud.",
     "premium.freeForever": "L'enregistrement, l'analyse, les rapports et la suppression resteront gratuits. Rien de ce qui fonctionne aujourd'hui ne passera derrière un paiement.",
-
     "export.disclaimer": "Enregistré avec Somna. Somna détecte des sons ; ce n'est pas un dispositif médical et elle ne mesure pas le sommeil.",
-
     "calibration.title": "Calibration de la pièce",
     "calibration.why": "Pourquoi c'est utile",
     "calibration.why.body": "Somna compare chaque son au niveau de calme de ta chambre quand rien ne se passe. Sans cette référence, elle retombe sur des valeurs qui ne correspondent à aucune chambre en particulier, et la détection devient nettement moins fiable.",
@@ -346,39 +313,31 @@
     "calibration.measuring": "Écoute en cours…",
     "calibration.again": "Mesurer à nouveau",
     "calibration.needsMicrophone": "La calibration a besoin du micro. Autorise-le dans les Réglages iOS puis reviens.",
-
     "settings.calibration": "Calibration de la pièce",
     "settings.calibration.never": "Jamais mesurée",
     "settings.calibration.stale": "Plus d'un mois",
     "settings.reportReady": "Me prévenir quand un rapport est prêt",
     "settings.weeklyTime": "L'envoyer le dimanche à",
-
     "alarm.title": "Bonjour",
     "alarm.stop": "Arrêter",
     "settings.wakeAlarm": "Réveil",
     "settings.wakeTime": "Me réveiller à",
     "settings.wakeAlarm.allow": "Autoriser Somna à sonner",
-
     "launch.accessibility": "Somna s'ouvre",
-
     "settings.palette": "Accent",
     "settings.appearance.footer": "L'accent change aussi l'icône de l'app sur ton écran d'accueil. iOS affiche sa propre confirmation quand c'est le cas.",
     "palette.midnight": "Minuit",
     "palette.dawn": "Aube",
     "palette.tide": "Marée",
     "palette.ink": "Encre",
-
-
     "report.notAnalysed.title": "Cette nuit n'a pas encore été lue",
     "report.notAnalysed.body": "L'enregistrement est intact. Somna peut le parcourir maintenant.",
     "report.analyse": "Lire cette nuit",
     "report.analysing": "Lecture en cours…",
     "timeline.empty.tooShort": "Cette session était trop courte pour que Somna détecte quoi que ce soit.",
-
     "notification.night.title": "Somna écoute",
     "notification.night.body": "Appuie longuement sur cette notification pour arrêter la nuit sans déverrouiller.",
     "notification.night.stop": "Arrêter la nuit",
-
     "status.allowMicrophone": "Autoriser l'accès au micro",
     "status.calibration": "Calibration",
     "status.calibrationDone": "Faite",
@@ -396,9 +355,18 @@
     "status.readyDetail": "Garde ton iPhone branché et à moins d'un mètre du lit. Ne balaie pas Somna hors du sélecteur d'apps pendant l'enregistrement.",
     "status.recordable": "De la place pour environ",
     "status.storage": "Stockage",
-    "status.unfinished": "Nuits inachevées"
+    "status.unfinished": "Nuits inachevées",
+    "report.export": "Exporter",
+    "report.export.audio": "Exporter l'audio de la nuit",
+    "report.export.data": "Exporter les données (JSON)",
+    "report.export.summary": "Partager le résumé",
+    "report.export.audio.confirm.title": "Exporter la nuit entière ?",
+    "report.export.audio.confirm.action": "Exporter",
+    "error.exportEmpty.title": "Il n'y a plus d'audio à exporter",
+    "error.exportEmpty.suggestion": "L'audio brut est conservé selon la durée réglée dans les Réglages. Les extraits des événements sont toujours là.",
+    "common.cancel": "Annuler",
+    "common.ok": "OK"
   },
-
   "infoplist": {
     "NSMicrophoneUsageDescription": {
       "en": "Somna listens to the sounds of your night so it can build a timeline of what happened while you slept. Audio never leaves your iPhone.",
@@ -409,22 +377,39 @@
       "fr": "Somna fait sonner le réveil que tu as réglé, et met fin à l'enregistrement de la nuit quand il sonne."
     }
   },
-
   "dynamic": {
     "summary.overallActive": {
       "plural": true,
-      "en": { "one": "It was a busy night, with one event picked up.", "other": "It was a busy night, with %lld events picked up." },
-      "fr": { "one": "La nuit a été agitée, avec un événement détecté.", "other": "La nuit a été agitée, avec %lld événements détectés." }
+      "en": {
+        "one": "It was a busy night, with one event picked up.",
+        "other": "It was a busy night, with %lld events picked up."
+      },
+      "fr": {
+        "one": "La nuit a été agitée, avec un événement détecté.",
+        "other": "La nuit a été agitée, avec %lld événements détectés."
+      }
     },
     "summary.coughs": {
       "plural": true,
-      "en": { "one": "One cough was detected.", "other": "%lld coughs were detected." },
-      "fr": { "one": "Une toux a été détectée.", "other": "%lld toux ont été détectées." }
+      "en": {
+        "one": "One cough was detected.",
+        "other": "%lld coughs were detected."
+      },
+      "fr": {
+        "one": "Une toux a été détectée.",
+        "other": "%lld toux ont été détectées."
+      }
     },
     "summary.interrupted": {
       "plural": true,
-      "en": { "one": "Recording was interrupted once, so part of the night was not captured.", "other": "Recording was interrupted %lld times, so parts of the night were not captured." },
-      "fr": { "one": "L'enregistrement a été interrompu une fois, une partie de la nuit n'a donc pas été captée.", "other": "L'enregistrement a été interrompu %lld fois, des parties de la nuit n'ont donc pas été captées." }
+      "en": {
+        "one": "Recording was interrupted once, so part of the night was not captured.",
+        "other": "Recording was interrupted %lld times, so parts of the night were not captured."
+      },
+      "fr": {
+        "one": "L'enregistrement a été interrompu une fois, une partie de la nuit n'a donc pas été captée.",
+        "other": "L'enregistrement a été interrompu %lld fois, des parties de la nuit n'ont donc pas été captées."
+      }
     },
     "summary.snoringConcentrated": {
       "en": "Snoring was detected mostly between %1$@ and %2$@, for about %3$@ in total.",
@@ -446,7 +431,6 @@
       "en": "The quietest stretch ran from %1$@ to %2$@.",
       "fr": "La période la plus calme s'est étendue de %1$@ à %2$@."
     },
-
     "session.check.storage.ok": {
       "en": "%@ available",
       "fr": "%@ disponibles"
@@ -463,7 +447,6 @@
       "en": "Recording for %@",
       "fr": "Enregistrement depuis %@"
     },
-
     "report.calmness.accessibility": {
       "en": "Calmness %1$lld out of 100, %2$@. This reflects how quiet the recording was, not the quality of your sleep.",
       "fr": "Tranquillité %1$lld sur 100, %2$@. Cela reflète le calme sonore de l'enregistrement, pas la qualité de ton sommeil."
@@ -478,29 +461,45 @@
     },
     "report.seeTimeline": {
       "plural": true,
-      "en": { "one": "See the whole night (%lld event)", "other": "See the whole night (%lld events)" },
-      "fr": { "one": "Voir toute la nuit (%lld événement)", "other": "Voir toute la nuit (%lld événements)" }
+      "en": {
+        "one": "See the whole night (%lld event)",
+        "other": "See the whole night (%lld events)"
+      },
+      "fr": {
+        "one": "Voir toute la nuit (%lld événement)",
+        "other": "Voir toute la nuit (%lld événements)"
+      }
     },
     "timeline.episodes": {
       "plural": true,
-      "en": { "one": "1 episode", "other": "%lld episodes" },
-      "fr": { "one": "1 épisode", "other": "%lld épisodes" }
+      "en": {
+        "one": "1 episode",
+        "other": "%lld episodes"
+      },
+      "fr": {
+        "one": "1 épisode",
+        "other": "%lld épisodes"
+      }
     },
-
     "settings.confirm.rawAudio": {
       "en": "This removes %@ of raw recordings. Your reports and the short clips behind each event are kept.",
       "fr": "Cela supprime %@ d'enregistrements bruts. Tes rapports et les extraits courts de chaque événement sont conservés."
     },
     "settings.confirm.everything": {
       "plural": true,
-      "en": { "one": "This permanently deletes your only night, every recording and every report. It cannot be undone.", "other": "This permanently deletes all %lld nights, every recording and every report. It cannot be undone." },
-      "fr": { "one": "Cela supprime définitivement ton unique nuit, tous les enregistrements et tous les rapports. C'est irréversible.", "other": "Cela supprime définitivement les %lld nuits, tous les enregistrements et tous les rapports. C'est irréversible." }
+      "en": {
+        "one": "This permanently deletes your only night, every recording and every report. It cannot be undone.",
+        "other": "This permanently deletes all %lld nights, every recording and every report. It cannot be undone."
+      },
+      "fr": {
+        "one": "Cela supprime définitivement ton unique nuit, tous les enregistrements et tous les rapports. C'est irréversible.",
+        "other": "Cela supprime définitivement les %lld nuits, tous les enregistrements et tous les rapports. C'est irréversible."
+      }
     },
     "settings.freed": {
       "en": "Freed %@.",
       "fr": "%@ libérés."
     },
-
     "trends.empty.body": {
       "en": "Somna has %1$lld analysed nights and needs %2$lld before showing trends. A line through two points is not a trend, and drawing one would say more than the data can.",
       "fr": "Somna a %1$lld nuits analysées et en attend %2$lld avant d'afficher des tendances. Une ligne entre deux points n'est pas une tendance, et la tracer dirait plus que les données ne permettent."
@@ -513,22 +512,37 @@
       "en": "Average %1$@ %2$@ over %3$lld nights.",
       "fr": "Moyenne de %1$@ %2$@ sur %3$lld nuits."
     },
-
     "onboarding.progress": {
       "en": "Step %1$lld of %2$lld",
       "fr": "Étape %1$lld sur %2$lld"
     },
     "status.hours": {
       "plural": true,
-      "en": { "one": "%lld hour", "other": "%lld hours" },
-      "fr": { "one": "%lld heure", "other": "%lld heures" }
+      "en": {
+        "one": "%lld hour",
+        "other": "%lld hours"
+      },
+      "fr": {
+        "one": "%lld heure",
+        "other": "%lld heures"
+      }
     },
-
-    "home.greeting.morning": { "en": "Good morning", "fr": "Bonjour" },
-    "home.greeting.afternoon": { "en": "Good afternoon", "fr": "Bon après-midi" },
-    "home.greeting.evening": { "en": "Good evening", "fr": "Bonsoir" },
-    "home.greeting.night": { "en": "Still awake?", "fr": "Encore debout ?" },
-
+    "home.greeting.morning": {
+      "en": "Good morning",
+      "fr": "Bonjour"
+    },
+    "home.greeting.afternoon": {
+      "en": "Good afternoon",
+      "fr": "Bon après-midi"
+    },
+    "home.greeting.evening": {
+      "en": "Good evening",
+      "fr": "Bonsoir"
+    },
+    "home.greeting.night": {
+      "en": "Still awake?",
+      "fr": "Encore debout ?"
+    },
     "calibration.issue.noInput": {
       "en": "Somna is not picking up any sound. Check that nothing is covering the bottom of your iPhone.",
       "fr": "Somna ne capte aucun son. Vérifie que rien ne couvre le bas de ton iPhone."
@@ -545,73 +559,213 @@
       "en": "The signal is very faint. Move your iPhone closer to the bed.",
       "fr": "Le signal est très faible. Rapproche ton iPhone du lit."
     },
-
-    "event.snoring.high": { "en": "Snoring detected", "fr": "Ronflement détecté" },
-    "event.snoring.medium": { "en": "Likely snoring", "fr": "Ronflement probable" },
-    "event.snoring.low": { "en": "Snoring-like sound", "fr": "Son ressemblant à un ronflement" },
-
-    "event.coughing.high": { "en": "Cough detected", "fr": "Toux détectée" },
-    "event.coughing.medium": { "en": "Likely cough", "fr": "Toux probable" },
-    "event.coughing.low": { "en": "Cough-like sound", "fr": "Son ressemblant à une toux" },
-
-    "event.talking.high": { "en": "Speech detected", "fr": "Parole détectée" },
-    "event.talking.medium": { "en": "Likely speech", "fr": "Parole probable" },
-    "event.talking.low": { "en": "Speech-like sound", "fr": "Son ressemblant à une parole" },
-
-    "event.breathing.high": { "en": "Audible breathing", "fr": "Respiration audible" },
-    "event.breathing.medium": { "en": "Likely audible breathing", "fr": "Respiration audible probable" },
-    "event.breathing.low": { "en": "Breathing-like sound", "fr": "Son ressemblant à une respiration" },
-
-    "event.sighing.high": { "en": "Sigh detected", "fr": "Soupir détecté" },
-    "event.sighing.medium": { "en": "Likely sigh", "fr": "Soupir probable" },
-    "event.sighing.low": { "en": "Sigh-like sound", "fr": "Son ressemblant à un soupir" },
-
-    "event.movementNoise.high": { "en": "Audible movement likely", "fr": "Mouvement audible probable" },
-    "event.movementNoise.medium": { "en": "Possible audible movement", "fr": "Mouvement audible possible" },
-    "event.movementNoise.low": { "en": "Faint movement-like sound", "fr": "Son léger évoquant un mouvement" },
-
-    "event.beddingNoise.high": { "en": "Bedding noise detected", "fr": "Bruit de draps détecté" },
-    "event.beddingNoise.medium": { "en": "Likely bedding noise", "fr": "Bruit de draps probable" },
-    "event.beddingNoise.low": { "en": "Rustling-like sound", "fr": "Son ressemblant à un froissement" },
-
-    "event.alarm.high": { "en": "Alarm detected", "fr": "Alarme détectée" },
-    "event.alarm.medium": { "en": "Likely alarm", "fr": "Alarme probable" },
-    "event.alarm.low": { "en": "Alarm-like sound", "fr": "Son ressemblant à une alarme" },
-
-    "event.door.high": { "en": "Door detected", "fr": "Porte détectée" },
-    "event.door.medium": { "en": "Likely door", "fr": "Porte probable" },
-    "event.door.low": { "en": "Door-like sound", "fr": "Son ressemblant à une porte" },
-
-    "event.animal.high": { "en": "Animal detected", "fr": "Animal détecté" },
-    "event.animal.medium": { "en": "Likely animal", "fr": "Animal probable" },
-    "event.animal.low": { "en": "Animal-like sound", "fr": "Son ressemblant à un animal" },
-
-    "event.traffic.high": { "en": "Traffic detected", "fr": "Circulation détectée" },
-    "event.traffic.medium": { "en": "Likely traffic", "fr": "Circulation probable" },
-    "event.traffic.low": { "en": "Traffic-like sound", "fr": "Son ressemblant à de la circulation" },
-
-    "event.rain.high": { "en": "Rain detected", "fr": "Pluie détectée" },
-    "event.rain.medium": { "en": "Likely rain", "fr": "Pluie probable" },
-    "event.rain.low": { "en": "Rain-like sound", "fr": "Son ressemblant à de la pluie" },
-
-    "event.whiteNoise.high": { "en": "Steady background noise", "fr": "Bruit de fond constant" },
-    "event.whiteNoise.medium": { "en": "Likely steady background noise", "fr": "Bruit de fond constant probable" },
-    "event.whiteNoise.low": { "en": "Faint steady noise", "fr": "Léger bruit constant" },
-
-    "event.television.high": { "en": "Television or media detected", "fr": "Télévision ou média détecté" },
-    "event.television.medium": { "en": "Likely television or media", "fr": "Télévision ou média probable" },
-    "event.television.low": { "en": "Media-like sound", "fr": "Son ressemblant à un média" },
-
-    "event.impact.high": { "en": "Loud impact detected", "fr": "Choc important détecté" },
-    "event.impact.medium": { "en": "Likely impact", "fr": "Choc probable" },
-    "event.impact.low": { "en": "Impact-like sound", "fr": "Son ressemblant à un choc" },
-
-    "event.sessionGap.high": { "en": "Recording interrupted", "fr": "Enregistrement interrompu" },
-    "event.sessionGap.medium": { "en": "Recording interrupted", "fr": "Enregistrement interrompu" },
-    "event.sessionGap.low": { "en": "Recording interrupted", "fr": "Enregistrement interrompu" },
-
-    "event.unknown.high": { "en": "Unidentified sound", "fr": "Son non identifié" },
-    "event.unknown.medium": { "en": "Unidentified sound", "fr": "Son non identifié" },
-    "event.unknown.low": { "en": "Faint unidentified sound", "fr": "Son faible non identifié" }
+    "event.snoring.high": {
+      "en": "Snoring detected",
+      "fr": "Ronflement détecté"
+    },
+    "event.snoring.medium": {
+      "en": "Likely snoring",
+      "fr": "Ronflement probable"
+    },
+    "event.snoring.low": {
+      "en": "Snoring-like sound",
+      "fr": "Son ressemblant à un ronflement"
+    },
+    "event.coughing.high": {
+      "en": "Cough detected",
+      "fr": "Toux détectée"
+    },
+    "event.coughing.medium": {
+      "en": "Likely cough",
+      "fr": "Toux probable"
+    },
+    "event.coughing.low": {
+      "en": "Cough-like sound",
+      "fr": "Son ressemblant à une toux"
+    },
+    "event.talking.high": {
+      "en": "Speech detected",
+      "fr": "Parole détectée"
+    },
+    "event.talking.medium": {
+      "en": "Likely speech",
+      "fr": "Parole probable"
+    },
+    "event.talking.low": {
+      "en": "Speech-like sound",
+      "fr": "Son ressemblant à une parole"
+    },
+    "event.breathing.high": {
+      "en": "Audible breathing",
+      "fr": "Respiration audible"
+    },
+    "event.breathing.medium": {
+      "en": "Likely audible breathing",
+      "fr": "Respiration audible probable"
+    },
+    "event.breathing.low": {
+      "en": "Breathing-like sound",
+      "fr": "Son ressemblant à une respiration"
+    },
+    "event.sighing.high": {
+      "en": "Sigh detected",
+      "fr": "Soupir détecté"
+    },
+    "event.sighing.medium": {
+      "en": "Likely sigh",
+      "fr": "Soupir probable"
+    },
+    "event.sighing.low": {
+      "en": "Sigh-like sound",
+      "fr": "Son ressemblant à un soupir"
+    },
+    "event.movementNoise.high": {
+      "en": "Audible movement likely",
+      "fr": "Mouvement audible probable"
+    },
+    "event.movementNoise.medium": {
+      "en": "Possible audible movement",
+      "fr": "Mouvement audible possible"
+    },
+    "event.movementNoise.low": {
+      "en": "Faint movement-like sound",
+      "fr": "Son léger évoquant un mouvement"
+    },
+    "event.beddingNoise.high": {
+      "en": "Bedding noise detected",
+      "fr": "Bruit de draps détecté"
+    },
+    "event.beddingNoise.medium": {
+      "en": "Likely bedding noise",
+      "fr": "Bruit de draps probable"
+    },
+    "event.beddingNoise.low": {
+      "en": "Rustling-like sound",
+      "fr": "Son ressemblant à un froissement"
+    },
+    "event.alarm.high": {
+      "en": "Alarm detected",
+      "fr": "Alarme détectée"
+    },
+    "event.alarm.medium": {
+      "en": "Likely alarm",
+      "fr": "Alarme probable"
+    },
+    "event.alarm.low": {
+      "en": "Alarm-like sound",
+      "fr": "Son ressemblant à une alarme"
+    },
+    "event.door.high": {
+      "en": "Door detected",
+      "fr": "Porte détectée"
+    },
+    "event.door.medium": {
+      "en": "Likely door",
+      "fr": "Porte probable"
+    },
+    "event.door.low": {
+      "en": "Door-like sound",
+      "fr": "Son ressemblant à une porte"
+    },
+    "event.animal.high": {
+      "en": "Animal detected",
+      "fr": "Animal détecté"
+    },
+    "event.animal.medium": {
+      "en": "Likely animal",
+      "fr": "Animal probable"
+    },
+    "event.animal.low": {
+      "en": "Animal-like sound",
+      "fr": "Son ressemblant à un animal"
+    },
+    "event.traffic.high": {
+      "en": "Traffic detected",
+      "fr": "Circulation détectée"
+    },
+    "event.traffic.medium": {
+      "en": "Likely traffic",
+      "fr": "Circulation probable"
+    },
+    "event.traffic.low": {
+      "en": "Traffic-like sound",
+      "fr": "Son ressemblant à de la circulation"
+    },
+    "event.rain.high": {
+      "en": "Rain detected",
+      "fr": "Pluie détectée"
+    },
+    "event.rain.medium": {
+      "en": "Likely rain",
+      "fr": "Pluie probable"
+    },
+    "event.rain.low": {
+      "en": "Rain-like sound",
+      "fr": "Son ressemblant à de la pluie"
+    },
+    "event.whiteNoise.high": {
+      "en": "Steady background noise",
+      "fr": "Bruit de fond constant"
+    },
+    "event.whiteNoise.medium": {
+      "en": "Likely steady background noise",
+      "fr": "Bruit de fond constant probable"
+    },
+    "event.whiteNoise.low": {
+      "en": "Faint steady noise",
+      "fr": "Léger bruit constant"
+    },
+    "event.television.high": {
+      "en": "Television or media detected",
+      "fr": "Télévision ou média détecté"
+    },
+    "event.television.medium": {
+      "en": "Likely television or media",
+      "fr": "Télévision ou média probable"
+    },
+    "event.television.low": {
+      "en": "Media-like sound",
+      "fr": "Son ressemblant à un média"
+    },
+    "event.impact.high": {
+      "en": "Loud impact detected",
+      "fr": "Choc important détecté"
+    },
+    "event.impact.medium": {
+      "en": "Likely impact",
+      "fr": "Choc probable"
+    },
+    "event.impact.low": {
+      "en": "Impact-like sound",
+      "fr": "Son ressemblant à un choc"
+    },
+    "event.sessionGap.high": {
+      "en": "Recording interrupted",
+      "fr": "Enregistrement interrompu"
+    },
+    "event.sessionGap.medium": {
+      "en": "Recording interrupted",
+      "fr": "Enregistrement interrompu"
+    },
+    "event.sessionGap.low": {
+      "en": "Recording interrupted",
+      "fr": "Enregistrement interrompu"
+    },
+    "event.unknown.high": {
+      "en": "Unidentified sound",
+      "fr": "Son non identifié"
+    },
+    "event.unknown.medium": {
+      "en": "Unidentified sound",
+      "fr": "Son non identifié"
+    },
+    "event.unknown.low": {
+      "en": "Faint unidentified sound",
+      "fr": "Son faible non identifié"
+    },
+    "report.export.audio.confirm.body": {
+      "en": "This is %@ of continuous recording of your room. Anyone who was audible is in it. It leaves Somna only where you send it.",
+      "fr": "Ce sont %@ d'enregistrement continu de ta chambre. Toute personne qui y était audible s'y trouve. Ça ne quitte Somna que là où tu l'envoies."
+    }
   }
 }
