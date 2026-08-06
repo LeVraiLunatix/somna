@@ -19,6 +19,15 @@
       "screenshots": [],
       "versions": [
         {
+          "version": "0.1.1",
+          "buildVersion": "3",
+          "date": "2026-08-06T00:53:26Z",
+          "localizedDescription": "### Corrigé\n- Démarrer une nuit ne coupe plus la musique en cours. La session d'enregistrement\n  déclare désormais `.mixWithOthers`, ce qui impose la catégorie `.playAndRecord` :\n  l'option qui dit « ne fais taire personne » n'est acceptée que sur celle-là.\n- Les AirPods restent en pleine qualité pendant l'enregistrement. Seul\n  `.allowBluetoothA2DP` est autorisé, jamais `.allowBluetooth` — ce dernier est le\n  profil mains-libres, qui aurait fait sonner la musique comme un appel.\n- Le micro intégré du téléphone est forcé en entrée. Sans cela, une nuit passée avec\n  des écouteurs aurait été enregistrée depuis les écouteurs, par un micro qui quitte\n  la chambre en même temps que celui qui le porte.\n\n---",
+          "downloadURL": "https://github.com/LeVraiLunatix/somna/releases/download/v0.1.1/Somna-0.1.1.ipa",
+          "size": 2116817,
+          "minOSVersion": "26.0"
+        },
+        {
           "version": "0.1.0",
           "buildVersion": "2",
           "date": "2026-08-05T01:29:20Z",
