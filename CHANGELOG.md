@@ -10,6 +10,22 @@ alimentent automatiquement les notes de version de la source AltStore (Phase 7).
 
 ## [Non publié]
 
+### Ajouté
+- Export d'une nuit depuis son rapport : l'audio brut, les données en JSON, le résumé en texte.
+  L'audio part en une archive unique — une nuit complète fait une quarantaine de segments de
+  dix minutes, et seule cette forme survit intacte à une feuille de partage.
+- L'export audio demande confirmation, en annonçant la durée réelle et en rappelant que toute
+  personne audible dans la pièce s'y trouve.
+
+### Corrigé
+- L'export existait depuis la Phase 7 mais n'était relié à aucun écran : rien n'était
+  exportable, pas même le JSON. L'app conservait des heures d'audio pendant une semaine sans
+  offrir aucun moyen de les atteindre.
+
+---
+
+## [0.1.1] — 2026-08-05
+
 ### Corrigé
 - Démarrer une nuit ne coupe plus la musique en cours. La session d'enregistrement
   déclare désormais `.mixWithOthers`, ce qui impose la catégorie `.playAndRecord` :
