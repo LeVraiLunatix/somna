@@ -19,6 +19,15 @@
       "screenshots": [],
       "versions": [
         {
+          "version": "0.1.2",
+          "buildVersion": "4",
+          "date": "2026-08-06T02:02:54Z",
+          "localizedDescription": "### Ajouté\n- Export d'une nuit depuis son rapport : l'audio brut, les données en JSON, le résumé en texte.\n  L'audio part en une archive unique — une nuit complète fait une quarantaine de segments de\n  dix minutes, et seule cette forme survit intacte à une feuille de partage.\n- L'export audio demande confirmation, en annonçant la durée réelle et en rappelant que toute\n  personne audible dans la pièce s'y trouve.\n\n### Corrigé\n- L'export existait depuis la Phase 7 mais n'était relié à aucun écran : rien n'était\n  exportable, pas même le JSON. L'app conservait des heures d'audio pendant une semaine sans\n  offrir aucun moyen de les atteindre.\n\n---",
+          "downloadURL": "https://github.com/LeVraiLunatix/somna/releases/download/v0.1.2/Somna-0.1.2.ipa",
+          "size": 2144487,
+          "minOSVersion": "26.0"
+        },
+        {
           "version": "0.1.1",
           "buildVersion": "3",
           "date": "2026-08-06T00:53:26Z",
